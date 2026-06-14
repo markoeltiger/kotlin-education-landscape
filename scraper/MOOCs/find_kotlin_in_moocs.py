@@ -13,6 +13,9 @@ load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
 KOTLIN = re.compile(r"\bkotlin\b", re.I)
 
+STEPIK_BASE = "https://stepik.org/api/courses"
+STEPIK_UA = {"User-Agent": "kotlin-education-landscape"}
+
 COURSERA_BASE = "https://api.coursera.org/api/courses.v1"
 COURSERA_FIELDS = "name,slug,description,partnerIds,primaryLanguages,workload"
 COURSERA_UA = {"User-Agent": "kotlin-education-landscape"}
@@ -20,15 +23,20 @@ COURSERA_UA = {"User-Agent": "kotlin-education-landscape"}
 UDEMY_SEARCH_URL = os.environ.get("UDEMY_SEARCH_URL", "https://www.udemy.com/api-2.0/courses/")
 UDEMY_FIELDS = ("title,url,headline,visible_instructors,num_subscribers,avg_rating,"
                 "is_paid,locale,num_published_lectures")
+UDEMY_COOKIE = os.environ.get("UDEMY_COOKIE", "")
+UDEMY_UA = os.environ.get(
+    "UDEMY_UA",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 UDEMY_HEADERS = {
-    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                   "AppleWebKit/537.36 (KHTML, like Gecko) "
-                   "Chrome/124.0.0.0 Safari/537.36"),
+    "User-Agent": UDEMY_UA,
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "en-US,en;q=0.9",
     "Referer": "https://www.udemy.com/courses/search/?q=kotlin",
     "X-Requested-With": "XMLHttpRequest",
 }
+if UDEMY_COOKIE:
+    UDEMY_HEADERS["Cookie"] = UDEMY_COOKIE
 
 
 def trim(text, n=300):
@@ -157,26 +165,63 @@ def collect_udemy(coll, query, pages, page_size, delay):
     return written
 
 
+def collect_stepik(coll, query, pages, delay):
+    written = 0
+    for page in range(1, pages + 1):
+        r = requests.get(STEPIK_BASE, headers=STEPIK_UA, timeout=30,
+                         params={"search": query, "page": page})
+        if r.status_code != 200:
+            print(f"stepik HTTP {r.status_code} on page {page}, stopping", file=sys.stderr)
+            break
+        data = r.json()
+        courses = data.get("courses", [])
+        if not courses:
+            break
+        for c in courses:
+            cid = c.get("id")
+            if not cid:
+                continue
+            authors = c.get("authors") or []
+            written += upsert(coll, {
+                "source": "stepik",
+                "course_id": cid,
+                "title": c.get("title"),
+                "url": f"https://stepik.org/course/{cid}",
+                "description": trim(c.get("summary") or c.get("description")),
+                "providers": [str(a) for a in authors] if authors else ["Stepik"],
+                "languages": [c.get("language")] if c.get("language") else None,
+                "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            })
+        print(f"[stepik page {page}] new={written}")
+        if not (data.get("meta") or {}).get("has_next"):
+            break
+        time.sleep(delay)
+    return written
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--source", choices=["coursera", "udemy", "all"], default="all")
-    ap.add_argument("--query", default="kotlin", help="udemy search term")
+    ap.add_argument("--source", choices=["coursera", "udemy", "stepik", "all"], default="all")
+    ap.add_argument("--query", default="kotlin", help="udemy/stepik search term")
     ap.add_argument("--page-size", type=int, default=100)
     ap.add_argument("--max-pages", type=int, default=300, help="coursera catalog pages")
     ap.add_argument("--udemy-pages", type=int, default=10)
+    ap.add_argument("--stepik-pages", type=int, default=20)
     ap.add_argument("--delay", type=float, default=0.5)
     args = ap.parse_args()
 
     coll = get_collection()
     total = 0
-    if args.source in ("coursera", "all"):
-        total += collect_coursera(coll, args.max_pages, args.page_size, args.delay)
     if args.source in ("udemy", "all"):
         total += collect_udemy(coll, args.query, args.udemy_pages,
                                min(args.page_size, 20), max(args.delay, 2.0))
+    if args.source in ("stepik", "all"):
+        total += collect_stepik(coll, args.query, args.stepik_pages, max(args.delay, 1.0))
+    if args.source in ("coursera", "all"):
+        total += collect_coursera(coll, args.max_pages, args.page_size, args.delay)
 
     print(f"\nWrote {total} new course(s).")
-    for src in ("coursera", "udemy"):
+    for src in ("coursera", "udemy", "stepik"):
         print(f"  {src}: {coll.count_documents({'source': src})}")
 
 
