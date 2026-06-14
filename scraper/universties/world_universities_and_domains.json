@@ -1,4 +1,12 @@
 [
+    {
+    "name": "Constructor University",
+    "domains": ["constructor.university"],
+    "web_pages": ["https://constructor.university/"],
+    "country": "Germany",
+    "alpha_two_code": "De",
+    "state-province": "Bermen"
+  },
   {
     "name": "Fundação Hermínio Ometto",
     "domains": ["fho.edu.br"],
