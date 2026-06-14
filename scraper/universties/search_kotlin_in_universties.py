@@ -1,146 +1,147 @@
-
 import argparse
 import json
+import os
 import re
 import sys
 import time
+import requests
+from pymongo import MongoClient, ASCENDING
 from pathlib import Path
+from dotenv import load_dotenv
 
-import cdx_toolkit
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
 INPUT = "world_universities_and_domains.json"
-OUTPUT = "findings_commoncrawl.json"
-PROGRESS = "cc_progress.json"      
+BASE = os.environ.get("SERP_URL", "http://localhost:7001")
+PATH = os.environ.get("SERP_PATH", "/{engine}/search")
 
-# URL slugs that suggest a course/catalog page (cheap pre-filter, saves fetches)
-CANDIDATE_URL = re.compile(
-    r"(course|courses|syllab|module|curricul|catalog|catalogue|"
-    r"bachelor|master|undergrad|module|class|teaching|lecture|"
-    r"cs\d|comp\W?sci|informat|program(me|ming)?)", re.I)
-
-# Page must mention Kotlin...
-KOTLIN = re.compile(r"\bkotlin\b", re.I)
-# ...AND at least one course marker, to confirm it's actually a course/syllabus.
-COURSE_MARKER = re.compile(
-    r"(syllab|prerequisit|credit hours?|\bECTS\b|semester|lecture|"
-    r"learning outcome|assessment|instructor|course code|"
-    r"\b[A-Z]{2,4}\s?\d{3}\b)", re.I)
+COURSE_WORDS = ("course", "syllab", "module", "curriculum", "lecture", "semester",
+                "bachelor", "master", "undergraduate", "handbook", "ects", "credits")
+COURSE_CODE = re.compile(r"\b[A-Z]{2,4}[-\s]?\d{3}\b")
 
 
-def load_universities(tier, limit):
-    unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
-    if tier:
-        unis = [u for u in unis if u.get("priority_tier") == tier]
-    unis = [u for u in unis if u.get("domains")]
-    unis.sort(key=lambda u: u.get("crawl_order", 1 << 30))
-    return unis[:limit]
+def fetch(engine, text, site, limit, retries=3):
+    url = BASE + PATH.format(engine=engine)
+    params = {"text": text, "site": site, "limit": limit}
+    for attempt in range(retries):
+        try:
+            r = requests.get(url, params=params, timeout=90)
+            if r.status_code == 200:
+                data = r.json()
+                return data.get("results", []) if isinstance(data, dict) else (data or [])
+            if r.status_code in (429, 503):
+                time.sleep(10 * (attempt + 1))
+                continue
+            return []
+        except requests.RequestException:
+            time.sleep(5 * (attempt + 1))
+    return []
 
 
-def extract_snippet(text, term=KOTLIN, radius=160):
-    m = term.search(text)
-    if not m:
-        return ""
-    a, b = max(0, m.start() - radius), min(len(text), m.end() + radius)
-    return re.sub(r"\s+", " ", text[a:b]).strip()
+def parse(r):
+    url = r.get("url") or r.get("link") or ""
+    title = r.get("title", "")
+    snippet = r.get("snippet") or r.get("description") or ""
+    content_type = (r.get("classification") or {}).get("content_type")
+    rank = r.get("rank") or (r.get("position") or {}).get("absolute")
+    engine = r.get("engine")
+    return url, title, snippet, content_type, rank, engine
+
+
+def course_signal(title, snippet, content_type):
+    if content_type == "document":
+        return True
+    if COURSE_CODE.search(title) or COURSE_CODE.search(snippet):
+        return True
+    blob = f"{title} {snippet}".lower()
+    return any(w in blob for w in COURSE_WORDS)
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--limit", type=int, default=50, help="max universities this run")
-    ap.add_argument("--tier", type=int, default=1, help="priority tier to process")
-    ap.add_argument("--crawls", type=int, default=2,
-                    help="how many recent monthly crawls to span")
-    ap.add_argument("--max-captures", type=int, default=400,
-                    help="cap CDX captures pulled per domain (politeness)")
-    ap.add_argument("--debug", action="store_true",
-                    help="show fetched/kotlin_only diagnostics per university")
+    ap.add_argument("--engine", default="google")
+    ap.add_argument("--query", default="kotlin")
+    ap.add_argument("--tier", type=int, default=1)
+    ap.add_argument("--limit", type=int, default=600)
+    ap.add_argument("--results", type=int, default=10)
+    ap.add_argument("--delay", type=float, default=3.0)
     args = ap.parse_args()
 
-    cdx = cdx_toolkit.CDXFetcher(source="cc")
+    uri = os.environ.get("MONGODB_URI")
+    if not uri:
+        sys.exit("MONGODB_URI not set (check your .env)")
 
-    progress = set()
-    if Path(PROGRESS).exists():
-        progress = set(json.loads(Path(PROGRESS).read_text()))
+    client = MongoClient(uri, serverSelectionTimeoutMS=15000)
+    client.admin.command("ping")
+    db = client["kotlin_edu"]
+    findings = db["university_findings"]
+    progress = db["serp_progress"]
+    findings.create_index([("url", ASCENDING)], unique=True)
 
-    findings = []
-    if Path(OUTPUT).exists():
-        findings = json.loads(Path(OUTPUT).read_text(encoding="utf-8"))
-    seen_urls = {f["url"] for f in findings}
+    host = uri.split("@")[-1].split("/")[0]
+    print(f"connected to {host} | db=kotlin_edu coll=university_findings | "
+          f"starting count={findings.count_documents({})}\n")
 
-    unis = load_universities(args.tier, args.limit + len(progress))
-    unis = [u for u in unis
-            if (u["name"] + "|" + (u.get("alpha_two_code") or "")) not in progress][:args.limit]
-    print(f"Processing {len(unis)} universities (tier {args.tier}, "
-          f"{args.crawls} crawl(s) each)\n")
+    unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
+    if args.tier:
+        unis = [u for u in unis ]
+    unis = [u for u in unis if u.get("domains")]
 
-    for i, uni in enumerate(unis, 1):
+    done = {d["_id"] for d in progress.find({}, {"_id": 1})}
+    processed = 0
+    total_written = 0
+
+    for uni in unis:
+        if processed >= args.limit:
+            break
         name = uni["name"]
-        uni_key = name + "|" + (uni.get("alpha_two_code") or "")
-        hits_here = 0
-        candidates_seen = 0
-        kotlin_only = 0          # diagnostic: Kotlin present but no course marker
-        fetched = 0              # diagnostic: candidate pages whose text we read
-        errored = False
+        key = f"{name}|{uni.get('alpha_two_code') or ''}"
+        if key in done:
+            continue
+        domains = uni.get("domains", [])
 
-        for domain in uni["domains"]:            # try every domain (alias coverage)
-            try:
-                for cap in cdx.iter(f"{domain}/*", limit=args.max_captures,
-                                    crawl=[str(args.crawls)],
-                                    filter=["status:200", "mime:text/html"]):
-                    url = cap.data.get("url", "")
-                    if not CANDIDATE_URL.search(url):
-                        continue
-                    candidates_seen += 1
-                    if url in seen_urls:
-                        continue
-                    try:
-                        text = cap.text or ""      # archived page text (free)
-                    except Exception:
-                        continue
-                    fetched += 1
-                    has_kotlin = bool(KOTLIN.search(text))
-                    if has_kotlin and COURSE_MARKER.search(text):
-                        rec = {
-                            "url": url,
-                            "university": name,
-                            "country": uni.get("country"),
-                            "alpha_two_code": uni.get("alpha_two_code"),
-                            "priority_tier": uni.get("priority_tier"),
-                            "source_type": "university_website",
-                            "discovery": "common_crawl",
-                            "crawl_timestamp": cap.data.get("timestamp"),
-                            "snippet": extract_snippet(text),
-                            "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                        }
-                        findings.append(rec)
-                        seen_urls.add(url)
-                        hits_here += 1
-                    elif has_kotlin:
-                        kotlin_only += 1
-            except Exception as e:                  # noqa: BLE001
-                print(f"  ! {name} ({domain}): {e}", file=sys.stderr)
-                errored = True
+        hits = 0
+        new = 0
+        dropped = 0
+        for r in fetch(args.engine, args.query, domains[0], args.results):
+            url, title, snippet, ctype, rank, engine = parse(r)
+            if not any(d in url for d in domains):
+                dropped += 1
+                continue
+            res = findings.update_one(
+                {"url": url},
+                {"$setOnInsert": {
+                    "url": url,
+                    "university": name,
+                    "country": uni.get("country"),
+                    "alpha_two_code": uni.get("alpha_two_code"),
+                    "title": title,
+                    "snippet": snippet,
+                    "content_type": ctype,
+                    "rank": rank,
+                    "course_signal": course_signal(title, snippet, ctype),
+                    "source": "university_website",
+                    "discovery": f"serp:{engine or args.engine}",
+                    "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                }},
+                upsert=True,
+            )
+            hits += 1
+            if res.upserted_id is not None:
+                new += 1
+                total_written += 1
 
-        # only mark complete if nothing errored — otherwise retry on next run
-        if not errored:
-            progress.add(uni_key)
-        # checkpoint every uni so long runs are fully resumable
-        Path(OUTPUT).write_text(json.dumps(findings, ensure_ascii=False, indent=1))
-        Path(PROGRESS).write_text(json.dumps(sorted(progress)))
-        flag = f"{hits_here} HIT(S)" if hits_here else "-"
-        diag = f"fetched={fetched:<3} kotlin_only={kotlin_only}" if args.debug else ""
-        print(f"[{i}/{len(unis)}] {name:<42.42} cand={candidates_seen:<4} "
-              f"{flag:<9} {diag}")
+        progress.update_one({"_id": key}, {"$set": {"name": name}}, upsert=True)
+        processed += 1
+        print(f"[{processed}] {name:<40.40} kept={hits:<2} new={new:<2} "
+              f"dropped={dropped:<2}" if (hits or dropped)
+              else f"[{processed}] {name:<40.40} -")
+        time.sleep(args.delay)
 
-    print(f"\nDone. {len(findings)} total findings in {OUTPUT}.")
-    by_country = {}
-    for f in findings:
-        by_country[f["country"]] = by_country.get(f["country"], 0) + 1
-    top = sorted(by_country.items(), key=lambda x: -x[1])[:10]
-    if top:
-        print("Top countries by Kotlin course pages found:")
-        for c, n in top:
-            print(f"  {n:>4}  {c}")
+    total = findings.count_documents({})
+    courses = findings.count_documents({"course_signal": True})
+    print(f"\nWrote {total_written} new doc(s) this run.")
+    print(f"Findings now in mongo: {total}  (course-signal: {courses})")
 
 
 if __name__ == "__main__":
