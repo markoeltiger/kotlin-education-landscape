@@ -3,21 +3,25 @@ import json
 import os
 import re
 import sys
+import threading
 import time
-import requests
-from pymongo import MongoClient, ASCENDING
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+
+import requests
 from dotenv import load_dotenv
+from pymongo import MongoClient, ASCENDING
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
-INPUT = "world_universities_and_domains.json"
+INPUT = os.environ.get("UNI_INPUT", "world_universities_and_domains.json")
 BASE = os.environ.get("SERP_URL", "http://localhost:7001")
 PATH = os.environ.get("SERP_PATH", "/{engine}/search")
 
 COURSE_WORDS = ("course", "syllab", "module", "curriculum", "lecture", "semester",
                 "bachelor", "master", "undergraduate", "handbook", "ects", "credits")
 COURSE_CODE = re.compile(r"\b[A-Z]{2,4}[-\s]?\d{3}\b")
+KOTLIN = re.compile(r"\bkotlin\b", re.I)
 
 
 def fetch(engine, text, site, limit, retries=3):
@@ -57,21 +61,31 @@ def course_signal(title, snippet, content_type):
     return any(w in blob for w in COURSE_WORDS)
 
 
+def load_universities(limit, done):
+    unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
+    unis = [u for u in unis if u.get("domains")]
+    pending = [u for u in unis
+               if f"{u['name']}|{u.get('alpha_two_code') or ''}" not in done]
+    return pending[:limit]
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--engine", default="google")
-    ap.add_argument("--query", default="kotlin")
-    ap.add_argument("--tier", type=int, default=1)
+    ap.add_argument("--engine", default="duck",
+                    help="duck/bing are faster and less blocked than google")
+    ap.add_argument("--query", default="kotlin course")
     ap.add_argument("--limit", type=int, default=600)
     ap.add_argument("--results", type=int, default=10)
-    ap.add_argument("--delay", type=float, default=3.0)
+    ap.add_argument("--workers", type=int, default=8, help="parallel searches")
+    ap.add_argument("--course-only", action="store_true",
+                    help="only store results that look like courses (drops job/news noise)")
     args = ap.parse_args()
 
     uri = os.environ.get("MONGODB_URI")
     if not uri:
         sys.exit("MONGODB_URI not set (check your .env)")
 
-    client = MongoClient(uri, serverSelectionTimeoutMS=15000)
+    client = MongoClient(uri, serverSelectionTimeoutMS=15000, maxPoolSize=args.workers + 4)
     client.admin.command("ping")
     db = client["kotlin_edu"]
     findings = db["university_findings"]
@@ -79,68 +93,64 @@ def main():
     findings.create_index([("url", ASCENDING)], unique=True)
 
     host = uri.split("@")[-1].split("/")[0]
-    print(f"connected to {host} | db=kotlin_edu coll=university_findings | "
+    print(f"connected to {host} | coll=university_findings | "
           f"starting count={findings.count_documents({})}\n")
 
-    unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
-    if args.tier:
-        unis = [u for u in unis ]
-    unis = [u for u in unis if u.get("domains")]
-
     done = {d["_id"] for d in progress.find({}, {"_id": 1})}
-    processed = 0
-    total_written = 0
+    unis = load_universities(args.limit, done)
+    print(f"processing {len(unis)} universities with {args.workers} workers "
+          f"(engine={args.engine})\n")
 
-    for uni in unis:
-        if processed >= args.limit:
-            break
+    counter = {"i": 0, "written": 0}
+    lock = threading.Lock()
+
+    def work(uni):
         name = uni["name"]
-        key = f"{name}|{uni.get('alpha_two_code') or ''}"
-        if key in done:
-            continue
         domains = uni.get("domains", [])
-
-        hits = 0
-        new = 0
-        dropped = 0
-        for r in fetch(args.engine, args.query, domains[0], args.results):
+        results = fetch(args.engine, args.query, domains[0], args.results)
+        new = hits = dropped = 0
+        for r in results:
             url, title, snippet, ctype, rank, engine = parse(r)
             if not any(d in url for d in domains):
+                dropped += 1
+                continue
+            if not KOTLIN.search(f"{title} {snippet} {url}"):
+                dropped += 1
+                continue
+            is_course = course_signal(title, snippet, ctype)
+            if args.course_only and not is_course:
                 dropped += 1
                 continue
             res = findings.update_one(
                 {"url": url},
                 {"$setOnInsert": {
-                    "url": url,
-                    "university": name,
-                    "country": uni.get("country"),
-                    "alpha_two_code": uni.get("alpha_two_code"),
-                    "title": title,
-                    "snippet": snippet,
-                    "content_type": ctype,
-                    "rank": rank,
-                    "course_signal": course_signal(title, snippet, ctype),
+                    "url": url, "university": name, "country": uni.get("country"),
+                    "alpha_two_code": uni.get("alpha_two_code"), "title": title,
+                    "snippet": snippet, "content_type": ctype, "rank": rank,
+                    "course_signal": is_course,
                     "source": "university_website",
                     "discovery": f"serp:{engine or args.engine}",
                     "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                }},
-                upsert=True,
-            )
+                }}, upsert=True)
             hits += 1
             if res.upserted_id is not None:
                 new += 1
-                total_written += 1
+        progress.update_one({"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
+                            {"$set": {"name": name}}, upsert=True)
+        with lock:
+            counter["i"] += 1
+            counter["written"] += new
+            tag = f"kept={hits} new={new} dropped={dropped}" if (hits or dropped) else "-"
+            print(f"[{counter['i']}/{len(unis)}] {name:<40.40} {tag}")
 
-        progress.update_one({"_id": key}, {"$set": {"name": name}}, upsert=True)
-        processed += 1
-        print(f"[{processed}] {name:<40.40} kept={hits:<2} new={new:<2} "
-              f"dropped={dropped:<2}" if (hits or dropped)
-              else f"[{processed}] {name:<40.40} -")
-        time.sleep(args.delay)
+    with ThreadPoolExecutor(max_workers=args.workers) as ex:
+        futures = [ex.submit(work, u) for u in unis]
+        for f in as_completed(futures):
+            f.result()
 
     total = findings.count_documents({})
     courses = findings.count_documents({"course_signal": True})
-    print(f"\nWrote {total_written} new doc(s) this run.")
+    print(f"\nWrote {counter['written']} new doc(s) this run.")
     print(f"Findings now in mongo: {total}  (course-signal: {courses})")
 
 
