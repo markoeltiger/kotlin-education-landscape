@@ -74,7 +74,7 @@ def main():
     ap.add_argument("--engine", default="duck",
                     help="duck/bing are faster and less blocked than google")
     ap.add_argument("--query", default="kotlin course")
-    ap.add_argument("--limit", type=int, default=600)
+    ap.add_argument("--limit", type=int, default=1000)
     ap.add_argument("--results", type=int, default=10)
     ap.add_argument("--workers", type=int, default=8, help="parallel searches")
     ap.add_argument("--course-only", action="store_true",
