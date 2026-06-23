@@ -1,75 +1,66 @@
 import argparse
-import csv
 import os
 import sys
 from collections import Counter
-from pathlib import Path
 
 from dotenv import load_dotenv
 from pymongo import MongoClient, ASCENDING
 
 load_dotenv()
 
-UNIFIED_FIELDS = ["source", "category", "title", "url", "provider", "country",
-                  "language", "subtype", "popularity", "date", "kotlin_confidence", "raw_id"]
+GH_PRIMARY = {"course", "tutorial", "workshop", "book_companion"}
+# formal = structured, institution-backed; informal = self-directed / community
+FORMAL_MOOC = {"coursera", "stepik", "edx", "udemy"}
 
 
 def norm_github(c):
+    rtype = c.get("repo_type")
+    # GitHub is community/self-directed by nature -> informal, even "course" repos
     return {
-        "source": "github",
-        "category": "repository",
-        "title": c.get("full_name") or c.get("title"),
-        "url": c.get("url"),
-        "provider": c.get("owner"),
-        "country": c.get("country"),
-        "language": None,
-        "subtype": c.get("repo_type"),
-        "popularity": c.get("stars"),
-        "date": c.get("created_at"),
-        "kotlin_confidence": c.get("edu_confidence"),
-        "raw_id": str(c.get("_id")),
+        "source": "github", "category": "repository",
+        "signal_tier": "primary" if rtype in GH_PRIMARY else "secondary",
+        "learning_type": "informal",
+        "title": c.get("full_name") or c.get("title"), "url": c.get("url"),
+        "provider": c.get("owner"), "country": c.get("country"), "language": None,
+        "subtype": rtype, "popularity": c.get("stars"), "date": c.get("created_at"),
+        "kotlin_confidence": c.get("edu_confidence"), "raw_id": str(c.get("_id")),
     }
 
 
 def norm_mooc(c):
+    src = c.get("source")
     providers = c.get("providers") or []
     langs = c.get("languages") or []
+    # structured platforms = formal; youtube = informal
+    learning = "formal" if src in FORMAL_MOOC else "informal"
     return {
-        "source": c.get("source"),
-        "category": "online_course",
-        "title": c.get("title"),
-        "url": c.get("url"),
+        "source": src, "category": "online_course",
+        "signal_tier": "primary", "learning_type": learning,
+        "title": c.get("title"), "url": c.get("url"),
         "provider": "; ".join(p for p in providers if p) or None,
-        "country": None,
-        "language": langs[0] if langs else None,
-        "subtype": "mooc",
-        "popularity": c.get("num_subscribers"),
-        "date": c.get("found_at"),
-        "kotlin_confidence": 1.0,
+        "country": None, "language": langs[0] if langs else None, "subtype": "mooc",
+        "popularity": c.get("num_subscribers") or c.get("views"),
+        "date": c.get("found_at"), "kotlin_confidence": 1.0,
         "raw_id": str(c.get("course_id")),
     }
 
 
 def norm_university(c):
+    sig = bool(c.get("course_signal"))
+    # universities are institutional -> formal
     return {
-        "source": "university_website",
-        "category": "university_page",
-        "title": c.get("title"),
-        "url": c.get("url"),
-        "provider": c.get("university"),
-        "country": c.get("country"),
-        "language": None,
-        "subtype": c.get("content_type"),
-        "popularity": None,
-        "date": c.get("found_at"),
-        "kotlin_confidence": 0.8 if c.get("course_signal") else 0.4,
-        "raw_id": c.get("url"),
+        "source": "university_website", "category": "university_page",
+        "signal_tier": "primary" if sig else "secondary",
+        "learning_type": "formal",
+        "title": c.get("title"), "url": c.get("url"), "provider": c.get("university"),
+        "country": c.get("country"), "language": None, "subtype": c.get("content_type"),
+        "popularity": None, "date": c.get("found_at"),
+        "kotlin_confidence": 0.8 if sig else 0.4, "raw_id": c.get("url"),
     }
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", default="output/kotlin_courses_unified.csv")
     args = ap.parse_args()
 
     uri = os.environ.get("MONGODB_URI")
@@ -83,12 +74,9 @@ def main():
     unified.create_index([("source", ASCENDING), ("raw_id", ASCENDING)], unique=True)
 
     rows = []
-    sources = {
-        "github_repos": norm_github,
-        "mooc_courses": norm_mooc,
-        "university_findings": norm_university,
-    }
-    for coll_name, fn in sources.items():
+    for coll_name, fn in (("github_repos", norm_github),
+                          ("mooc_courses", norm_mooc),
+                          ("university_findings", norm_university)):
         n = 0
         for doc in db[coll_name].find({}):
             row = fn(doc)
@@ -98,48 +86,41 @@ def main():
             n += 1
         print(f"read {coll_name}: {n}")
 
+    from pymongo import UpdateOne
+    ops = [UpdateOne({"source": r["source"], "raw_id": r["raw_id"]},
+                     {"$set": r}, upsert=True) for r in rows]
     written = 0
-    for row in rows:
-        res = unified.update_one(
-            {"source": row["source"], "raw_id": row["raw_id"]},
-            {"$set": row}, upsert=True)
-        if res.upserted_id is not None:
-            written += 1
+    for i in range(0, len(ops), 1000):
+        res = unified.bulk_write(ops[i:i + 1000], ordered=False)
+        written += res.upserted_count
+        print(f"  wrote {min(i + 1000, len(ops))}/{len(ops)}")
 
-    Path(args.csv).parent.mkdir(parents=True, exist_ok=True)
-    with open(args.csv, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=UNIFIED_FIELDS)
-        w.writeheader()
-        for row in rows:
-            w.writerow(row)
-
-    # ---- summary for the run log ----
     total = len(rows)
     by_source = Counter(r["source"] for r in rows)
-    by_category = Counter(r["category"] for r in rows)
+    by_tier = Counter(r["signal_tier"] for r in rows)
+    by_learning = Counter(r["learning_type"] for r in rows)
     countries = Counter(r["country"] for r in rows if r["country"])
-    providers = Counter(r["provider"] for r in rows if r["provider"])
 
-    print("\n" + "=" * 48)
+    print("\n" + "=" * 50)
     print(" KOTLIN EDUCATION LANDSCAPE — UNIFIED SUMMARY")
-    print("=" * 48)
+    print("=" * 50)
     print(f" total records:        {total}")
     print(f" new this run:         {written}")
-    print(f" unified collection:   {unified.count_documents({})}")
+    print(f" courses_unified now:  {unified.count_documents({})}")
+    print("\n learning type:")
+    for t, n in by_learning.most_common():
+        print(f"   {n:>6}  {t}")
+    print("\n signal tier:")
+    for t, n in by_tier.most_common():
+        print(f"   {n:>6}  {t}")
     print("\n by source:")
     for s, n in by_source.most_common():
         print(f"   {n:>6}  {s}")
-    print("\n by category:")
-    for c, n in by_category.most_common():
-        print(f"   {n:>6}  {c}")
-    print("\n top countries (university pages):")
+    print("\n top countries:")
     for c, n in countries.most_common(8):
         print(f"   {n:>6}  {c}")
-    print("\n top providers:")
-    for p, n in providers.most_common(8):
-        print(f"   {n:>6}  {p[:40]}")
-    print("=" * 48)
-    print(f"CSV written: {args.csv} ({total} rows)")
+    print("=" * 50)
+    print(f"Written to MongoDB: kotlin_edu.courses_unified ({unified.count_documents({})} docs)")
 
 
 if __name__ == "__main__":
