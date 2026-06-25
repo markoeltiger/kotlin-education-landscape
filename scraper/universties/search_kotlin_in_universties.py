@@ -18,28 +18,44 @@ INPUT = os.environ.get("UNI_INPUT", "world_universities_and_domains.json")
 BASE = os.environ.get("SERP_URL", "http://localhost:7001")
 PATH = os.environ.get("SERP_PATH", "/{engine}/search")
 
-COURSE_WORDS = ("course", "syllab", "module", "curriculum", "lecture", "semester",
-                "bachelor", "master", "undergraduate", "handbook", "ects", "credits")
-COURSE_CODE = re.compile(r"\b[A-Z]{2,4}[-\s]?\d{3}\b")
+ENGINES = ["google", "duck", "bing"]
+
+COURSE_WORDS = ("course", "courses", "syllabus", "syllabi", "module", "modules",
+                "curriculum", "curricula", "lecture", "lectures", "seminar",
+                "semester", "bachelor", "master", "masters", "undergraduate",
+                "graduate", "postgraduate", "handbook", "ects", "credit hours",
+                "programme", "degree", "elective", "prerequisite",
+                "coursework", "tutorial", "diploma", "assignment")
+COURSE_WORDS_RE = re.compile(r"\b(" + "|".join(COURSE_WORDS) + r")\b", re.I)
+COURSE_CODE = re.compile(r"\b[A-Z]{2,4}[-\s]?\d{3,4}\b")
 KOTLIN = re.compile(r"\bkotlin\b", re.I)
 
 
-def fetch(engine, text, site, limit, retries=3):
+def fetch_engine(engine, text, site, limit):
     url = BASE + PATH.format(engine=engine)
     params = {"text": text, "site": site, "limit": limit}
-    for attempt in range(retries):
-        try:
-            r = requests.get(url, params=params, timeout=90)
-            if r.status_code == 200:
-                data = r.json()
-                return data.get("results", []) if isinstance(data, dict) else (data or [])
-            if r.status_code in (429, 503):
-                time.sleep(10 * (attempt + 1))
-                continue
-            return []
-        except requests.RequestException:
-            time.sleep(5 * (attempt + 1))
-    return []
+    try:
+        r = requests.get(url, params=params, timeout=90)
+        if r.status_code == 200:
+            data = r.json()
+            results = data.get("results", []) if isinstance(data, dict) else (data or [])
+            return results, True          # responded cleanly
+        return [], False                  # error / captcha / 429 -> try next engine
+    except requests.RequestException:
+        return [], False
+
+
+def fetch(text, site, limit):
+    # try google first, then duck, then bing; first engine that RETURNS RESULTS wins,
+    # otherwise the first that responds at all
+    responded = False
+    for engine in ENGINES:
+        results, ok = fetch_engine(engine, text, site, limit)
+        if results:
+            return results, engine
+        if ok:
+            responded = True
+    return [], (ENGINES[0] if responded else None)
 
 
 def parse(r):
@@ -57,28 +73,25 @@ def course_signal(title, snippet, content_type):
         return True
     if COURSE_CODE.search(title) or COURSE_CODE.search(snippet):
         return True
-    blob = f"{title} {snippet}".lower()
-    return any(w in blob for w in COURSE_WORDS)
+    return bool(COURSE_WORDS_RE.search(f"{title} {snippet}"))
 
 
-def load_universities(limit, done):
+def load_universities(done):
     unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
     unis = [u for u in unis if u.get("domains")]
-    pending = [u for u in unis
-               if f"{u['name']}|{u.get('alpha_two_code') or ''}" not in done]
-    return pending[:limit]
+    return [u for u in unis
+            if f"{u['name']}|{u.get('alpha_two_code') or ''}" not in done]
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--engine", default="duck",
-                    help="duck/bing are faster and less blocked than google")
-    ap.add_argument("--query", default="kotlin course")
-    ap.add_argument("--limit", type=int, default=1000)
+    ap.add_argument("--query", default="kotlin")
     ap.add_argument("--results", type=int, default=10)
     ap.add_argument("--workers", type=int, default=8, help="parallel searches")
     ap.add_argument("--course-only", action="store_true",
-                    help="only store results that look like courses (drops job/news noise)")
+                    help="only store results that look like courses (course_signal must be true)")
+    ap.add_argument("--strict", action="store_true",
+                    help="require BOTH kotlin AND a course/syllabus term in title+snippet")
     args = ap.parse_args()
 
     uri = os.environ.get("MONGODB_URI")
@@ -94,12 +107,12 @@ def main():
 
     host = uri.split("@")[-1].split("/")[0]
     print(f"connected to {host} | coll=university_findings | "
-          f"starting count={findings.count_documents({})}\n")
+          f"engines: google -> duck -> bing | starting count={findings.count_documents({})}\n")
 
     done = {d["_id"] for d in progress.find({}, {"_id": 1})}
-    unis = load_universities(args.limit, done)
-    print(f"processing {len(unis)} universities with {args.workers} workers "
-          f"(engine={args.engine})\n")
+    unis = load_universities(done)
+    n_total = len(unis)
+    print(f"processing ALL {n_total} remaining universities with {args.workers} workers\n")
 
     counter = {"i": 0, "written": 0}
     lock = threading.Lock()
@@ -107,7 +120,7 @@ def main():
     def work(uni):
         name = uni["name"]
         domains = uni.get("domains", [])
-        results = fetch(args.engine, args.query, domains[0], args.results)
+        results, used_engine = fetch(args.query, domains[0], args.results)
         new = hits = dropped = 0
         for r in results:
             url, title, snippet, ctype, rank, engine = parse(r)
@@ -121,6 +134,9 @@ def main():
             if args.course_only and not is_course:
                 dropped += 1
                 continue
+            if args.strict and not is_course:
+                dropped += 1
+                continue
             res = findings.update_one(
                 {"url": url},
                 {"$setOnInsert": {
@@ -129,7 +145,7 @@ def main():
                     "snippet": snippet, "content_type": ctype, "rank": rank,
                     "course_signal": is_course,
                     "source": "university_website",
-                    "discovery": f"serp:{engine or args.engine}",
+                    "discovery": f"serp:{engine or used_engine}",
                     "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 }}, upsert=True)
             hits += 1
@@ -140,8 +156,9 @@ def main():
         with lock:
             counter["i"] += 1
             counter["written"] += new
-            tag = f"kept={hits} new={new} dropped={dropped}" if (hits or dropped) else "-"
-            print(f"[{counter['i']}/{len(unis)}] {name:<40.40} {tag}")
+            eng = f"[{used_engine}]" if used_engine else "[none]"
+            tag = f"{eng} kept={hits} new={new} dropped={dropped}" if (hits or dropped) else f"{eng} -"
+            print(f"[{counter['i']}/{n_total}] {name:<36.36} {tag}")
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         futures = [ex.submit(work, u) for u in unis]
