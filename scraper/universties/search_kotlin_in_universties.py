@@ -24,9 +24,16 @@ COURSE_WORDS = ("course", "courses", "syllabus", "syllabi", "module", "modules",
                 "curriculum", "curricula", "lecture", "lectures", "seminar",
                 "semester", "bachelor", "master", "masters", "undergraduate",
                 "graduate", "postgraduate", "handbook", "ects", "credit hours",
-                "programme", "degree", "elective", "prerequisite",
-                "coursework", "tutorial", "diploma", "assignment")
+                "programme", "programmes", "program", "programs", "education",
+                "degree", "degrees", "elective", "prerequisite",
+                "coursework", "tutorial", "diploma", "assignment", "faculty",
+                "department", "studies", "major", "minor")
 COURSE_WORDS_RE = re.compile(r"\b(" + "|".join(COURSE_WORDS) + r")\b", re.I)
+# also catch course-like URL path segments (e.g. /programs/, /undergraduate-education/)
+URL_HINTS_RE = re.compile(
+    r"(course|courses|program|programme|curriculum|syllab|module|degree|"
+    r"undergraduate|graduate|bachelor|master|education|faculty|department|catalog|module)",
+    re.I)
 COURSE_CODE = re.compile(r"\b[A-Z]{2,4}[-\s]?\d{3,4}\b")
 KOTLIN = re.compile(r"\bkotlin\b", re.I)
 
@@ -68,12 +75,14 @@ def parse(r):
     return url, title, snippet, content_type, rank, engine
 
 
-def course_signal(title, snippet, content_type):
+def course_signal(title, snippet, content_type, url=""):
     if content_type == "document":
         return True
     if COURSE_CODE.search(title) or COURSE_CODE.search(snippet):
         return True
-    return bool(COURSE_WORDS_RE.search(f"{title} {snippet}"))
+    if COURSE_WORDS_RE.search(f"{title} {snippet}"):
+        return True
+    return bool(URL_HINTS_RE.search(url))
 
 
 def load_universities(done):
@@ -86,12 +95,15 @@ def load_universities(done):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--query", default="kotlin")
-    ap.add_argument("--results", type=int, default=10)
+    ap.add_argument("--results", type=int, default=100,
+                    help="max results to request per engine (high = take all)")
     ap.add_argument("--workers", type=int, default=8, help="parallel searches")
     ap.add_argument("--course-only", action="store_true",
                     help="only store results that look like courses (course_signal must be true)")
     ap.add_argument("--strict", action="store_true",
                     help="require BOTH kotlin AND a course/syllabus term in title+snippet")
+    ap.add_argument("--retry-failed", action="store_true",
+                    help="also re-run universities whose engines previously failed")
     args = ap.parse_args()
 
     uri = os.environ.get("MONGODB_URI")
@@ -109,10 +121,14 @@ def main():
     print(f"connected to {host} | coll=university_findings | "
           f"engines: google -> duck -> bing | starting count={findings.count_documents({})}\n")
 
-    done = {d["_id"] for d in progress.find({}, {"_id": 1})}
+    # skip only schools that actually completed; optionally exclude failed so they retry
+    skip_query = {} if args.retry_failed else {"status": {"$ne": "failed"}}
+    done = {d["_id"] for d in progress.find(skip_query, {"_id": 1})}
     unis = load_universities(done)
     n_total = len(unis)
-    print(f"processing ALL {n_total} remaining universities with {args.workers} workers\n")
+    failed_pending = progress.count_documents({"status": "failed"})
+    print(f"processing {n_total} universities with {args.workers} workers "
+          f"({failed_pending} previously-failed will {'retry' if args.retry_failed else 'be skipped unless --retry-failed'})\n")
 
     counter = {"i": 0, "written": 0}
     lock = threading.Lock()
@@ -121,6 +137,7 @@ def main():
         name = uni["name"]
         domains = uni.get("domains", [])
         results, used_engine = fetch(args.query, domains[0], args.results)
+        raw = len(results)
         new = hits = dropped = 0
         for r in results:
             url, title, snippet, ctype, rank, engine = parse(r)
@@ -130,7 +147,7 @@ def main():
             if not KOTLIN.search(f"{title} {snippet} {url}"):
                 dropped += 1
                 continue
-            is_course = course_signal(title, snippet, ctype)
+            is_course = course_signal(title, snippet, ctype, url)
             if args.course_only and not is_course:
                 dropped += 1
                 continue
@@ -151,13 +168,40 @@ def main():
             hits += 1
             if res.upserted_id is not None:
                 new += 1
-        progress.update_one({"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
-                            {"$set": {"name": name}}, upsert=True)
+
+        # status: failed = no engine responded; empty = responded but no raw results;
+        # no_match = had results but none passed filters; found = at least one kept
+        if used_engine is None:
+            status = "failed"
+        elif raw == 0:
+            status = "empty"
+        elif hits == 0:
+            status = "no_match"
+        else:
+            status = "found"
+
+        progress.update_one(
+            {"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
+            {"$set": {
+                "name": name,
+                "country": uni.get("country"),
+                "alpha_two_code": uni.get("alpha_two_code"),
+                "domain": domains[0] if domains else None,
+                "status": status,
+                "engine": used_engine,
+                "raw_results": raw,
+                "kept": hits,
+                "dropped": dropped,
+                "last_run": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            }}, upsert=True)
+
         with lock:
             counter["i"] += 1
             counter["written"] += new
+            counter[status] = counter.get(status, 0) + 1
             eng = f"[{used_engine}]" if used_engine else "[none]"
-            tag = f"{eng} kept={hits} new={new} dropped={dropped}" if (hits or dropped) else f"{eng} -"
+            tag = (f"{eng} kept={hits} new={new} dropped={dropped}"
+                   if (hits or dropped) else f"{eng} {status}")
             print(f"[{counter['i']}/{n_total}] {name:<36.36} {tag}")
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
@@ -168,7 +212,15 @@ def main():
     total = findings.count_documents({})
     courses = findings.count_documents({"course_signal": True})
     print(f"\nWrote {counter['written']} new doc(s) this run.")
-    print(f"Findings now in mongo: {total}  (course-signal: {courses})")
+    print("run status breakdown:")
+    for st in ("found", "no_match", "empty", "failed"):
+        if counter.get(st):
+            print(f"   {counter[st]:>6}  {st}")
+    print(f"\nFindings now in mongo: {total}  (course-signal: {courses})")
+    still_failed = progress.count_documents({"status": "failed"})
+    if still_failed:
+        print(f"{still_failed} universities still in 'failed' state "
+              f"— rerun with --retry-failed to retry them.")
 
 
 if __name__ == "__main__":
