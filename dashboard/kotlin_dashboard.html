@@ -54,6 +54,13 @@
   }
   .toggle input{accent-color:var(--kt-a)}
   .toggle.on{color:var(--ink); border-color:var(--kt-a)}
+  .sel,.search{
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:7px 14px; font-size:13px; color:var(--ink); font-family:inherit; outline:none;
+  }
+  .sel:focus,.search:focus{border-color:var(--kt-a)}
+  .search{min-width:200px}
+  .search::placeholder{color:var(--faint)}
   .reload{margin-left:auto;font-size:12px;color:var(--faint);cursor:pointer;background:none;border:none}
   .reload:hover{color:var(--muted)}
 
@@ -115,6 +122,19 @@
   <div id="app" style="display:none">
     <div class="controls">
       <label class="toggle on" id="tgl"><input type="checkbox" id="primaryOnly" checked> Primary educational only</label>
+      <select id="sourceFilter" class="sel">
+        <option value="">All sources</option>
+        <option value="university_website">Universities</option>
+        <option value="github">GitHub</option>
+        <option value="stepik">Stepik</option>
+        <option value="coursera">Coursera</option>
+      </select>
+      <select id="tierFilter" class="sel">
+        <option value="">All tiers</option>
+        <option value="primary">Primary only</option>
+        <option value="secondary">Secondary only</option>
+      </select>
+      <input id="search" class="search" placeholder="filter by name / provider…">
       <span class="mono" style="font-size:12px;color:var(--faint)" id="rowcount"></span>
       <button class="reload" id="reload">↻ load different file</button>
     </div>
@@ -152,6 +172,18 @@
         <p class="hint">institutions, platforms & channels</p>
         <div id="providers"></div>
       </div>
+
+      <div class="panel">
+        <h3>GitHub by type</h3>
+        <p class="hint">how open-source Kotlin learning content breaks down</p>
+        <div id="ghtypes"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Online course platforms</h3>
+        <p class="hint">MOOC records by platform</p>
+        <div id="platforms"></div>
+      </div>
     </div>
   </div>
 </main>
@@ -175,6 +207,8 @@ document.getElementById('primaryOnly').addEventListener('change',e=>{
   document.getElementById('tgl').classList.toggle('on',e.target.checked);
   render();
 });
+['sourceFilter','tierFilter'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+document.getElementById('search').addEventListener('input',render);
 
 function boot(){
   document.getElementById('loader').style.display='none';
@@ -183,8 +217,15 @@ function boot(){
 }
 
 function current(){
-  const p=document.getElementById('primaryOnly').checked;
-  return p?RAW.filter(r=>r.signal_tier==='primary'):RAW;
+  let d=RAW;
+  if(document.getElementById('primaryOnly').checked) d=d.filter(r=>r.signal_tier==='primary');
+  const src=document.getElementById('sourceFilter').value;
+  if(src) d=d.filter(r=>r.source===src);
+  const tier=document.getElementById('tierFilter').value;
+  if(tier) d=d.filter(r=>r.signal_tier===tier);
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  if(q) d=d.filter(r=>((r.title||'')+' '+(r.provider||'')+' '+(r.country||'')).toLowerCase().includes(q));
+  return d;
 }
 
 function render(){
@@ -196,6 +237,8 @@ function render(){
   drawSources(d);
   drawLearning(d);
   drawProviders(d);
+  drawGhTypes(d);
+  drawPlatforms(d);
 }
 
 function countBy(rows,key,filter){
@@ -254,13 +297,40 @@ function drawProviders(d){
   const data=countBy(d,'provider').slice(0,12);
   hbars('providers',data,C.a);
 }
+function drawGhTypes(d){
+  const data=countBy(d.filter(r=>r.source==='github'),'subtype');
+  hbars('ghtypes',data,C.c,s=>(s||'').replace(/_/g,' '));
+}
+function drawPlatforms(d){
+  const data=countBy(d.filter(r=>r.category==='online_course'),'source');
+  hbars('platforms',data,C.b);
+}
 
 let WORLD=null;
+// our CSV country names -> the names used in the world-atlas topojson
+const MAP_ALIAS={
+  "United States":"United States of America",
+  "USA":"United States of America",
+  "United States of America":"United States of America",
+  "Russia":"Russia","Russian Federation":"Russia",
+  "United Kingdom":"United Kingdom","UK":"United Kingdom",
+  "Czech Republic":"Czechia","Czechia":"Czechia",
+  "South Korea":"South Korea","Korea, Republic of":"South Korea",
+  "Turkey":"Turkey","Türkiye":"Turkey","Turkiye":"Turkey",
+  "Serbia":"Republic of Serbia",
+  "Tanzania":"United Republic of Tanzania",
+  "Bosnia and Herzegovina":"Bosnia and Herz.",
+  "Dominican Republic":"Dominican Rep.",
+  "North Macedonia":"North Macedonia","Macedonia":"North Macedonia",
+};
+function mapName(c){return MAP_ALIAS[c]||c;}
+
 function drawMap(d){
-  const box=document.getElementById('map'); 
+  const box=document.getElementById('map');
   const counts=new Map();
   d.filter(r=>r.source==='university_website'&&r.country).forEach(r=>{
-    counts.set(r.country,(counts.get(r.country)||0)+1);
+    const k=mapName(r.country);
+    counts.set(k,(counts.get(k)||0)+1);
   });
   const draw=()=>{
     box.innerHTML='';
@@ -268,21 +338,30 @@ function drawMap(d){
     const svg=d3.select(box).append('svg').attr('viewBox',`0 0 ${w} ${h}`);
     const proj=d3.geoNaturalEarth1().fitSize([w,h],{type:'Sphere'});
     const path=d3.geoPath(proj);
-    const max=d3.max([...counts.values()])||1;
-    const col=d3.scaleSequential().domain([0,Math.sqrt(max)]).interpolator(t=>d3.interpolateRgb('#241f36',C.a)(t));
-    svg.append('path').attr('d',path({type:'Sphere'})).attr('fill','#19152480').attr('stroke',C.muted+'22');
+    const vals=[...counts.values()].sort((a,b)=>a-b);
+    const max=vals[vals.length-1]||1;
+    // log-based ramp so the largest (US) is unmistakably darkest, but small
+    // counts still register. multi-stop purple->pink->orange = Kotlin identity.
+    const ramp=d3.scaleLinear()
+      .domain([0, Math.log(max+1)*0.5, Math.log(max+1)])
+      .range(['#2e2747','#6f3fd6','#b94bb0'])
+      .interpolate(d3.interpolateRgb);
+    const fill=n=>n? ramp(Math.log(n+1)) : '#201b30';
+    svg.append('path').attr('d',path({type:'Sphere'})).attr('fill','#19152466').attr('stroke',C.muted+'22');
     const feats=topojson.feature(WORLD,WORLD.objects.countries).features;
     svg.append('g').selectAll('path').data(feats).join('path')
       .attr('class','country').attr('d',path)
-      .attr('fill',f=>{const n=counts.get(f.properties.name)||0;return n?col(Math.sqrt(n)):'#221d33';})
+      .attr('fill',f=>fill(counts.get(f.properties.name)||0))
       .on('mousemove',(e,f)=>{const n=counts.get(f.properties.name)||0;showTip(`${f.properties.name} · <span class="tv">${n}</span> ${n===1?'finding':'findings'}`,e.clientX,e.clientY);})
       .on('mouseleave',hideTip);
-    // legend
-    const lg=svg.append('g').attr('class','legend').attr('transform',`translate(${w-180},${h-30})`);
-    const steps=[0,.25,.5,.75,1];
-    steps.forEach((s,i)=>{lg.append('rect').attr('x',i*30).attr('width',30).attr('height',8).attr('fill',s?col(Math.sqrt(max)*s):'#221d33');});
-    lg.append('text').attr('x',0).attr('y',-6).text('fewer');
-    lg.append('text').attr('x',150).attr('y',-6).attr('text-anchor','end').text('more');
+    // legend with real value anchors
+    const lg=svg.append('g').attr('class','legend').attr('transform',`translate(${w-200},${h-30})`);
+    const stops=[1, Math.round(max*0.15)||2, Math.round(max*0.4)||5, Math.round(max*0.7)||10, max];
+    stops.forEach((v,i)=>{
+      lg.append('rect').attr('x',i*38).attr('width',38).attr('height',9).attr('fill',fill(v));
+      lg.append('text').attr('x',i*38).attr('y',22).attr('font-size','9').text(v);
+    });
+    lg.append('text').attr('x',0).attr('y',-6).text('universities per country');
   };
   if(WORLD){draw();return;}
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(w=>{WORLD=w;draw();})
