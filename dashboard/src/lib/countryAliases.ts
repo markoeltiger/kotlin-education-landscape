@@ -1,0 +1,42 @@
+// Maps our dataset country names to the names used by world-atlas topojson.
+export const COUNTRY_ALIASES: Record<string, string> = {
+  "United States": "United States of America",
+  "USA": "United States of America",
+  "US": "United States of America",
+  "Russia": "Russia",
+  "Russian Federation": "Russia",
+  "Czech Republic": "Czechia",
+  "Czechia": "Czechia",
+  "Serbia": "Republic of Serbia",
+  "Tanzania": "United Republic of Tanzania",
+  "Bosnia and Herzegovina": "Bosnia and Herz.",
+  "Dominican Republic": "Dominican Rep.",
+  "South Korea": "South Korea",
+  "Korea, Republic of": "South Korea",
+  "North Korea": "North Korea",
+  "Congo": "Republic of the Congo",
+  "Democratic Republic of the Congo": "Dem. Rep. Congo",
+  "Cote d'Ivoire": "Ivory Coast",
+  "Côte d'Ivoire": "Ivory Coast",
+  "Central African Republic": "Central African Rep.",
+  "South Sudan": "S. Sudan",
+  "Equatorial Guinea": "Eq. Guinea",
+  "eSwatini": "eSwatini",
+  "Swaziland": "eSwatini",
+  "Myanmar": "Myanmar",
+  "Burma": "Myanmar",
+  "Laos": "Laos",
+  "Vietnam": "Vietnam",
+  "Syria": "Syria",
+  "Iran": "Iran",
+  "Palestine": "Palestine",
+  "Taiwan": "Taiwan",
+  "United Kingdom": "United Kingdom",
+  "UK": "United Kingdom",
+  "Macedonia": "North Macedonia",
+  "North Macedonia": "North Macedonia",
+};
+
+export function aliasCountry(name: string): string {
+  return COUNTRY_ALIASES[name] ?? name;
+}

@@ -1,0 +1,93 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-ink: var(--ink);
+  --color-kt-purple: var(--kt-purple);
+  --color-kt-magenta: var(--kt-magenta);
+  --color-kt-orange: var(--kt-orange);
+  --color-border: var(--line);
+  --color-primary: var(--kt-purple);
+  --color-primary-foreground: var(--ink);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --background: #19191C;
+  --foreground: #F5F5F7;
+  --panel: #27282C;
+  --panel-2: #1F2024;
+  --line: #3A3A3F;
+  --muted: #2C2D31;
+  --muted-foreground: #9B9BA1;
+  --ink: #F5F5F7;
+  --kt-purple: #7F52FF;
+  --kt-magenta: #C711E1;
+  --kt-orange: #E44857;
+  --gradient-kotlin: linear-gradient(90deg, #7F52FF 0%, #C711E1 55%, #E44857 100%);
+  --gradient-kotlin-135: linear-gradient(135deg, #7F52FF 0%, #C711E1 55%, #E44857 100%);
+  --map-low: #241F36;
+  --map-mid: #7F52FF;
+  --map-high: #C711E1;
+}
+
+@layer base {
+  * { border-color: var(--line); }
+  html, body, #root { background: var(--background); color: var(--foreground); }
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-sans); letter-spacing: -0.02em; font-weight: 700; }
+  ::selection { background: color-mix(in oklab, var(--kt-purple) 40%, transparent); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+@utility mono { font-family: var(--font-mono); font-feature-settings: "zero", "ss02"; }
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+@utility panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+@utility kt-gradient-text {
+  background: var(--gradient-kotlin);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #27282C 0%, #33343A 50%, #27282C 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 6px;
+}
