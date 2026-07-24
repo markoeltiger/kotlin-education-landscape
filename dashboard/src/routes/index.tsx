@@ -340,7 +340,7 @@ function Dashboard() {
           </div>
 
           <Panel title="Data table" subtitle="Filterable · scrollable">
-            <DataTable data={filtered} />
+            <DataTable rows={filtered} />
           </Panel>
         </main>
       </div>
