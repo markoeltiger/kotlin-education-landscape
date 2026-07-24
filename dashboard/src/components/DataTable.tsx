@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import type { Course } from "../lib/dataset";
 import { fmt, classNames } from "../lib/format";
@@ -19,6 +19,13 @@ const COLS: Col[] = [
 
 export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) {
   const actualRows: Course[] = rows ?? data ?? [];
+
+  // useVirtualizer requires DOM refs — never run during SSR.
+  // useEffect does not execute on the server, so isMounted stays false
+  // and we render a skeleton instead of calling useVirtualizer.
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
   const [sortKey, setSortKey] = useState<keyof Course>("popularity");
   const [dir, setDir] = useState<"asc" | "desc">("desc");
 
@@ -38,12 +45,30 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
   }, [actualRows, sortKey, dir]);
 
   const parentRef = useRef<HTMLDivElement>(null);
-  const virt = useVirtualizer({
-    count: sorted.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 40,
-    overscan: 12,
-  });
+
+  // On server: isMounted=false, so useVirtualizer is never called.
+  // On client: isMounted=true after first paint, virtualizer is safe to use.
+  const virt = useVirtualizer(
+    isMounted
+      ? { count: sorted.length, getScrollElement: () => parentRef.current, estimateSize: () => 40, overscan: 12 }
+      : { count: 0, getScrollElement: () => null, estimateSize: () => 40 }
+  );
+
+  // Show a simple skeleton until the client has mounted
+  if (!isMounted) {
+    return (
+      <div className="flex flex-col min-w-0">
+        <div className="mono text-xs text-muted-foreground tabular-nums mb-3">
+          {fmt(actualRows.length)} rows — loading table…
+        </div>
+        <div className="border border-line rounded-md overflow-hidden" style={{ height: 520 }}>
+          <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+            Loading…
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const gridTemplate = COLS.map((c) => c.w).join(" ");
 

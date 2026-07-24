@@ -2,7 +2,7 @@ import { o as __toESM } from "../_runtime.mjs";
 import { n as fmt, t as classNames } from "./format-BVvm7-du.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { t as useVirtualizer } from "../_libs/@tanstack/react-virtual+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-CCZb1rl8.js
+//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-BHhYvnua.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function toCsv(rows, columns) {
@@ -78,6 +78,10 @@ var COLS = [
 ];
 function DataTable({ rows, data }) {
 	const actualRows = rows ?? data ?? [];
+	const [isMounted, setIsMounted] = (0, import_react.useState)(false);
+	(0, import_react.useEffect)(() => {
+		setIsMounted(true);
+	}, []);
 	const [sortKey, setSortKey] = (0, import_react.useState)("popularity");
 	const [dir, setDir] = (0, import_react.useState)("desc");
 	const sorted = (0, import_react.useMemo)(() => {
@@ -99,11 +103,29 @@ function DataTable({ rows, data }) {
 		dir
 	]);
 	const parentRef = (0, import_react.useRef)(null);
-	const virt = useVirtualizer({
+	const virt = useVirtualizer(isMounted ? {
 		count: sorted.length,
 		getScrollElement: () => parentRef.current,
 		estimateSize: () => 40,
 		overscan: 12
+	} : {
+		count: 0,
+		getScrollElement: () => null,
+		estimateSize: () => 40
+	});
+	if (!isMounted) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col min-w-0",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "mono text-xs text-muted-foreground tabular-nums mb-3",
+			children: [fmt(actualRows.length), " rows — loading table…"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "border border-line rounded-md overflow-hidden",
+			style: { height: 520 },
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex items-center justify-center h-full text-sm text-muted-foreground",
+				children: "Loading…"
+			})
+		})]
 	});
 	const gridTemplate = COLS.map((c) => c.w).join(" ");
 	const onSort = (k) => {
