@@ -26,77 +26,84 @@ var public_assets_data_default = {
 	"/favicon.ico": {
 		"type": "image/vnd.microsoft.icon",
 		"etag": "\"4f95-3RXc3p2mhEAs1WBwaIvE0Y0uu0Y\"",
-		"mtime": "2026-07-24T15:04:33.204Z",
+		"mtime": "2026-07-24T15:32:59.017Z",
 		"size": 20373,
 		"path": "../public/favicon.ico"
 	},
-	"/assets/DataTable-BQPZy9Gv.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"6e64-27zQntgDoCD1knBXZf86jX2Lmk0\"",
-		"mtime": "2026-07-24T15:04:32.758Z",
-		"size": 28260,
-		"path": "../public/assets/DataTable-BQPZy9Gv.js"
+	"/favicon.svg": {
+		"type": "image/svg+xml",
+		"etag": "\"1a4-+rYjOtdvgx3STWwomPhfrygP0EM\"",
+		"mtime": "2026-07-24T15:32:59.017Z",
+		"size": 420,
+		"path": "../public/favicon.svg"
 	},
-	"/assets/format-CkOFoDvF.js": {
+	"/assets/DataTable-D7Dm3nt5.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"80-DXprVUq3lOzjYz7fxrbIukkhpKA\"",
-		"mtime": "2026-07-24T15:04:32.758Z",
-		"size": 128,
-		"path": "../public/assets/format-CkOFoDvF.js"
+		"etag": "\"6e64-5J0hT5Cli5K4ZsElKIP77enbvKA\"",
+		"mtime": "2026-07-24T15:32:58.675Z",
+		"size": 28260,
+		"path": "../public/assets/DataTable-D7Dm3nt5.js"
 	},
 	"/kotlin_education_tableau_universities.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"16a29-AIo3yh2So/OL2NnjHBrqflElX3E\"",
-		"mtime": "2026-07-24T15:04:33.205Z",
+		"mtime": "2026-07-24T15:32:59.018Z",
 		"size": 92713,
 		"path": "../public/kotlin_education_tableau_universities.csv"
 	},
-	"/data/baseline_comparison.json": {
-		"type": "application/json",
-		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
-		"mtime": "2026-07-24T15:04:33.204Z",
-		"size": 112,
-		"path": "../public/data/baseline_comparison.json"
-	},
-	"/assets/routes-DsjpDQ6a.js": {
+	"/assets/format-CkOFoDvF.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1eb63-4a0BvWxG20yAHpb3ja3WXAu8s5w\"",
-		"mtime": "2026-07-24T15:04:32.758Z",
-		"size": 125795,
-		"path": "../public/assets/routes-DsjpDQ6a.js"
+		"etag": "\"80-DXprVUq3lOzjYz7fxrbIukkhpKA\"",
+		"mtime": "2026-07-24T15:32:58.675Z",
+		"size": 128,
+		"path": "../public/assets/format-CkOFoDvF.js"
 	},
 	"/assets/styles-CjKSHSKb.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"108dc-sJyN1VHSE3T4iSP9OQasTjYH74s\"",
-		"mtime": "2026-07-24T15:04:32.759Z",
+		"mtime": "2026-07-24T15:32:58.676Z",
 		"size": 67804,
 		"path": "../public/assets/styles-CjKSHSKb.css"
 	},
-	"/assets/index-CXmKk7Sd.js": {
+	"/data/baseline_comparison.json": {
+		"type": "application/json",
+		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
+		"mtime": "2026-07-24T15:32:59.017Z",
+		"size": 112,
+		"path": "../public/data/baseline_comparison.json"
+	},
+	"/assets/routes-xgP2fPUa.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"6904b-G709Wr7BW1UlqejDxUz+73A0Wj8\"",
-		"mtime": "2026-07-24T15:04:32.757Z",
-		"size": 430155,
-		"path": "../public/assets/index-CXmKk7Sd.js"
+		"etag": "\"1eb63-0NCfcoDRr/Bj9+v4SnOw6KESPSA\"",
+		"mtime": "2026-07-24T15:32:58.675Z",
+		"size": 125795,
+		"path": "../public/assets/routes-xgP2fPUa.js"
+	},
+	"/assets/index-BUeImt7F.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"69081-tLqBVjsLTyN3dsWsqK1ijVrJGCs\"",
+		"mtime": "2026-07-24T15:32:58.674Z",
+		"size": 430209,
+		"path": "../public/assets/index-BUeImt7F.js"
 	},
 	"/data/serp_progress.json": {
 		"type": "application/json",
 		"etag": "\"1725fa-vZzHydDZn45KMjQ11Y5UrSWYA5A\"",
-		"mtime": "2026-07-24T15:04:33.208Z",
+		"mtime": "2026-07-24T15:32:59.023Z",
 		"size": 1517050,
 		"path": "../public/data/serp_progress.json"
 	},
 	"/kotlin_education_tableau.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"1ff18f-OvxQHYrllfoyHzXkOzyu7TEnSj4\"",
-		"mtime": "2026-07-24T15:04:33.209Z",
+		"mtime": "2026-07-24T15:32:59.026Z",
 		"size": 2093455,
 		"path": "../public/kotlin_education_tableau.csv"
 	},
 	"/data/courses_unified.json": {
 		"type": "application/json",
 		"etag": "\"43ebe9-NuH7Ld0SxUktzIVDH5zqNwTUHiU\"",
-		"mtime": "2026-07-24T15:04:33.212Z",
+		"mtime": "2026-07-24T15:32:59.028Z",
 		"size": 4451305,
 		"path": "../public/data/courses_unified.json"
 	}
