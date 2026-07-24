@@ -1,6 +1,6 @@
 import { o as __toESM } from "../../_runtime.mjs";
-import { g as require_react_dom } from "./react-router+[...].mjs";
 import { r as require_react } from "../react+tanstack__react-query.mjs";
+import { F as require_react_dom } from "./react-router+[...].mjs";
 //#region node_modules/@tanstack/virtual-core/dist/esm/lazy-measurements.js
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 var import_react_dom = require_react_dom();

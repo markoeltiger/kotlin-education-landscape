@@ -17,13 +17,16 @@ const COLS: Col[] = [
   { key: "kotlin_confidence", label: "Conf.", w: "80px", align: "right" },
 ];
 
-export function DataTable({ rows }: { rows: Course[] }) {
+export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) {
+  const actualRows: Course[] = rows ?? data ?? [];
   const [sortKey, setSortKey] = useState<keyof Course>("popularity");
   const [dir, setDir] = useState<"asc" | "desc">("desc");
 
   const sorted = useMemo(() => {
-    const arr = rows.slice();
+    if (!actualRows || !Array.isArray(actualRows)) return [];
+    const arr = actualRows.slice();
     arr.sort((a, b) => {
+      if (!a || !b) return 0;
       const av = a[sortKey] as unknown as string | number;
       const bv = b[sortKey] as unknown as string | number;
       if (typeof av === "number" && typeof bv === "number") return dir === "asc" ? av - bv : bv - av;
@@ -32,7 +35,7 @@ export function DataTable({ rows }: { rows: Course[] }) {
       return dir === "asc" ? as.localeCompare(bs) : bs.localeCompare(as);
     });
     return arr;
-  }, [rows, sortKey, dir]);
+  }, [actualRows, sortKey, dir]);
 
   const parentRef = useRef<HTMLDivElement>(null);
   const virt = useVirtualizer({

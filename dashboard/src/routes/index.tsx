@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, Suspense, lazy } from "react";
 import Papa from "papaparse";
 
 import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline } from "../lib/dataset";
@@ -10,10 +10,15 @@ import { StatCards } from "../components/StatCards";
 import { Panel } from "../components/Panel";
 import { WorldMap } from "../components/WorldMap";
 import { Donut, Funnel, Histogram, HorizontalBars, StackedBars } from "../components/Charts";
-import { DataTable } from "../components/DataTable";
 import { fmt } from "../lib/format";
 import { readFileSync } from "fs";
 import { join } from "path";
+
+// DataTable uses useVirtualizer which is SSR-incompatible (needs DOM refs)
+// Lazy-loading ensures it only renders on the client
+const DataTable = lazy(() =>
+  import("../components/DataTable").then((m) => ({ default: m.DataTable }))
+);
 
 const searchSchema = z.object({
   primary_only: fallback(z.boolean(), false).default(false),
@@ -340,7 +345,9 @@ function Dashboard() {
           </div>
 
           <Panel title="Data table" subtitle="Filterable · scrollable">
-            <DataTable rows={filtered} />
+            <Suspense fallback={<div className="text-sm text-muted-foreground p-4">Loading table…</div>}>
+              <DataTable data={filtered} />
+            </Suspense>
           </Panel>
         </main>
       </div>
