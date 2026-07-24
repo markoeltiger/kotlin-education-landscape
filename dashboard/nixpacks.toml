@@ -1,0 +1,12 @@
+[phases.install]
+cmds = ["npm install --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[phases.start]
+cmds = ["npm start"]
+
+[variables]
+NODE_ENV = "production"
+PORT = "3000"

@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && node scripts/copy-csv.js",
-    "build:dev": "vite build --mode development && node scripts/copy-csv.js",
+    "build": "vite build && node scripts/copy-csv.cjs",
+    "build:dev": "vite build --mode development && node scripts/copy-csv.cjs",
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",

@@ -27,4 +27,20 @@ files.forEach(file => {
   }
 });
 
+// Also copy to public directory for development compatibility
+const publicDir = path.join(sourceDir, 'public');
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir, { recursive: true });
+}
+
+files.forEach(file => {
+  const source = path.join(sourceDir, file);
+  const target = path.join(publicDir, file);
+  
+  if (fs.existsSync(source)) {
+    fs.copyFileSync(source, target);
+    console.log(`Copied ${file} to public directory`);
+  }
+});
+
 console.log('CSV files copied successfully');
