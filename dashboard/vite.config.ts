@@ -12,4 +12,11 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  nitro: {
+    preset: "node-server",
+  },
+  vite: {
+    publicDir: false, // Disable default public dir
+    assetsInclude: ['**/*.csv'], // Include CSV files as assets
+  },
 });

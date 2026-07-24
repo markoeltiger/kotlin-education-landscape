@@ -1,84 +1,20 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useCallback, useMemo } from "react";
+import Papa from "papaparse";
 
 import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline } from "../lib/dataset";
 import { ActiveFilters, FilterRail } from "../components/FilterRail";
 import { StatCards } from "../components/StatCards";
-import { Panel, Skeleton } from "../components/Panel";
+import { Panel } from "../components/Panel";
 import { WorldMap } from "../components/WorldMap";
 import { Donut, Funnel, Histogram, HorizontalBars, StackedBars } from "../components/Charts";
 import { DataTable } from "../components/DataTable";
 import { fmt } from "../lib/format";
+import { readFileSync } from "fs";
+import { join } from "path";
 
-// ── Server function: load dataset from MongoDB, fall back to static JSON ──────
-const fetchDataset = createServerFn({ method: "GET" }).handler(
-  async (): Promise<Dataset> => {
-    // Dynamic imports keep Node-only modules out of the client bundle
-    const { readFileSync } = await import("fs");
-    const { join } = await import("path");
-
-    // Helper: load a JSON file from public/data/
-    function loadJson<T>(name: string): T | null {
-      try {
-        const p = join(process.cwd(), "public/data", name);
-        return JSON.parse(readFileSync(p, "utf-8")) as T;
-      } catch {
-        return null;
-      }
-    }
-
-    // ── Try MongoDB first ────────────────────────────────────────────────────
-    try {
-      const { getDbSafe } = await import("../lib/mongodb");
-      const db = await getDbSafe();
-
-      if (db) {
-        // Query courses (check courses_unified first, then courses)
-        let courses = await db.collection<Course>("courses_unified").find({}, { projection: { _id: 0 } }).toArray();
-        if (!courses || courses.length === 0) {
-          courses = await db.collection<Course>("courses").find({}, { projection: { _id: 0 } }).toArray();
-        }
-
-        // Query serp (check serp_progress first, then serp)
-        let serp = await db.collection<SerpRow>("serp_progress").find({}, { projection: { _id: 0 } }).toArray();
-        if (!serp || serp.length === 0) {
-          serp = await db.collection<SerpRow>("serp").find({}, { projection: { _id: 0 } }).toArray();
-        }
-
-        // Query baseline doc
-        let baselineDoc = (await db.collection<Baseline>("baseline").findOne({}, { projection: { _id: 0 } })) as Baseline | null;
-        if (!baselineDoc) {
-          baselineDoc = loadJson<Baseline>("baseline_comparison.json");
-        }
-
-        if (courses.length > 0) {
-          console.log(`[mongo] loaded ${courses.length} courses, ${serp.length} serp rows from MongoDB Atlas.`);
-          return {
-            courses,
-            serp,
-            baseline: baselineDoc,
-          };
-        }
-      }
-    } catch (err) {
-      console.warn("[mongo] MongoDB query failed, falling back to static JSON:", (err as Error).message);
-    }
-
-    // ── Fallback: static JSON files ──────────────────────────────────────────
-    console.log("[json] Loading data from static JSON files…");
-    const courses  = loadJson<Course[]>("courses_unified.json") ?? [];
-    const serp     = loadJson<SerpRow[]>("serp_progress.json") ?? [];
-    const baseline = loadJson<Baseline>("baseline_comparison.json") ?? null;
-
-    console.log(`[json] loaded ${courses.length} courses, ${serp.length} serp rows.`);
-    return { courses, serp, baseline };
-  },
-);
-
-// ── Search / filter schema ────────────────────────────────────────────────────
 const searchSchema = z.object({
   primary_only: fallback(z.boolean(), false).default(false),
   sources: fallback(z.array(z.string()), []).default([]),
@@ -93,7 +29,50 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/")({
   validateSearch: zodValidator(searchSchema),
-  loader: () => fetchDataset(),
+  loader: async (): Promise<Dataset> => {
+    // Load courses from CSV files
+    const isDev = process.env.NODE_ENV === 'development';
+    const basePath = isDev ? process.cwd() : join(process.cwd(), '.output/public');
+    
+    const mainCsvPath = join(basePath, 'kotlin_education_tableau.csv');
+    const uniCsvPath = join(basePath, 'kotlin_education_tableau_universities.csv');
+    
+    // Parse main CSV file
+    const mainCsvContent = readFileSync(mainCsvPath, 'utf-8');
+    const mainResult = Papa.parse<Course>(mainCsvContent, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+    });
+    
+    // Parse universities CSV file
+    const uniCsvContent = readFileSync(uniCsvPath, 'utf-8');
+    const uniResult = Papa.parse<Course>(uniCsvContent, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+    });
+    
+    // Combine courses from both CSV files
+    const courses = [...mainResult.data, ...uniResult.data];
+    
+    console.log(`[csv] loaded ${courses.length} courses from CSV files.`);
+    
+    // Load serp data from JSON file
+    const serpPath = join(process.cwd(), 'public/data/serp_progress.json');
+    const serp = JSON.parse(readFileSync(serpPath, 'utf-8')) as SerpRow[];
+    
+    // Load baseline data from JSON file
+    const baselinePath = join(process.cwd(), 'public/data/baseline_comparison.json');
+    let baseline: Baseline = null;
+    try {
+      baseline = JSON.parse(readFileSync(baselinePath, 'utf-8')) as Baseline;
+    } catch {
+      // baseline file might not exist
+    }
+    
+    return { courses, serp, baseline };
+  },
   component: Dashboard,
 });
 
@@ -121,8 +100,6 @@ function Dashboard() {
     },
     [navigate],
   );
-
-  const loading = false;
 
   const filtered = useMemo(
     () => applyFilters(dataset.courses, filters),
@@ -365,44 +342,9 @@ function Dashboard() {
             </Panel>
           </div>
 
-          {dataset?.baseline && (
-            <Panel title="Baseline comparison" subtitle="Against curated seed list">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <HorizontalBars
-                  data={[
-                    ["rediscovered", dataset.baseline.rediscovered],
-                    ["net-new", dataset.baseline.net_new],
-                    ["missed", dataset.baseline.missed],
-                  ]}
-                  color="#7F52FF"
-                  height={180}
-                />
-                <div>
-                  <div className="eyebrow mb-2">Why we missed</div>
-                  <HorizontalBars
-                    data={[
-                      ["not in input list", dataset.baseline.missed_not_in_input],
-                      ["searched, no match", dataset.baseline.missed_searched_no_match],
-                    ]}
-                    color="#E44857"
-                    height={140}
-                  />
-                </div>
-              </div>
-            </Panel>
-          )}
-
-          <Panel
-            title="Records"
-            subtitle={`${fmt(filtered.length)} rows · sortable · exportable`}
-          >
-            {loading ? <Skeleton h={520} /> : <DataTable rows={filtered} />}
+          <Panel title="Data table" subtitle="Filterable · scrollable">
+            <DataTable data={filtered} />
           </Panel>
-
-          <footer className="pt-4 pb-8 flex flex-wrap items-center justify-between gap-4 text-muted-foreground mono text-[11px] uppercase tracking-[0.18em]">
-            <span>Kotlin Education Landscape · GSoC 2026</span>
-            <span>Snapshot dataset · client-side aggregation</span>
-          </footer>
         </main>
       </div>
     </div>

@@ -1,4 +1,4 @@
-//#region src/lib/error-capture.ts
+//#region node_modules/.nitro/vite/services/ssr/index.js
 var lastCapturedError;
 var TTL_MS = 5e3;
 function record(error) {
@@ -21,8 +21,6 @@ function consumeLastCapturedError() {
 	lastCapturedError = void 0;
 	return error;
 }
-//#endregion
-//#region src/lib/error-page.ts
 function renderErrorPage() {
 	return `<!doctype html>
 <html lang="en">
@@ -53,11 +51,9 @@ function renderErrorPage() {
   </body>
 </html>`;
 }
-//#endregion
-//#region src/server.ts
 var serverEntryPromise;
 async function getServerEntry() {
-	if (!serverEntryPromise) serverEntryPromise = import("./assets/server-Dyf-iFC0.js").then((m) => m.default ?? m);
+	if (!serverEntryPromise) serverEntryPromise = import("./server-Dyf-iFC0.mjs").then((m) => m.default ?? m);
 	return serverEntryPromise;
 }
 async function normalizeCatastrophicSsrResponse(response) {

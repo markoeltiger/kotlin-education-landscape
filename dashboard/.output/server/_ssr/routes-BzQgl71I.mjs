@@ -1,11 +1,19 @@
-import { t as Route } from "./routes-6cyj9UAf.js";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import * as d3 from "d3";
-import * as topojson from "topojson-client";
-import { useVirtualizer } from "@tanstack/react-virtual";
-//#region src/lib/dataset.ts
+import { o as __toESM } from "../_runtime.mjs";
+import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
+import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
+import { t as Route } from "./routes-Ci3Rpdj8.mjs";
+import { a as bin, i as max, t as sum } from "../_libs/d3-array.mjs";
+import { n as linear, r as band, t as log } from "../_libs/d3-scale+internmap.mjs";
+import { n as axisLeft, t as axisBottom } from "../_libs/d3-axis.mjs";
+import { m as select_default, t as zoom_default } from "../_libs/d3+[...].mjs";
+import { t as hcl_default } from "../_libs/d3-interpolate.mjs";
+import { n as path_default, r as graticule10, t as naturalEarth1_default } from "../_libs/d3-geo.mjs";
+import { n as arc_default, t as pie_default } from "../_libs/d3-shape.mjs";
+import { t as feature_default } from "../_libs/topojson-client.mjs";
+import { t as useVirtualizer } from "../_libs/@tanstack/react-virtual+[...].mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BzQgl71I.js
+var import_react = /* @__PURE__ */ __toESM(require_react());
+var import_jsx_runtime = require_jsx_runtime();
 var emptyFilters = {
 	primary_only: false,
 	sources: [],
@@ -54,15 +62,11 @@ function topN(m, n, dropEmpty = true) {
 	arr.sort((a, b) => b[1] - a[1]);
 	return arr.slice(0, n);
 }
-//#endregion
-//#region src/lib/format.ts
 var nf = new Intl.NumberFormat("en-US");
 var fmt = (n) => nf.format(n);
 function classNames(...xs) {
 	return xs.filter(Boolean).join(" ");
 }
-//#endregion
-//#region src/components/FilterRail.tsx
 var TIERS = ["primary", "secondary"];
 var LEARNING = ["formal", "informal"];
 var STAR_STEPS = [
@@ -73,8 +77,8 @@ var STAR_STEPS = [
 	500
 ];
 function FilterRail({ filters, setFilters, sources, countries, filteredCount, totalCount }) {
-	const [countryQuery, setCountryQuery] = useState("");
-	const filteredCountries = useMemo(() => {
+	const [countryQuery, setCountryQuery] = (0, import_react.useState)("");
+	const filteredCountries = (0, import_react.useMemo)(() => {
 		const q = countryQuery.trim().toLowerCase();
 		const base = countries.filter((c) => c);
 		if (!q) return base.slice(0, 60);
@@ -88,15 +92,15 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 			[key]: has ? cur.filter((x) => x !== v) : [...cur, v]
 		};
 	});
-	return /* @__PURE__ */ jsxs("aside", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
 		className: "panel p-5 flex flex-col gap-6 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto",
 		children: [
-			/* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "eyebrow",
 				children: "Filters"
-			}), /* @__PURE__ */ jsxs("div", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mt-2 mono text-sm tabular-nums text-ink",
-				children: [fmt(filteredCount), /* @__PURE__ */ jsxs("span", {
+				children: [fmt(filteredCount), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "text-muted-foreground",
 					children: [
 						" / ",
@@ -105,9 +109,9 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					]
 				})]
 			})] }),
-			/* @__PURE__ */ jsx(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: "Search",
-				children: /* @__PURE__ */ jsx("input", {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 					type: "text",
 					value: filters.search,
 					onChange: (e) => setFilters((p) => ({
@@ -118,42 +122,42 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
 				})
 			}),
-			/* @__PURE__ */ jsxs(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
 				label: "Signal tier",
-				children: [/* @__PURE__ */ jsx(ToggleRow, { children: /* @__PURE__ */ jsx(Chip, {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
 					active: filters.primary_only,
 					onClick: () => setFilters((p) => ({
 						...p,
 						primary_only: !p.primary_only
 					})),
 					children: "Primary-only"
-				}) }), /* @__PURE__ */ jsx(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ jsx(Chip, {
+				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
 					active: filters.tiers.includes(t),
 					onClick: () => toggle("tiers", t),
 					children: t
 				}, t)) })]
 			}),
-			/* @__PURE__ */ jsx(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: "Source",
-				children: /* @__PURE__ */ jsx(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ jsx(Chip, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
 					active: filters.sources.includes(s),
 					onClick: () => toggle("sources", s),
 					children: s
 				}, s)) })
 			}),
-			/* @__PURE__ */ jsx(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: "Learning type",
-				children: /* @__PURE__ */ jsx(ToggleRow, { children: LEARNING.map((l) => /* @__PURE__ */ jsx(Chip, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: LEARNING.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
 					active: filters.learning_types.includes(l),
 					onClick: () => toggle("learning_types", l),
 					children: l
 				}, l)) })
 			}),
-			/* @__PURE__ */ jsx(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: `Min GitHub stars · ${filters.min_stars}`,
-				children: /* @__PURE__ */ jsx("div", {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex items-center gap-1",
-					children: STAR_STEPS.map((s) => /* @__PURE__ */ jsx("button", {
+					children: STAR_STEPS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						onClick: () => setFilters((p) => ({
 							...p,
 							min_stars: s
@@ -163,11 +167,11 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					}, s))
 				})
 			}),
-			/* @__PURE__ */ jsx(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: `Kotlin confidence · ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`,
-				children: /* @__PURE__ */ jsxs("div", {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ jsx("input", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 						type: "range",
 						min: 0,
 						max: 1,
@@ -178,7 +182,7 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 							conf_min: Math.min(Number(e.target.value), p.conf_max)
 						})),
 						className: "w-full accent-[color:var(--kt-purple)]"
-					}), /* @__PURE__ */ jsx("input", {
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 						type: "range",
 						min: 0,
 						max: 1,
@@ -192,23 +196,23 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					})]
 				})
 			}),
-			/* @__PURE__ */ jsxs(Group, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
 				label: `Country${filters.countries.length ? ` · ${filters.countries.length} picked` : ""}`,
-				children: [/* @__PURE__ */ jsx("input", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 					type: "text",
 					value: countryQuery,
 					onChange: (e) => setCountryQuery(e.target.value),
 					placeholder: "filter countries…",
 					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] mb-2"
-				}), /* @__PURE__ */ jsx("div", {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "max-h-56 overflow-y-auto flex flex-col",
 					children: filteredCountries.map((c) => {
 						const active = filters.countries.includes(c);
-						return /* @__PURE__ */ jsxs("button", {
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							onClick: () => toggle("countries", c),
 							className: classNames("text-left mono text-xs px-2 py-1 rounded-md transition-colors", active ? "bg-[color:var(--kt-purple)]/20 text-ink" : "text-muted-foreground hover:text-ink hover:bg-panel-2"),
 							children: [
-								/* @__PURE__ */ jsx("span", {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "inline-block w-3",
 									children: active ? "×" : ""
 								}),
@@ -223,22 +227,22 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 	});
 }
 function Group({ label, children }) {
-	return /* @__PURE__ */ jsxs("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-col gap-2",
-		children: [/* @__PURE__ */ jsx("div", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "eyebrow",
 			children: label
 		}), children]
 	});
 }
 function ToggleRow({ children }) {
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "flex flex-wrap gap-1.5",
 		children
 	});
 }
 function Chip({ active, onClick, children }) {
-	return /* @__PURE__ */ jsx("button", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 		onClick,
 		className: classNames("mono text-[11px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-md border transition-colors", active ? "bg-[color:var(--kt-purple)] text-white border-transparent" : "border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-purple)]"),
 		children
@@ -304,13 +308,13 @@ function ActiveFilters({ filters, setFilters }) {
 		}))
 	});
 	if (!chips.length) return null;
-	return /* @__PURE__ */ jsxs("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-wrap items-center gap-1.5",
-		children: [chips.map((c, i) => /* @__PURE__ */ jsxs("button", {
+		children: [chips.map((c, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 			onClick: c.onRemove,
 			className: "mono text-[11px] px-2 py-1 rounded-md border border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-magenta)] transition-colors",
 			children: [c.label, " ×"]
-		}, i)), /* @__PURE__ */ jsx("button", {
+		}, i)), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 			onClick: () => setFilters((p) => ({
 				...p,
 				primary_only: false,
@@ -328,11 +332,9 @@ function ActiveFilters({ filters, setFilters }) {
 		})]
 	});
 }
-//#endregion
-//#region src/components/StatCards.tsx
 function CountUp({ value, duration = 900 }) {
-	const [n, setN] = useState(0);
-	useEffect(() => {
+	const [n, setN] = (0, import_react.useState)(0);
+	(0, import_react.useEffect)(() => {
 		let raf = 0;
 		const start = performance.now();
 		const from = 0;
@@ -345,10 +347,10 @@ function CountUp({ value, duration = 900 }) {
 		raf = requestAnimationFrame(tick);
 		return () => cancelAnimationFrame(raf);
 	}, [value, duration]);
-	return /* @__PURE__ */ jsx(Fragment, { children: fmt(n) });
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children: fmt(n) });
 }
 function StatCards({ totals }) {
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3",
 		children: [
 			{
@@ -375,56 +377,52 @@ function StatCards({ totals }) {
 				label: "MOOC courses",
 				value: totals.mooc
 			}
-		].map((it) => /* @__PURE__ */ jsxs("div", {
+		].map((it) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "panel relative overflow-hidden p-5",
 			children: [
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "absolute left-0 top-0 bottom-0 w-[3px]",
 					style: { background: "var(--gradient-kotlin-135)" }
 				}),
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "eyebrow",
 					children: it.label
 				}),
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mono mt-2 text-3xl font-bold tabular-nums text-ink",
-					children: /* @__PURE__ */ jsx(CountUp, { value: it.value })
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CountUp, { value: it.value })
 				})
 			]
 		}, it.label))
 	});
 }
-//#endregion
-//#region src/components/Panel.tsx
 function Panel({ title, subtitle, children, className, action }) {
-	return /* @__PURE__ */ jsxs("section", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: classNames("panel p-5 flex flex-col min-w-0", className),
-		children: [/* @__PURE__ */ jsxs("header", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "flex items-start justify-between gap-4 mb-4",
-			children: [/* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "eyebrow",
 				children: subtitle ?? "Panel"
-			}), /* @__PURE__ */ jsx("h3", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 				className: "text-[15px] font-semibold text-ink mt-1",
 				children: title
 			})] }), action]
-		}), /* @__PURE__ */ jsx("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "flex-1 min-w-0",
 			children
 		})]
 	});
 }
 function Empty({ label = "No data for current filters" }) {
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "h-full min-h-[120px] flex items-center justify-center text-center",
-		children: /* @__PURE__ */ jsx("span", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 			className: "mono text-xs text-muted-foreground uppercase tracking-[0.2em]",
 			children: label
 		})
 	});
 }
-//#endregion
-//#region src/lib/countryAliases.ts
 var COUNTRY_ALIASES = {
 	"United States": "United States of America",
 	"USA": "United States of America",
@@ -465,15 +463,13 @@ var COUNTRY_ALIASES = {
 function aliasCountry(name) {
 	return COUNTRY_ALIASES[name] ?? name;
 }
-//#endregion
-//#region src/hooks/useResizeObserver.ts
 function useResizeObserver() {
-	const ref = useRef(null);
-	const [size, setSize] = useState({
+	const ref = (0, import_react.useRef)(null);
+	const [size, setSize] = (0, import_react.useState)({
 		width: 0,
 		height: 0
 	});
-	useEffect(() => {
+	(0, import_react.useEffect)(() => {
 		if (!ref.current) return;
 		const ro = new ResizeObserver((entries) => {
 			for (const e of entries) {
@@ -492,23 +488,21 @@ function useResizeObserver() {
 		...size
 	};
 }
-//#endregion
-//#region src/components/WorldMap.tsx
 var WORLD_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 var worldPromise = null;
 function loadWorld() {
-	if (!worldPromise) worldPromise = fetch(WORLD_URL).then((r) => r.json()).then((topo) => topojson.feature(topo, topo.objects.countries));
+	if (!worldPromise) worldPromise = fetch(WORLD_URL).then((r) => r.json()).then((topo) => feature_default(topo, topo.objects.countries));
 	return worldPromise;
 }
 function WorldMap({ countryCounts, activeCountries, onToggleCountry }) {
 	const { ref, width } = useResizeObserver();
-	const svgRef = useRef(null);
-	const [world, setWorld] = useState(null);
-	const [tip, setTip] = useState(null);
-	useEffect(() => {
+	const svgRef = (0, import_react.useRef)(null);
+	const [world, setWorld] = (0, import_react.useState)(null);
+	const [tip, setTip] = (0, import_react.useState)(null);
+	(0, import_react.useEffect)(() => {
 		loadWorld().then(setWorld).catch((e) => console.warn("world atlas load failed", e));
 	}, []);
-	const aliased = useMemo(() => {
+	const aliased = (0, import_react.useMemo)(() => {
 		const m = /* @__PURE__ */ new Map();
 		for (const [k, v] of countryCounts) {
 			if (!k) continue;
@@ -516,20 +510,19 @@ function WorldMap({ countryCounts, activeCountries, onToggleCountry }) {
 		}
 		return m;
 	}, [countryCounts]);
-	const activeSet = useMemo(() => new Set(activeCountries.map(aliasCountry)), [activeCountries]);
+	const activeSet = (0, import_react.useMemo)(() => new Set(activeCountries.map(aliasCountry)), [activeCountries]);
 	const height = 460;
-	useEffect(() => {
+	(0, import_react.useEffect)(() => {
 		if (!world || !svgRef.current || !width) return;
-		const svg = d3.select(svgRef.current);
+		const svg = select_default(svgRef.current);
 		svg.selectAll("*").remove();
-		const projection = d3.geoNaturalEarth1().fitSize([width, height], world);
-		const path = d3.geoPath(projection);
-		const max = d3.max(Array.from(aliased.values())) ?? 1;
-		const color = d3.scaleLog().domain([1, Math.max(2, max)]).range(["#241F36", "#C711E1"]).interpolate(d3.interpolateHcl).clamp(true);
+		const path = path_default(naturalEarth1_default().fitSize([width, height], world));
+		const max$1 = max(Array.from(aliased.values())) ?? 1;
+		const color = log().domain([1, Math.max(2, max$1)]).range(["#241F36", "#C711E1"]).interpolate(hcl_default).clamp(true);
 		const g = svg.append("g");
-		const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", (event) => g.attr("transform", event.transform.toString()));
+		const zoom = zoom_default().scaleExtent([1, 8]).on("zoom", (event) => g.attr("transform", event.transform.toString()));
 		svg.call(zoom);
-		const graticule = d3.geoGraticule10();
+		const graticule = graticule10();
 		g.append("path").datum(graticule).attr("d", path).attr("fill", "none").attr("stroke", "#2A2B30").attr("stroke-width", .5);
 		const unmatched = [];
 		g.selectAll("path.country").data(world.features).enter().append("path").attr("class", "country").attr("d", path).attr("fill", (d) => {
@@ -568,67 +561,65 @@ function WorldMap({ countryCounts, activeCountries, onToggleCountry }) {
 		countryCounts,
 		onToggleCountry
 	]);
-	const max = d3.max(Array.from(aliased.values())) ?? 1;
+	const max$2 = max(Array.from(aliased.values())) ?? 1;
 	const legendStops = [
 		1,
-		Math.max(2, Math.round(max / 50)),
-		Math.max(5, Math.round(max / 10)),
-		Math.max(10, Math.round(max / 3)),
-		max
+		Math.max(2, Math.round(max$2 / 50)),
+		Math.max(5, Math.round(max$2 / 10)),
+		Math.max(10, Math.round(max$2 / 3)),
+		max$2
 	];
-	return /* @__PURE__ */ jsxs("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		ref,
 		className: "relative w-full",
 		children: [
-			/* @__PURE__ */ jsx("svg", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 				ref: svgRef,
 				width: width || 800,
 				height,
 				className: "block"
 			}),
-			tip && /* @__PURE__ */ jsxs("div", {
+			tip && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "pointer-events-none absolute z-10 panel px-3 py-2 mono text-xs",
 				style: {
 					left: tip.x + 12,
 					top: tip.y + 12,
 					background: "#19191C"
 				},
-				children: [/* @__PURE__ */ jsx("div", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "text-ink",
 					children: tip.name
-				}), /* @__PURE__ */ jsx("div", {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "text-muted-foreground",
 					children: tip.value ? `${fmt(tip.value)} records` : "no data"
 				})]
 			}),
-			/* @__PURE__ */ jsxs("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mt-3 flex items-center gap-3",
 				children: [
-					/* @__PURE__ */ jsx("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "eyebrow",
 						children: "Universities · log scale"
 					}),
-					/* @__PURE__ */ jsx("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "h-2 flex-1 rounded-sm",
 						style: { background: "linear-gradient(90deg, #241F36 0%, #4B2E8A 40%, #7F52FF 70%, #C711E1 100%)" }
 					}),
-					/* @__PURE__ */ jsx("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "mono text-[11px] tabular-nums text-muted-foreground flex gap-3",
-						children: legendStops.map((v, i) => /* @__PURE__ */ jsx("span", { children: fmt(v) }, i))
+						children: legendStops.map((v, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: fmt(v) }, i))
 					})
 				]
 			})
 		]
 	});
 }
-//#endregion
-//#region src/components/Charts.tsx
 function HorizontalBars({ data, color = "#7F52FF", height = 340, onClick, activeKey }) {
 	const { ref, width } = useResizeObserver();
-	const svgRef = useRef(null);
-	useEffect(() => {
+	const svgRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
 		if (!svgRef.current || !width || !data.length) return;
-		const svg = d3.select(svgRef.current);
+		const svg = select_default(svgRef.current);
 		svg.selectAll("*").remove();
 		const margin = {
 			top: 4,
@@ -638,8 +629,8 @@ function HorizontalBars({ data, color = "#7F52FF", height = 340, onClick, active
 		};
 		const w = width - margin.left - margin.right;
 		const h = height - margin.top - margin.bottom;
-		const y = d3.scaleBand().domain(data.map((d) => d[0])).range([0, h]).padding(.28);
-		const x = d3.scaleLinear().domain([0, d3.max(data, (d) => d[1]) ?? 1]).range([0, w]);
+		const y = band().domain(data.map((d) => d[0])).range([0, h]).padding(.28);
+		const x = linear().domain([0, max(data, (d) => d[1]) ?? 1]).range([0, w]);
 		const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 		g.selectAll("text.lbl").data(data).join("text").attr("x", -10).attr("y", (d) => (y(d[0]) ?? 0) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").attr("class", "mono").attr("fill", (d) => d[0] === activeKey ? "#F5F5F7" : "#9B9BA1").attr("font-size", 11).text((d) => d[0].length > 22 ? d[0].slice(0, 21) + "…" : d[0]);
 		g.selectAll("rect.bg").data(data).join("rect").attr("x", 0).attr("y", (d) => y(d[0]) ?? 0).attr("width", w).attr("height", y.bandwidth()).attr("fill", "#1F2024").attr("rx", 3);
@@ -653,11 +644,11 @@ function HorizontalBars({ data, color = "#7F52FF", height = 340, onClick, active
 		activeKey,
 		onClick
 	]);
-	if (!data.length) return /* @__PURE__ */ jsx(Empty, {});
-	return /* @__PURE__ */ jsx("div", {
+	if (!data.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		className: "w-full",
-		children: /* @__PURE__ */ jsx("svg", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 			ref: svgRef,
 			width: width || 400,
 			height
@@ -666,16 +657,16 @@ function HorizontalBars({ data, color = "#7F52FF", height = 340, onClick, active
 }
 function Donut({ data, colors, height = 220, centerLabel }) {
 	const { ref, width } = useResizeObserver();
-	const svgRef = useRef(null);
-	useEffect(() => {
+	const svgRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
 		if (!svgRef.current || !width || !data.length) return;
-		const svg = d3.select(svgRef.current);
+		const svg = select_default(svgRef.current);
 		svg.selectAll("*").remove();
 		const radius = Math.min(width, height) / 2;
 		const g = svg.append("g").attr("transform", `translate(${width / 2},${height / 2})`);
-		const total = d3.sum(data, (d) => d[1]);
-		const pie = d3.pie().value((d) => d[1]).sort(null);
-		const arc = d3.arc().innerRadius(radius * .62).outerRadius(radius);
+		const total = sum(data, (d) => d[1]);
+		const pie = pie_default().value((d) => d[1]).sort(null);
+		const arc = arc_default().innerRadius(radius * .62).outerRadius(radius);
 		g.selectAll("path").data(pie(data)).join("path").attr("d", arc).attr("fill", (_d, i) => colors[i % colors.length]).attr("stroke", "#19191C").attr("stroke-width", 2).append("title").text((d) => `${d.data[0]}: ${fmt(d.data[1])} (${(d.data[1] / total * 100).toFixed(1)}%)`);
 		g.append("text").attr("text-anchor", "middle").attr("class", "mono").attr("fill", "#F5F5F7").attr("font-size", 22).attr("font-weight", 700).attr("dy", "-0.1em").text(fmt(total));
 		if (centerLabel) g.append("text").attr("text-anchor", "middle").attr("class", "mono").attr("fill", "#9B9BA1").attr("font-size", 10).attr("letter-spacing", "0.18em").attr("dy", "1.2em").text(centerLabel.toUpperCase());
@@ -686,29 +677,29 @@ function Donut({ data, colors, height = 220, centerLabel }) {
 		colors,
 		centerLabel
 	]);
-	if (!data.length) return /* @__PURE__ */ jsx(Empty, {});
-	return /* @__PURE__ */ jsxs("div", {
+	if (!data.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-col gap-3",
-		children: [/* @__PURE__ */ jsx("div", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			ref,
 			className: "w-full",
-			children: /* @__PURE__ */ jsx("svg", {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 				ref: svgRef,
 				width: width || 220,
 				height
 			})
-		}), /* @__PURE__ */ jsx("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "flex flex-wrap gap-x-4 gap-y-1 justify-center",
-			children: data.map(([k, v], i) => /* @__PURE__ */ jsxs("div", {
+			children: data.map(([k, v], i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mono text-[11px] text-muted-foreground flex items-center gap-1.5",
 				children: [
-					/* @__PURE__ */ jsx("span", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "inline-block w-2.5 h-2.5 rounded-sm",
 						style: { background: colors[i % colors.length] }
 					}),
 					k,
 					" · ",
-					/* @__PURE__ */ jsx("span", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-ink",
 						children: fmt(v)
 					})
@@ -719,10 +710,10 @@ function Donut({ data, colors, height = 220, centerLabel }) {
 }
 function StackedBars({ data, keys, colors, height = 320 }) {
 	const { ref, width } = useResizeObserver();
-	const svgRef = useRef(null);
-	useEffect(() => {
+	const svgRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
 		if (!svgRef.current || !width || !data.length) return;
-		const svg = d3.select(svgRef.current);
+		const svg = select_default(svgRef.current);
 		svg.selectAll("*").remove();
 		const margin = {
 			top: 4,
@@ -732,9 +723,9 @@ function StackedBars({ data, keys, colors, height = 320 }) {
 		};
 		const w = width - margin.left - margin.right;
 		const h = height - margin.top - margin.bottom;
-		const y = d3.scaleBand().domain(data.map((d) => d.label)).range([0, h]).padding(.28);
+		const y = band().domain(data.map((d) => d.label)).range([0, h]).padding(.28);
 		const totals = data.map((d) => keys.reduce((s, k) => s + (d.parts[k] ?? 0), 0));
-		const x = d3.scaleLinear().domain([0, d3.max(totals) ?? 1]).range([0, w]);
+		const x = linear().domain([0, max(totals) ?? 1]).range([0, w]);
 		const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 		g.selectAll("text.lbl").data(data).join("text").attr("x", -10).attr("y", (d) => (y(d.label) ?? 0) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").attr("class", "mono").attr("fill", "#9B9BA1").attr("font-size", 11).text((d) => d.label.length > 22 ? d.label.slice(0, 21) + "…" : d.label);
 		data.forEach((d) => {
@@ -754,20 +745,20 @@ function StackedBars({ data, keys, colors, height = 320 }) {
 		width,
 		height
 	]);
-	if (!data.length) return /* @__PURE__ */ jsx(Empty, {});
-	return /* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
+	if (!data.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		className: "w-full",
-		children: /* @__PURE__ */ jsx("svg", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 			ref: svgRef,
 			width: width || 400,
 			height
 		})
-	}), /* @__PURE__ */ jsx("div", {
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "mt-2 flex flex-wrap gap-4 justify-center",
-		children: keys.map((k, i) => /* @__PURE__ */ jsxs("div", {
+		children: keys.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "mono text-[11px] text-muted-foreground flex items-center gap-1.5",
-			children: [/* @__PURE__ */ jsx("span", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 				className: "inline-block w-2.5 h-2.5 rounded-sm",
 				style: { background: colors[i] }
 			}), k]
@@ -776,10 +767,10 @@ function StackedBars({ data, keys, colors, height = 320 }) {
 }
 function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 	const { ref, width } = useResizeObserver();
-	const svgRef = useRef(null);
-	useEffect(() => {
+	const svgRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
 		if (!svgRef.current || !width || !values.length) return;
-		const svg = d3.select(svgRef.current);
+		const svg = select_default(svgRef.current);
 		svg.selectAll("*").remove();
 		const margin = {
 			top: 8,
@@ -789,14 +780,14 @@ function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 		};
 		const w = width - margin.left - margin.right;
 		const h = height - margin.top - margin.bottom;
-		const x = d3.scaleLinear().domain([0, 1]).range([0, w]);
-		const hist = d3.bin().domain([0, 1]).thresholds(bins)(values);
-		const y = d3.scaleLinear().domain([0, d3.max(hist, (d) => d.length) ?? 1]).range([h, 0]);
+		const x = linear().domain([0, 1]).range([0, w]);
+		const hist = bin().domain([0, 1]).thresholds(bins)(values);
+		const y = linear().domain([0, max(hist, (d) => d.length) ?? 1]).range([h, 0]);
 		const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 		g.selectAll("rect").data(hist).join("rect").attr("x", (d) => x(d.x0 ?? 0) + 1).attr("y", (d) => y(d.length)).attr("width", (d) => Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 2)).attr("height", (d) => h - y(d.length)).attr("fill", color).attr("rx", 2).append("title").text((d) => `${(d.x0 ?? 0).toFixed(1)}–${(d.x1 ?? 0).toFixed(1)}: ${fmt(d.length)}`);
-		const xAxis = d3.axisBottom(x).ticks(5).tickSizeOuter(0);
+		const xAxis = axisBottom(x).ticks(5).tickSizeOuter(0);
 		g.append("g").attr("transform", `translate(0,${h})`).call(xAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1")).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
-		const yAxis = d3.axisLeft(y).ticks(4).tickSizeOuter(0);
+		const yAxis = axisLeft(y).ticks(4).tickSizeOuter(0);
 		g.append("g").call(yAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1")).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
 	}, [
 		values,
@@ -805,11 +796,11 @@ function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 		height,
 		color
 	]);
-	if (!values.length) return /* @__PURE__ */ jsx(Empty, {});
-	return /* @__PURE__ */ jsx("div", {
+	if (!values.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		className: "w-full",
-		children: /* @__PURE__ */ jsx("svg", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 			ref: svgRef,
 			width: width || 300,
 			height
@@ -818,7 +809,7 @@ function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 }
 function Funnel({ steps, height = 220 }) {
 	const { ref, width } = useResizeObserver();
-	if (!steps.length) return /* @__PURE__ */ jsx(Empty, {});
+	if (!steps.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
 	const max = Math.max(...steps.map((s) => s.value));
 	const colors = [
 		"#7F52FF",
@@ -826,26 +817,26 @@ function Funnel({ steps, height = 220 }) {
 		"#C711E1",
 		"#E44857"
 	];
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref,
 		className: "w-full flex flex-col gap-2",
 		style: { minHeight: height },
 		children: steps.map((s, i) => {
 			const pct = s.value / max * 100;
-			return /* @__PURE__ */ jsxs("div", {
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex items-center gap-3",
-				children: [/* @__PURE__ */ jsxs("div", {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "w-40 shrink-0",
-					children: [/* @__PURE__ */ jsx("div", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "eyebrow",
 						children: s.label
-					}), /* @__PURE__ */ jsx("div", {
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "mono text-xl font-bold text-ink tabular-nums",
 						children: fmt(s.value)
 					})]
-				}), /* @__PURE__ */ jsx("div", {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex-1 h-8 bg-panel-2 rounded-md overflow-hidden border border-line",
-					children: /* @__PURE__ */ jsx("div", {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "h-full transition-all",
 						style: {
 							width: `${pct}%`,
@@ -857,8 +848,6 @@ function Funnel({ steps, height = 220 }) {
 		})
 	});
 }
-//#endregion
-//#region src/lib/csv.ts
 function toCsv(rows, columns) {
 	const esc = (v) => {
 		if (v == null) return "";
@@ -881,8 +870,6 @@ function downloadCsv(filename, csv) {
 	a.remove();
 	URL.revokeObjectURL(url);
 }
-//#endregion
-//#region src/components/DataTable.tsx
 var COLS = [
 	{
 		key: "title",
@@ -933,9 +920,9 @@ var COLS = [
 	}
 ];
 function DataTable({ rows }) {
-	const [sortKey, setSortKey] = useState("popularity");
-	const [dir, setDir] = useState("desc");
-	const sorted = useMemo(() => {
+	const [sortKey, setSortKey] = (0, import_react.useState)("popularity");
+	const [dir, setDir] = (0, import_react.useState)("desc");
+	const sorted = (0, import_react.useMemo)(() => {
 		const arr = rows.slice();
 		arr.sort((a, b) => {
 			const av = a[sortKey];
@@ -951,7 +938,7 @@ function DataTable({ rows }) {
 		sortKey,
 		dir
 	]);
-	const parentRef = useRef(null);
+	const parentRef = (0, import_react.useRef)(null);
 	const virt = useVirtualizer({
 		count: sorted.length,
 		getScrollElement: () => parentRef.current,
@@ -970,43 +957,43 @@ function DataTable({ rows }) {
 		const csv = toCsv(sorted, COLS.map((c) => c.key));
 		downloadCsv(`kotlin-edu-${sorted.length}-rows.csv`, csv);
 	};
-	return /* @__PURE__ */ jsxs("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-col min-w-0",
-		children: [/* @__PURE__ */ jsxs("div", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex items-center justify-between mb-3",
-			children: [/* @__PURE__ */ jsxs("div", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mono text-xs text-muted-foreground tabular-nums",
 				children: [fmt(sorted.length), " rows"]
-			}), /* @__PURE__ */ jsx("button", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 				onClick: exportCsv,
 				className: "mono text-[11px] uppercase tracking-[0.16em] px-3 py-1.5 rounded-md border border-line text-ink hover:border-[color:var(--kt-purple)] hover:text-[color:var(--kt-purple)] transition-colors",
 				children: "Export CSV"
 			})]
-		}), /* @__PURE__ */ jsxs("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "border border-line rounded-md overflow-hidden",
-			children: [/* @__PURE__ */ jsx("div", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "grid bg-panel-2 border-b border-line sticky top-0 z-10",
 				style: { gridTemplateColumns: gridTemplate },
-				children: COLS.map((c) => /* @__PURE__ */ jsxs("button", {
+				children: COLS.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 					onClick: () => onSort(c.key),
 					className: classNames("px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-left hover:text-ink transition-colors", sortKey === c.key ? "text-ink" : "text-muted-foreground", c.align === "right" && "text-right"),
-					children: [c.label, sortKey === c.key && /* @__PURE__ */ jsx("span", {
+					children: [c.label, sortKey === c.key && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "ml-1",
 						children: dir === "asc" ? "↑" : "↓"
 					})]
 				}, String(c.key)))
-			}), /* @__PURE__ */ jsx("div", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				ref: parentRef,
 				className: "overflow-auto",
 				style: { height: 520 },
-				children: /* @__PURE__ */ jsx("div", {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					style: {
 						height: virt.getTotalSize(),
 						position: "relative"
 					},
 					children: virt.getVirtualItems().map((vi) => {
 						const r = sorted[vi.index];
-						return /* @__PURE__ */ jsxs("div", {
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "grid absolute left-0 right-0 border-b border-line hover:bg-panel-2/60 transition-colors",
 							style: {
 								transform: `translateY(${vi.start}px)`,
@@ -1014,7 +1001,7 @@ function DataTable({ rows }) {
 								gridTemplateColumns: gridTemplate
 							},
 							children: [
-								/* @__PURE__ */ jsx(Cell, { children: /* @__PURE__ */ jsx("a", {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 									href: r.url,
 									target: "_blank",
 									rel: "noreferrer",
@@ -1022,40 +1009,40 @@ function DataTable({ rows }) {
 									title: r.title,
 									children: r.title
 								}) }),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									muted: true,
 									children: r.source
 								}),
-								/* @__PURE__ */ jsx(Cell, { children: /* @__PURE__ */ jsx(Badge, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									tier: r.signal_tier,
 									children: r.signal_tier
 								}) }),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									muted: true,
 									children: r.learning_type
 								}),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									children: r.provider
 								}),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									muted: true,
 									children: r.country || "—"
 								}),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									muted: true,
 									children: r.subtype || "—"
 								}),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									align: "right",
 									children: fmt(r.popularity)
 								}),
-								/* @__PURE__ */ jsx(Cell, {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
 									mono: true,
 									align: "right",
 									children: r.kotlin_confidence.toFixed(2)
@@ -1069,28 +1056,26 @@ function DataTable({ rows }) {
 	});
 }
 function Cell({ children, mono, muted, align }) {
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: classNames("px-3 py-2 text-[12px] flex items-center min-w-0 truncate", mono && "mono", muted ? "text-muted-foreground" : "text-ink", align === "right" && "justify-end tabular-nums"),
 		children
 	});
 }
 function Badge({ tier, children }) {
-	return /* @__PURE__ */ jsx("span", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: classNames("mono text-[10px] uppercase tracking-[0.14em] px-1.5 py-0.5 rounded", tier === "primary" ? "bg-[color:var(--kt-purple)]/20 text-[color:var(--kt-purple)]" : "bg-panel-2 text-muted-foreground border border-line"),
 		children
 	});
 }
-//#endregion
-//#region src/routes/index.tsx?tsr-split=component
 function Dashboard() {
 	const dataset = Route.useLoaderData();
 	const search = Route.useSearch();
 	const navigate = useNavigate({ from: "/" });
-	const filters = useMemo(() => ({
+	const filters = (0, import_react.useMemo)(() => ({
 		...emptyFilters,
 		...search
 	}), [search]);
-	const setFilters = useCallback((next) => {
+	const setFilters = (0, import_react.useCallback)((next) => {
 		navigate({
 			search: (prev) => {
 				const merged = {
@@ -1102,8 +1087,8 @@ function Dashboard() {
 			replace: true
 		});
 	}, [navigate]);
-	const filtered = useMemo(() => applyFilters(dataset.courses, filters), [dataset, filters]);
-	const totals = useMemo(() => {
+	const filtered = (0, import_react.useMemo)(() => applyFilters(dataset.courses, filters), [dataset, filters]);
+	const totals = (0, import_react.useMemo)(() => {
 		const uniProviders = new Set(filtered.filter((r) => r.source === "university_website" && r.provider).map((r) => r.provider));
 		const countries = new Set(filtered.filter((r) => r.country).map((r) => r.country));
 		return {
@@ -1115,8 +1100,8 @@ function Dashboard() {
 			mooc: filtered.filter((r) => r.source === "stepik" || r.source === "coursera").length
 		};
 	}, [dataset, filtered]);
-	const sources = useMemo(() => Array.from(new Set(dataset.courses.map((r) => r.source))).sort(), [dataset]);
-	const allCountries = useMemo(() => {
+	const sources = (0, import_react.useMemo)(() => Array.from(new Set(dataset.courses.map((r) => r.source))).sort(), [dataset]);
+	const allCountries = (0, import_react.useMemo)(() => {
 		const m = /* @__PURE__ */ new Map();
 		dataset.courses.forEach((r) => {
 			if (!r.country) return;
@@ -1124,15 +1109,15 @@ function Dashboard() {
 		});
 		return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).map(([k]) => k);
 	}, [dataset]);
-	const countryCounts = useMemo(() => groupBy(filtered, (r) => r.country || ""), [filtered]);
-	const topCountries = useMemo(() => topN(countryCounts, 15), [countryCounts]);
-	const sourceCounts = useMemo(() => topN(groupBy(filtered, (r) => r.source), 10), [filtered]);
-	const tierCounts = useMemo(() => topN(groupBy(filtered, (r) => r.signal_tier), 5), [filtered]);
-	const learningCounts = useMemo(() => topN(groupBy(filtered, (r) => r.learning_type), 5), [filtered]);
-	const repoTypeCounts = useMemo(() => topN(groupBy(filtered.filter((r) => r.source === "github"), (r) => r.subtype || "other"), 10), [filtered]);
-	const providerCounts = useMemo(() => topN(groupBy(filtered, (r) => r.provider), 15), [filtered]);
-	const confidenceValues = useMemo(() => filtered.map((r) => r.kotlin_confidence), [filtered]);
-	const popularityBuckets = useMemo(() => {
+	const countryCounts = (0, import_react.useMemo)(() => groupBy(filtered, (r) => r.country || ""), [filtered]);
+	const topCountries = (0, import_react.useMemo)(() => topN(countryCounts, 15), [countryCounts]);
+	const sourceCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.source), 10), [filtered]);
+	const tierCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.signal_tier), 5), [filtered]);
+	const learningCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.learning_type), 5), [filtered]);
+	const repoTypeCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "github"), (r) => r.subtype || "other"), 10), [filtered]);
+	const providerCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.provider), 15), [filtered]);
+	const confidenceValues = (0, import_react.useMemo)(() => filtered.map((r) => r.kotlin_confidence), [filtered]);
+	const popularityBuckets = (0, import_react.useMemo)(() => {
 		const gh = filtered.filter((r) => r.source === "github");
 		const buckets = [
 			["0", 0],
@@ -1153,7 +1138,7 @@ function Dashboard() {
 		}
 		return buckets;
 	}, [filtered]);
-	const formalInformal = useMemo(() => {
+	const formalInformal = (0, import_react.useMemo)(() => {
 		return topN(countryCounts, 10).map(([label]) => {
 			const rows = filtered.filter((r) => r.country === label);
 			return {
@@ -1165,7 +1150,7 @@ function Dashboard() {
 			};
 		});
 	}, [countryCounts, filtered]);
-	const crawlStats = useMemo(() => {
+	const crawlStats = (0, import_react.useMemo)(() => {
 		const s = dataset.serp;
 		return {
 			total: s.length,
@@ -1176,95 +1161,95 @@ function Dashboard() {
 			engine: topN(groupBy(s, (r) => r.engine), 10)
 		};
 	}, [dataset]);
-	const toggleCountry = useCallback((c) => {
+	const toggleCountry = (0, import_react.useCallback)((c) => {
 		setFilters((p) => ({
 			...p,
 			countries: p.countries.includes(c) ? p.countries.filter((x) => x !== c) : [...p.countries, c]
 		}));
 	}, [setFilters]);
-	return /* @__PURE__ */ jsxs("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "min-h-screen",
-		children: [/* @__PURE__ */ jsxs("header", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "max-w-[1600px] mx-auto px-6 pt-10 pb-8",
 			children: [
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "eyebrow",
 					children: "GSoC 2026 · Kotlin Foundation"
 				}),
-				/* @__PURE__ */ jsxs("h1", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 					className: "mt-3 text-4xl md:text-6xl font-extrabold tracking-[-0.03em] leading-[1.02]",
 					children: [
 						"Where ",
-						/* @__PURE__ */ jsx("span", {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "kt-gradient-text",
 							children: "Kotlin"
 						}),
 						" is taught,",
-						/* @__PURE__ */ jsx("br", { className: "hidden md:block" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", { className: "hidden md:block" }),
 						" mapped across the world."
 					]
 				}),
-				/* @__PURE__ */ jsx("p", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "mt-4 max-w-2xl text-muted-foreground text-[15px] leading-relaxed",
 					children: "An automated pipeline discovers universities, MOOCs, and public repositories teaching Kotlin. Every filter below refines the whole dashboard in real time."
 				})
 			]
-		}), /* @__PURE__ */ jsxs("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "max-w-[1600px] mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6",
-			children: [/* @__PURE__ */ jsx(FilterRail, {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FilterRail, {
 				filters,
 				setFilters,
 				sources,
 				countries: allCountries,
 				filteredCount: filtered.length,
 				totalCount: dataset.courses.length
-			}), /* @__PURE__ */ jsxs("main", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 				className: "flex flex-col gap-6 min-w-0",
 				children: [
-					/* @__PURE__ */ jsx(ActiveFilters, {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActiveFilters, {
 						filters,
 						setFilters
 					}),
-					/* @__PURE__ */ jsx(StatCards, { totals }),
-					/* @__PURE__ */ jsx(Panel, {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatCards, { totals }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 						title: "Universities per country",
 						subtitle: "World map · click to filter",
-						children: /* @__PURE__ */ jsx(WorldMap, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WorldMap, {
 							countryCounts: new Map(Array.from(groupBy(filtered.filter((r) => r.source === "university_website"), (r) => r.country || "")).filter(([k]) => k)),
 							activeCountries: filters.countries,
 							onToggleCountry: toggleCountry
 						})
 					}),
-					/* @__PURE__ */ jsxs("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "grid grid-cols-1 xl:grid-cols-2 gap-6",
-						children: [/* @__PURE__ */ jsx(Panel, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Top 15 countries",
 							subtitle: "All sources",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: topCountries,
 								onClick: toggleCountry,
 								activeKey: filters.countries[0]
 							})
-						}), /* @__PURE__ */ jsxs(Panel, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
 							title: "Records by source",
 							subtitle: "Distribution",
-							children: [/* @__PURE__ */ jsx(HorizontalBars, {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: sourceCounts,
 								color: "#C711E1",
 								height: 220
-							}), /* @__PURE__ */ jsxs("div", {
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "grid grid-cols-2 gap-6 mt-6",
-								children: [/* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "eyebrow mb-2",
 									children: "Signal tier"
-								}), /* @__PURE__ */ jsx(Donut, {
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
 									data: tierCounts,
 									colors: ["#7F52FF", "#3A3A3F"],
 									centerLabel: "records"
-								})] }), /* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "eyebrow mb-2",
 									children: "Learning type"
-								}), /* @__PURE__ */ jsx(Donut, {
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
 									data: learningCounts,
 									colors: ["#C711E1", "#7F52FF"],
 									centerLabel: "records"
@@ -1272,57 +1257,57 @@ function Dashboard() {
 							})]
 						})]
 					}),
-					/* @__PURE__ */ jsxs("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "grid grid-cols-1 xl:grid-cols-2 gap-6",
-						children: [/* @__PURE__ */ jsx(Panel, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "GitHub by repository type",
 							subtitle: "Subtype breakdown",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: repoTypeCounts,
 								color: "#7F52FF"
 							})
-						}), /* @__PURE__ */ jsx(Panel, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "GitHub popularity",
 							subtitle: "Stars distribution",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: popularityBuckets,
 								color: "#C711E1",
 								height: 260
 							})
 						})]
 					}),
-					/* @__PURE__ */ jsxs("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "grid grid-cols-1 xl:grid-cols-2 gap-6",
-						children: [/* @__PURE__ */ jsx(Panel, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Top 15 providers",
 							subtitle: "Owners & institutions",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: providerCounts,
 								color: "#7F52FF"
 							})
-						}), /* @__PURE__ */ jsx(Panel, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Formal vs informal",
 							subtitle: "Top 10 countries, stacked",
-							children: /* @__PURE__ */ jsx(StackedBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
 								data: formalInformal,
 								keys: ["formal", "informal"],
 								colors: ["#7F52FF", "#C711E1"]
 							})
 						})]
 					}),
-					/* @__PURE__ */ jsx(Panel, {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 						title: "Kotlin-confidence distribution",
 						subtitle: "Classifier score histogram",
-						children: /* @__PURE__ */ jsx(Histogram, {
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Histogram, {
 							values: confidenceValues,
 							bins: 10,
 							height: 220
 						})
 					}),
-					/* @__PURE__ */ jsx(Panel, {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 						title: "Crawl funnel",
 						subtitle: "Search → discovery → dedupe",
-						children: /* @__PURE__ */ jsx(Funnel, { steps: [
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Funnel, { steps: [
 							{
 								label: "Searched",
 								value: crawlStats.total
@@ -1341,12 +1326,12 @@ function Dashboard() {
 							}
 						] })
 					}),
-					/* @__PURE__ */ jsxs("div", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "grid grid-cols-1 xl:grid-cols-2 gap-6",
-						children: [/* @__PURE__ */ jsx(Panel, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Crawl outcomes",
 							subtitle: "Status breakdown",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: [
 									["found", crawlStats.found],
 									["no_match", crawlStats.no_match],
@@ -1356,47 +1341,20 @@ function Dashboard() {
 								color: "#7F52FF",
 								height: 200
 							})
-						}), /* @__PURE__ */ jsx(Panel, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Discovery engine",
 							subtitle: "Which engine served results",
-							children: /* @__PURE__ */ jsx(HorizontalBars, {
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 								data: crawlStats.engine,
 								color: "#C711E1",
 								height: 200
 							})
 						})]
 					}),
-					dataset?.baseline && /* @__PURE__ */ jsx(Panel, {
-						title: "Baseline comparison",
-						subtitle: "Against curated seed list",
-						children: /* @__PURE__ */ jsxs("div", {
-							className: "grid grid-cols-1 md:grid-cols-2 gap-6",
-							children: [/* @__PURE__ */ jsx(HorizontalBars, {
-								data: [
-									["rediscovered", dataset.baseline.rediscovered],
-									["net-new", dataset.baseline.net_new],
-									["missed", dataset.baseline.missed]
-								],
-								color: "#7F52FF",
-								height: 180
-							}), /* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("div", {
-								className: "eyebrow mb-2",
-								children: "Why we missed"
-							}), /* @__PURE__ */ jsx(HorizontalBars, {
-								data: [["not in input list", dataset.baseline.missed_not_in_input], ["searched, no match", dataset.baseline.missed_searched_no_match]],
-								color: "#E44857",
-								height: 140
-							})] })]
-						})
-					}),
-					/* @__PURE__ */ jsx(Panel, {
-						title: "Records",
-						subtitle: `${fmt(filtered.length)} rows · sortable · exportable`,
-						children: /* @__PURE__ */ jsx(DataTable, { rows: filtered })
-					}),
-					/* @__PURE__ */ jsxs("footer", {
-						className: "pt-4 pb-8 flex flex-wrap items-center justify-between gap-4 text-muted-foreground mono text-[11px] uppercase tracking-[0.18em]",
-						children: [/* @__PURE__ */ jsx("span", { children: "Kotlin Education Landscape · GSoC 2026" }), /* @__PURE__ */ jsx("span", { children: "Snapshot dataset · client-side aggregation" })]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+						title: "Data table",
+						subtitle: "Filterable · scrollable",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DataTable, { data: filtered })
 					})
 				]
 			})]
