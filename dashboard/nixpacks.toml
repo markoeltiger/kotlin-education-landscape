@@ -1,3 +1,8 @@
+providers = ["node"]
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
 [phases.install]
 cmds = ["npm install --legacy-peer-deps"]
 
@@ -8,5 +13,6 @@ cmds = ["npm run build"]
 cmds = ["npm start"]
 
 [variables]
+NIXPACKS_NODE_VERSION = "20"
 NODE_ENV = "production"
 PORT = "3000"

@@ -4,9 +4,9 @@ import { a as number, i as boolean, n as zodValidator, o as object, r as array, 
 import { t as require_papaparse } from "../_libs/papaparse.mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Ci3Rpdj8.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CoBblzDa.js
 var import_papaparse = /* @__PURE__ */ __toESM(require_papaparse());
-var $$splitComponentImporter = () => import("./routes-BzQgl71I.mjs");
+var $$splitComponentImporter = () => import("./routes-BU-3pKzN.mjs");
 var searchSchema = object({
 	primary_only: fallback(boolean(), false).default(false),
 	sources: fallback(array(string()), []).default([]),
@@ -21,9 +21,8 @@ var searchSchema = object({
 var Route = createFileRoute("/")({
 	validateSearch: zodValidator(searchSchema),
 	loader: async () => {
-		const basePath = join(process.cwd(), ".output/public");
-		const mainCsvPath = join(basePath, "kotlin_education_tableau.csv");
-		const uniCsvPath = join(basePath, "kotlin_education_tableau_universities.csv");
+		const mainCsvPath = join(process.cwd(), "kotlin_education_tableau.csv");
+		const uniCsvPath = join(process.cwd(), "kotlin_education_tableau_universities.csv");
 		const mainCsvContent = readFileSync(mainCsvPath, "utf-8");
 		const mainResult = import_papaparse.default.parse(mainCsvContent, {
 			header: true,

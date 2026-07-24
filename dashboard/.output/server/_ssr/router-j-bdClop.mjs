@@ -1,9 +1,9 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { c as HeadContent, d as Outlet, h as Link, m as createRootRouteWithContext, s as Scripts, u as createRouter, v as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as require_jsx_runtime, r as require_react, t as QueryClientProvider } from "../_libs/react+tanstack__react-query.mjs";
-import { t as Route$1 } from "./routes-Ci3Rpdj8.mjs";
+import { t as Route$1 } from "./routes-CoBblzDa.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-_KgIszq6.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-j-bdClop.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-CjKSHSKb.css";

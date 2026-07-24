@@ -26,63 +26,63 @@ var public_assets_data_default = {
 	"/favicon.ico": {
 		"type": "image/vnd.microsoft.icon",
 		"etag": "\"4f95-3RXc3p2mhEAs1WBwaIvE0Y0uu0Y\"",
-		"mtime": "2026-07-24T13:48:34.868Z",
+		"mtime": "2026-07-24T14:20:41.979Z",
 		"size": 20373,
 		"path": "../public/favicon.ico"
-	},
-	"/assets/routes-CFXvkmyA.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"255a7-/f0HWrwEoTxQURsvQLbUYk8HY4A\"",
-		"mtime": "2026-07-24T13:48:34.483Z",
-		"size": 152999,
-		"path": "../public/assets/routes-CFXvkmyA.js"
 	},
 	"/kotlin_education_tableau_universities.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"16a29-AIo3yh2So/OL2NnjHBrqflElX3E\"",
-		"mtime": "2026-07-24T13:48:34.869Z",
+		"mtime": "2026-07-24T14:20:42.000Z",
 		"size": 92713,
 		"path": "../public/kotlin_education_tableau_universities.csv"
-	},
-	"/data/baseline_comparison.json": {
-		"type": "application/json",
-		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
-		"mtime": "2026-07-24T13:48:34.868Z",
-		"size": 112,
-		"path": "../public/data/baseline_comparison.json"
 	},
 	"/assets/styles-CjKSHSKb.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"108dc-sJyN1VHSE3T4iSP9OQasTjYH74s\"",
-		"mtime": "2026-07-24T13:48:34.483Z",
+		"mtime": "2026-07-24T14:20:41.621Z",
 		"size": 67804,
 		"path": "../public/assets/styles-CjKSHSKb.css"
 	},
-	"/assets/index-BecfcVDZ.js": {
+	"/assets/routes-ayzzVG6j.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"68fbf-Ovv7Lr5SkR4r/F1ql64WRYP7Ywc\"",
-		"mtime": "2026-07-24T13:48:34.482Z",
-		"size": 430015,
-		"path": "../public/assets/index-BecfcVDZ.js"
+		"etag": "\"255a7-4QaWsWQqHNtv7lEJ3Phk3tkDzRY\"",
+		"mtime": "2026-07-24T14:20:41.620Z",
+		"size": 152999,
+		"path": "../public/assets/routes-ayzzVG6j.js"
+	},
+	"/data/baseline_comparison.json": {
+		"type": "application/json",
+		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
+		"mtime": "2026-07-24T14:20:41.978Z",
+		"size": 112,
+		"path": "../public/data/baseline_comparison.json"
+	},
+	"/assets/index-C5lUPl-r.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"68fa9-JdgiJB7pLie/MbSEM6Yn01emti0\"",
+		"mtime": "2026-07-24T14:20:41.620Z",
+		"size": 429993,
+		"path": "../public/assets/index-C5lUPl-r.js"
 	},
 	"/data/serp_progress.json": {
 		"type": "application/json",
 		"etag": "\"1725fa-vZzHydDZn45KMjQ11Y5UrSWYA5A\"",
-		"mtime": "2026-07-24T13:48:34.873Z",
+		"mtime": "2026-07-24T14:20:42.002Z",
 		"size": 1517050,
 		"path": "../public/data/serp_progress.json"
 	},
 	"/kotlin_education_tableau.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"1ff18f-OvxQHYrllfoyHzXkOzyu7TEnSj4\"",
-		"mtime": "2026-07-24T13:48:34.874Z",
+		"mtime": "2026-07-24T14:20:42.003Z",
 		"size": 2093455,
 		"path": "../public/kotlin_education_tableau.csv"
 	},
 	"/data/courses_unified.json": {
 		"type": "application/json",
 		"etag": "\"43ebe9-NuH7Ld0SxUktzIVDH5zqNwTUHiU\"",
-		"mtime": "2026-07-24T13:48:34.876Z",
+		"mtime": "2026-07-24T14:20:42.007Z",
 		"size": 4451305,
 		"path": "../public/data/courses_unified.json"
 	}
