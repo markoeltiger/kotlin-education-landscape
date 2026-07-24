@@ -31,11 +31,8 @@ export const Route = createFileRoute("/")({
   validateSearch: zodValidator(searchSchema),
   loader: async (): Promise<Dataset> => {
     // Load courses from CSV files
-    const isDev = process.env.NODE_ENV === 'development';
-    const basePath = isDev ? process.cwd() : join(process.cwd(), '.output/public');
-    
-    const mainCsvPath = join(basePath, 'kotlin_education_tableau.csv');
-    const uniCsvPath = join(basePath, 'kotlin_education_tableau_universities.csv');
+    const mainCsvPath = join(process.cwd(), 'kotlin_education_tableau.csv');
+    const uniCsvPath = join(process.cwd(), 'kotlin_education_tableau_universities.csv');
     
     // Parse main CSV file
     const mainCsvContent = readFileSync(mainCsvPath, 'utf-8');
