@@ -47,7 +47,7 @@ export function WorldMap({ countryCounts, activeCountries, onToggleCountry }: Pr
 
   const activeSet = useMemo(() => new Set(activeCountries.map(aliasCountry)), [activeCountries]);
 
-  const height = width < 640 ? 300 : width < 1024 ? 380 : 460;
+  const height = width < 480 ? 250 : width < 640 ? 300 : width < 1024 ? 380 : 460;
 
   useEffect(() => {
     if (!world || !svgRef.current || !width) return;

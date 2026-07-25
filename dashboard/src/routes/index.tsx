@@ -207,19 +207,19 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      <header className="max-w-[1600px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-6 sm:pb-8">
-        <div className="eyebrow text-[10px] sm:text-[11px]">GSoC 2026 · Kotlin Foundation</div>
-        <h1 className="mt-2 sm:mt-3 text-2xl sm:text-4xl md:text-6xl font-extrabold tracking-[-0.03em] leading-[1.02]">
+      <header className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 pt-4 sm:pt-6 md:pt-10 pb-4 sm:pb-6 md:pb-8">
+        <div className="eyebrow text-[9px] sm:text-[10px] md:text-[11px]">GSoC 2026 · Kotlin Foundation</div>
+        <h1 className="mt-1 sm:mt-2 md:mt-3 text-xl sm:text-2xl md:text-4xl lg:text-6xl font-extrabold tracking-[-0.03em] leading-[1.02]">
           Where <span className="kt-gradient-text">Kotlin</span> is taught,
           <br className="hidden md:block" /> mapped across the world.
         </h1>
-        <p className="mt-3 sm:mt-4 max-w-2xl text-muted-foreground text-[13px] sm:text-[15px] leading-relaxed">
+        <p className="mt-2 sm:mt-3 md:mt-4 max-w-2xl text-muted-foreground text-[12px] sm:text-[13px] md:text-[15px] leading-relaxed">
           An automated pipeline discovers universities, MOOCs, and public repositories teaching
           Kotlin. Every filter below refines the whole dashboard in real time.
         </p>
       </header>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-12 sm:pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 sm:gap-6">
+      <div className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 pb-10 sm:pb-12 md:pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-3 sm:gap-4 md:gap-6">
         <div className="lg:hidden">
           <FilterRail
             filters={filters}

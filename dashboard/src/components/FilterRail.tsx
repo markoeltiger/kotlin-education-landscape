@@ -199,13 +199,11 @@ export function FilterRail({
                   <span className="text-muted-foreground"> / {fmt(totalCount)}</span>
                 </span>
               </div>
-              <span className="text-muted-foreground">☰</span>
+              <span className="text-muted-foreground text-xl">☰</span>
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[85%] sm:w-[350px] overflow-y-auto">
-            <div className="mt-4">
-              {filterContent}
-            </div>
+          <SheetContent side="left" className="w-[85%] sm:w-[350px] overflow-y-auto p-4 sm:p-6">
+            {filterContent}
           </SheetContent>
         </Sheet>
       </div>
