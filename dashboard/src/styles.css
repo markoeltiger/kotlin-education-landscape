@@ -91,3 +91,8 @@
   animation: shimmer 1.4s linear infinite;
   border-radius: 6px;
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+}

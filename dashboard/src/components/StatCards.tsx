@@ -40,15 +40,15 @@ export function StatCards({
     { label: "MOOC courses", value: totals.mooc },
   ];
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
       {items.map((it) => (
-        <div key={it.label} className="panel relative overflow-hidden p-5">
+        <div key={it.label} className="panel relative overflow-hidden p-3 sm:p-5">
           <div
             className="absolute left-0 top-0 bottom-0 w-[3px]"
             style={{ background: "var(--gradient-kotlin-135)" }}
           />
-          <div className="eyebrow">{it.label}</div>
-          <div className="mono mt-2 text-3xl font-bold tabular-nums text-ink">
+          <div className="eyebrow text-[10px] sm:text-[11px]">{it.label}</div>
+          <div className="mono mt-1 sm:mt-2 text-xl sm:text-3xl font-bold tabular-nums text-ink">
             <CountUp value={it.value} />
           </div>
         </div>

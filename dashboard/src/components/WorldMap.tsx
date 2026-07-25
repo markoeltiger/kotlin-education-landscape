@@ -47,7 +47,7 @@ export function WorldMap({ countryCounts, activeCountries, onToggleCountry }: Pr
 
   const activeSet = useMemo(() => new Set(activeCountries.map(aliasCountry)), [activeCountries]);
 
-  const height = 460;
+  const height = width < 640 ? 300 : width < 1024 ? 380 : 460;
 
   useEffect(() => {
     if (!world || !svgRef.current || !width) return;
@@ -144,16 +144,16 @@ export function WorldMap({ countryCounts, activeCountries, onToggleCountry }: Pr
           </div>
         </div>
       )}
-      <div className="mt-3 flex items-center gap-3">
-        <div className="eyebrow">Universities · log scale</div>
+      <div className="mt-2 sm:mt-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+        <div className="eyebrow text-[10px] sm:text-[11px]">Universities · log scale</div>
         <div
-          className="h-2 flex-1 rounded-sm"
+          className="h-2 w-full sm:flex-1 rounded-sm"
           style={{
             background:
               "linear-gradient(90deg, #241F36 0%, #4B2E8A 40%, #7F52FF 70%, #C711E1 100%)",
           }}
         />
-        <div className="mono text-[11px] tabular-nums text-muted-foreground flex gap-3">
+        <div className="mono text-[10px] sm:text-[11px] tabular-nums text-muted-foreground flex gap-2 sm:gap-3">
           {legendStops.map((v, i) => (
             <span key={i}>{fmt(v)}</span>
           ))}

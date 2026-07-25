@@ -6,15 +6,15 @@ import { downloadCsv, toCsv } from "../lib/csv";
 
 type Col = { key: keyof Course; label: string; w: string; align?: "right" };
 const COLS: Col[] = [
-  { key: "title", label: "Title", w: "minmax(280px,2fr)" },
-  { key: "source", label: "Source", w: "110px" },
-  { key: "signal_tier", label: "Tier", w: "110px" },
-  { key: "learning_type", label: "Learning", w: "110px" },
-  { key: "provider", label: "Provider", w: "minmax(160px,1fr)" },
-  { key: "country", label: "Country", w: "160px" },
-  { key: "subtype", label: "Subtype", w: "140px" },
-  { key: "popularity", label: "Popularity", w: "110px", align: "right" },
-  { key: "kotlin_confidence", label: "Conf.", w: "80px", align: "right" },
+  { key: "title", label: "Title", w: "minmax(200px,2fr)" },
+  { key: "source", label: "Source", w: "90px" },
+  { key: "signal_tier", label: "Tier", w: "90px" },
+  { key: "learning_type", label: "Learning", w: "90px" },
+  { key: "provider", label: "Provider", w: "minmax(140px,1fr)" },
+  { key: "country", label: "Country", w: "130px" },
+  { key: "subtype", label: "Subtype", w: "120px" },
+  { key: "popularity", label: "Popularity", w: "90px", align: "right" },
+  { key: "kotlin_confidence", label: "Conf.", w: "70px", align: "right" },
 ];
 
 export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) {
@@ -61,7 +61,7 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
         <div className="mono text-xs text-muted-foreground tabular-nums mb-3">
           {fmt(actualRows.length)} rows — loading table…
         </div>
-        <div className="border border-line rounded-md overflow-hidden" style={{ height: 520 }}>
+        <div className="border border-line rounded-md overflow-hidden" style={{ height: 'min(520px, 60vh)' }}>
           <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
             Loading…
           </div>
@@ -118,7 +118,7 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
             </button>
           ))}
         </div>
-        <div ref={parentRef} className="overflow-auto" style={{ height: 520 }}>
+        <div ref={parentRef} className="overflow-auto" style={{ height: 'min(520px, 60vh)' }}>
           <div style={{ height: virt.getTotalSize(), position: "relative" }}>
             {virt.getVirtualItems().map((vi) => {
               const r = sorted[vi.index];

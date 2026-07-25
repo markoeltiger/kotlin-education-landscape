@@ -15,11 +15,11 @@ export function Panel({
   action?: ReactNode;
 }) {
   return (
-    <section className={classNames("panel p-5 flex flex-col min-w-0", className)}>
-      <header className="flex items-start justify-between gap-4 mb-4">
+    <section className={classNames("panel p-4 sm:p-5 flex flex-col min-w-0", className)}>
+      <header className="flex items-start justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
         <div>
-          <div className="eyebrow">{subtitle ?? "Panel"}</div>
-          <h3 className="text-[15px] font-semibold text-ink mt-1">{title}</h3>
+          <div className="eyebrow text-[10px] sm:text-[11px]">{subtitle ?? "Panel"}</div>
+          <h3 className="text-[13px] sm:text-[15px] font-semibold text-ink mt-1">{title}</h3>
         </div>
         {action}
       </header>

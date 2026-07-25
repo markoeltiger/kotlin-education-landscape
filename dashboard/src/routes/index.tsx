@@ -207,29 +207,41 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      <header className="max-w-[1600px] mx-auto px-6 pt-10 pb-8">
-        <div className="eyebrow">GSoC 2026 · Kotlin Foundation</div>
-        <h1 className="mt-3 text-4xl md:text-6xl font-extrabold tracking-[-0.03em] leading-[1.02]">
+      <header className="max-w-[1600px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-6 sm:pb-8">
+        <div className="eyebrow text-[10px] sm:text-[11px]">GSoC 2026 · Kotlin Foundation</div>
+        <h1 className="mt-2 sm:mt-3 text-2xl sm:text-4xl md:text-6xl font-extrabold tracking-[-0.03em] leading-[1.02]">
           Where <span className="kt-gradient-text">Kotlin</span> is taught,
           <br className="hidden md:block" /> mapped across the world.
         </h1>
-        <p className="mt-4 max-w-2xl text-muted-foreground text-[15px] leading-relaxed">
+        <p className="mt-3 sm:mt-4 max-w-2xl text-muted-foreground text-[13px] sm:text-[15px] leading-relaxed">
           An automated pipeline discovers universities, MOOCs, and public repositories teaching
           Kotlin. Every filter below refines the whole dashboard in real time.
         </p>
       </header>
 
-      <div className="max-w-[1600px] mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
-        <FilterRail
-          filters={filters}
-          setFilters={setFilters}
-          sources={sources}
-          countries={allCountries}
-          filteredCount={filtered.length}
-          totalCount={dataset.courses.length}
-        />
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-12 sm:pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 sm:gap-6">
+        <div className="lg:hidden">
+          <FilterRail
+            filters={filters}
+            setFilters={setFilters}
+            sources={sources}
+            countries={allCountries}
+            filteredCount={filtered.length}
+            totalCount={dataset.courses.length}
+          />
+        </div>
+        <div className="hidden lg:block">
+          <FilterRail
+            filters={filters}
+            setFilters={setFilters}
+            sources={sources}
+            countries={allCountries}
+            filteredCount={filtered.length}
+            totalCount={dataset.courses.length}
+          />
+        </div>
 
-        <main className="flex flex-col gap-6 min-w-0">
+        <main className="flex flex-col gap-4 sm:gap-6 min-w-0">
           <ActiveFilters filters={filters} setFilters={setFilters} />
 
           <StatCards totals={totals} />
@@ -251,7 +263,7 @@ function Dashboard() {
             />
           </Panel>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="Top 15 countries" subtitle="All sources">
               <HorizontalBars
                 data={topCountries}
@@ -282,7 +294,7 @@ function Dashboard() {
             </Panel>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="GitHub by repository type" subtitle="Subtype breakdown">
               <HorizontalBars data={repoTypeCounts} color="#7F52FF" />
             </Panel>
@@ -291,7 +303,7 @@ function Dashboard() {
             </Panel>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="Top 15 providers" subtitle="Owners & institutions">
               <HorizontalBars data={providerCounts} color="#7F52FF" />
             </Panel>
@@ -326,7 +338,7 @@ function Dashboard() {
             />
           </Panel>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="Crawl outcomes" subtitle="Status breakdown">
               <HorizontalBars
                 data={[
