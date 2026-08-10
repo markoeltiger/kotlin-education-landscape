@@ -1,0 +1,2945 @@
+{
+  "summary": {
+    "official": 408,
+    "ours": 243,
+    "rediscovered": 53,
+    "net_new": 192,
+    "missed": 355,
+    "recall_pct": 13.0
+  },
+  "missed": [
+    {
+      "name": "Yale University",
+      "location": "New Haven, CT, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Pennsylvania",
+      "location": "Philadelphia, PA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Columbia University",
+      "location": "New York, NY, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Toronto",
+      "location": "Toronto, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Duke University",
+      "location": "Durham, NC, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Northwestern University",
+      "location": "Evanston, IL, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Washington",
+      "location": "Seattle, WA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Carnegie Mellon University",
+      "location": "Pittsburgh, PA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Edinburgh",
+      "location": "Edinburgh, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Nanyang Technological University",
+      "location": "Singapore, Singapore",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "École Polytechnique Fédérale de Lausanne (EPFL)",
+      "location": "Lausanne, Switzerland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of California, San Diego",
+      "location": "San Diego, CA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Hong Kong",
+      "location": "Hong Kong, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Georgia Institute of Technology (Georgia Tech)",
+      "location": "Atlanta, GA, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Technical University of Munich",
+      "location": "Munich, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Illinois at Urbana-Champaign",
+      "location": "Champaign, IL, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "KU Leuven",
+      "location": "Leuven, Belgium",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Heidelberg University",
+      "location": "Heidelberg, Germany",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "The Chinese University of Hong Kong",
+      "location": "Hong Kong, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of California, Davis - UC Davis",
+      "location": "Davis, CA, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "The Hong Kong University of Science and Technology",
+      "location": "Hong Kong, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of California, Santa Barbara - UC Santa Barbara",
+      "location": "Santa Barbara, CA, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of North Carolina at Chapel Hill",
+      "location": "Chapel Hill, NC, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Leiden University",
+      "location": "Leiden, The Netherlands",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "City University of Hong Kong",
+      "location": "Hong Kong, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Purdue University West Lafayette",
+      "location": "West Lafayette, IN, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Hong Kong Polytechnic University",
+      "location": "Hong Kong, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Vanderbilt University",
+      "location": "Nashville, TN, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Lomonosov Moscow State University",
+      "location": "Moscow, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Southampton",
+      "location": "Southampton, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "The Ohio State University",
+      "location": "Columbus, OH, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "McMaster University",
+      "location": "Hamilton, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Sheffield",
+      "location": "Sheffield, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Aarhus University",
+      "location": "Aarhus, Denmark",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Alberta",
+      "location": "Edmonton, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Montreal",
+      "location": "Montreal, Canada",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Maryland",
+      "location": "College Park, MD, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Michigan State University",
+      "location": "East Lansing, MI, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Texas A&M University",
+      "location": "College Station, TX, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Rice University",
+      "location": "Houston, TX, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Technical University of Denmark",
+      "location": "Lyngby, Denmark",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Leeds",
+      "location": "Leeds, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Rochester",
+      "location": "Rochester, NY, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Hamburg",
+      "location": "Hamburg, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Sungkyunkwan University (SKKU)",
+      "location": "Seoul, South Korea",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Technology Sydney",
+      "location": "Sydney, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Cologne",
+      "location": "Cologne, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Dartmouth College",
+      "location": "Hanover, NH, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "TU Dresden",
+      "location": "Dresden, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Virginia",
+      "location": "Charlottesville, VA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Würzburg",
+      "location": "Wurzburg, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Sapienza University of Rome",
+      "location": "Rome, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Twente",
+      "location": "Enschede, The Netherlands",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Ulm University",
+      "location": "Ulm, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Indiana University",
+      "location": "Bloomington, IN, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Aalto University",
+      "location": "Espoo, Finland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of California, Santa Cruz",
+      "location": "Santa Cruz, CA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Curtin University",
+      "location": "Perth, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "George Washington University",
+      "location": "Washington, D.C., US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Illinois at Chicago",
+      "location": "Chicago, IL, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Université Libre de Bruxelles",
+      "location": "Brussels, Belgium",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Luxembourg",
+      "location": "Luxembourg, Luxembourg",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Padua",
+      "location": "Padua, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Politecnico di Milano",
+      "location": "Milan, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Rutgers, the State University of New Jersey",
+      "location": "New Brunswick, NJ, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Swinburne University of Technology",
+      "location": "Melbourne, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Tel Aviv University",
+      "location": "Tel Aviv, Israel",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Wollongong",
+      "location": "Wollongong, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Beijing Institute of Technology",
+      "location": "Beijing, China",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Griffith University",
+      "location": "Brisbane, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Johannes Gutenberg University of Mainz",
+      "location": "Mainz, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Laval University",
+      "location": "Quebec, Canada",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Linköping University",
+      "location": "Linkoping, Sweden",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Oulu",
+      "location": "Oulu, Finland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Qatar University",
+      "location": "Doha, Qatar",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Queen’s University",
+      "location": "Kingston, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Simon Fraser University",
+      "location": "Burnaby, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Università della Svizzera Italiana",
+      "location": "Lugano, Switzerland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Swansea University",
+      "location": "Swansea, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Tasmania",
+      "location": "Hobart, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Technical University of Darmstadt",
+      "location": "Darmstadt, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Bremen",
+      "location": "Bremen, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Dalhousie University",
+      "location": "Halifax, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Essex",
+      "location": "Colchester, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Innsbruck",
+      "location": "Innsbruck, Austria",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Montpellier University",
+      "location": "Montpellier, France",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Norwegian University of Science and Technology",
+      "location": "Trondheim, Norway",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Rome II – Tor Vergata",
+      "location": "Rome, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Stellenbosch University",
+      "location": "Stellenbosch, South Africa",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Tartu",
+      "location": "Tartu, Estonia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Turku",
+      "location": "Turku, Finland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University College Cork",
+      "location": "Cork, Ireland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Autonomous University of Madrid",
+      "location": "Madrid, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Bayreuth",
+      "location": "Bayreuth, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Connecticut",
+      "location": "Storrs, CT, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Georgia",
+      "location": "Athens, GA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Hasselt University",
+      "location": "Hasselt, Belgium",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Illinois Institute of Technology - Illinois Tech",
+      "location": "Chicago, IL, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Iowa State University",
+      "location": "Ames, IA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Peter the Great St Petersburg Polytechnic University",
+      "location": "Saint Petersburg, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Sabancı University",
+      "location": "Istanbul, Turkey",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Technion Israel Institute of Technology",
+      "location": "Haifa, Israel",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Temple University",
+      "location": "Philadelphia, PA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Central Florida",
+      "location": "Orlando, FL, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Charles University in Prague",
+      "location": "Prague, Czech Republic",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Constructor University - Jacobs University",
+      "location": "Bremen, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "George Mason University",
+      "location": "Fairfax, VA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Guelph",
+      "location": "Guelph, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "HSE University",
+      "location": "Moscow, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "IMT Atlantique",
+      "location": "Nantes, France",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Iran University of Science and Technology",
+      "location": "Tehran, Iran",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Johannes Kepler University of Linz",
+      "location": "Linz, Austria",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "King Saud University",
+      "location": "Riyadh, Saudi Arabia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Missouri University of Science and Technology",
+      "location": "Rolla, MO, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Missouri",
+      "location": "Columbia, MO, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Modena and Reggio Emilia",
+      "location": "Modena, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Research Nuclear University MEPhI",
+      "location": "Moscow, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Yang Ming Chiao Tung University",
+      "location": "Hsinchu, Taiwan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Pisa",
+      "location": "Pisa, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Plymouth",
+      "location": "Plymouth, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Pontificia Universidad Católica de Chile",
+      "location": "Santiago, Chile",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of South Carolina-Columbia",
+      "location": "Columbia, SC, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "TU Dortmund University",
+      "location": "Dortmund, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Umeå University",
+      "location": "Umea, Sweden",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Vaasa",
+      "location": "Vaasa, Finland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Victoria University",
+      "location": "Melbourne, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Alaska Fairbanks",
+      "location": "Fairbanks, AK, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "American University of Beirut",
+      "location": "Beirut, Lebanon",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Anna University",
+      "location": "Chennai, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Canterbury",
+      "location": "Christchurch, New Zealand",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Clark University",
+      "location": "Worcester, MA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Perugia",
+      "location": "Perugia, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Salerno",
+      "location": "Fisciano, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Baylor University",
+      "location": "Waco, TX, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Boğaziçi University",
+      "location": "Istanbul, Turkey",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Chang Gung University",
+      "location": "Taoyuan, Taiwan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Houston",
+      "location": "Houston, TX, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "ITMO University",
+      "location": "Saint Petersburg, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Missouri-St Louis",
+      "location": "St. Louis, MO, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "San Diego State University",
+      "location": "San Diego, CA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Federal University of Minas Gerais",
+      "location": "Belo Horizonte, Brazil",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Greenwich",
+      "location": "London, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Insubria",
+      "location": "Varese, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Maryland, Baltimore County",
+      "location": "Baltimore, MD, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Saint Petersburg State University",
+      "location": "Saint Petersburg, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Worcester Polytechnic Institute",
+      "location": "Worcester, MA, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Babeş-Bolyai University",
+      "location": "Cluj-Napoca, Romania",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Eastern Mediterranean University",
+      "location": "Famagusta, Northern Cyprus",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Texas at El Paso",
+      "location": "El Paso, TX, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of the Sinos Valley",
+      "location": "Sao Leopoldo, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Saint Petersburg Electrotechnical University (LETI)",
+      "location": "Saint Petersburg, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Ontario Tech University",
+      "location": "Oshawa, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Auvergne - Clermont",
+      "location": "Clermont-Ferrand, France",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Nevada - Reno",
+      "location": "Reno, NV, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Waterford Institute of Technology",
+      "location": "Waterford, Ireland",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Kristiania University College",
+      "location": "Oslo, Norway",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "UPC - Peruvian University of Applied Sciences, Peru",
+      "location": "Lima, Peru",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Lisbon Superior Engineering Institute (ISEL)",
+      "location": "Lisbon, Portugal",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Lusófona University",
+      "location": "Lisbon, Portugal",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Omsk State University",
+      "location": "Omsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Omsk State Technical University",
+      "location": "Omsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Wisconsin - Parkside",
+      "location": "Kenosha, WI, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Birkbeck, University of London",
+      "location": "London, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Jordan University of Science and Technology",
+      "location": "Irbid, Jordan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Carleton University",
+      "location": "Ottawa, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Marche Polytechnic University",
+      "location": "Ancona, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Novosibirsk State University",
+      "location": "Novosibirsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Oklahoma State University",
+      "location": "Stillwater, OK, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "TU Braunschweig",
+      "location": "Braunschweig, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of the Andes, Colombia",
+      "location": "Bogota, Colombia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Autonomous University of Mexico",
+      "location": "Mexico City, Mexico",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Sun Yat-Sen University",
+      "location": "Kaohsiung, Taiwan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Portland State University",
+      "location": "Portland, OR, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Tomsk Polytechnic University",
+      "location": "Tomsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Belarusian State University",
+      "location": "Minsk, Belarus",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Guadalajara",
+      "location": "Guadalajara, Mexico",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Irkutsk State University",
+      "location": "Irkutsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Jawaharlal Nehru Technological University Anantapur (JNTUA)",
+      "location": "Anantapur, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Kanazawa University",
+      "location": "Kanazawa, Japan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "National Technical University Kharkiv Polytechnic Institute",
+      "location": "Kharkiv, Ukraine",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "North-Eastern Federal University",
+      "location": "Yakutsk, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Pontifical Catholic University of Minas Gerais",
+      "location": "Belo Horizonte, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Samara University",
+      "location": "Samara, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Sargodha",
+      "location": "Sargodha, Pakistan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Satbayev University",
+      "location": "Almaty, Kazakhstan",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Silpakorn University",
+      "location": "Bangkok, Thailand",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Srinakharinwirot University",
+      "location": "Bangkok, Thailand",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Telkom University",
+      "location": "Bandung, Indonesia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Thammasat University",
+      "location": "Bangkok, Thailand",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Voronezh State University",
+      "location": "Voronezh, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Flensburg University of Applied Sciences",
+      "location": "Flensburg, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "I. K. Gujral Punjab Technical University",
+      "location": "Kapurthala, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Marwadi University",
+      "location": "Rajkot, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Politehnica University Timisoara",
+      "location": "Timișoara, Romania",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Bern University of Applied Sciences",
+      "location": "Bern, Switzerland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Ammersee-Gymnasium",
+      "location": "Munich, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National University of the South",
+      "location": "Bahia Blanca, Argentina",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National University of La Matanza - Universidad Nacional de La Matanza",
+      "location": "Buenos Aires, Argentina",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "The University of the Antilles - Université des Antilles",
+      "location": "Schoelcher, Martinique",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Fortaleza",
+      "location": "Fortaleza, Brazil",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Applied Sciences and Arts Northwestern Switzerland",
+      "location": "Brugg, Switzerland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Engineering and Management",
+      "location": "Jaipur, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "FH Joanneum",
+      "location": "Graz, Austria",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "IES Luis Vives",
+      "location": "Madrid, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Malmö Yrkeshögskola",
+      "location": "Malmo, Sweden",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Champlain College Lennoxville",
+      "location": "Sherbrooke, Сanada",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Minneapolis College",
+      "location": "Minneapolis, MN, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Pontifical Catholic University of Chile",
+      "location": "Santiago, Chile",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Bucharest University of Economic Studies",
+      "location": "Bucharest, Romania",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Durban University of Technology",
+      "location": "Durban, South Africa",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Open University of Catalonia",
+      "location": "Barcelona, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "American University of Sharjah",
+      "location": "Sharjah, United Arab Emirates",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Bar-Ilan University",
+      "location": "Ramat Gan, Israel",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Engineering and Technology, Taxila",
+      "location": "Taxila, Pakistan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Federation University Australia",
+      "location": "Ballarat, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Manchester Metropolitan University",
+      "location": "Manchester, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Nantes",
+      "location": "Nantes, France",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Cheng Kung University (NCKU)",
+      "location": "Tainan, Taiwan",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National University of Science and Technology (MISiS)",
+      "location": "Moscow, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "North South University",
+      "location": "Dhaka, Bangladesh",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Rovira i Virgili",
+      "location": "Tarragona, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Savitribai Phule Pune University",
+      "location": "Pune, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Thapar University",
+      "location": "Patiala, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Tomsk State University",
+      "location": "Tomsk, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "The University of Aizu",
+      "location": "Aizuwakamatsu, Japan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Belgrade",
+      "location": "Belgrade, Serbia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "ISCTE-University Institute of Lisbon",
+      "location": "Lisbon, Portugal",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Kazan Federal University",
+      "location": "Kazan, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Latvia",
+      "location": "Riga, Latvia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Ljubljana",
+      "location": "Ljubljiana, Slovenia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Mahidol University",
+      "location": "Salaya, Thailand",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Masaryk University",
+      "location": "Brno, Czech Republic",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of South Bohemia in České Budějovice",
+      "location": "Ceske Bedejovice, Czech Republic",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Al-Farabi Kazakh National University",
+      "location": "Almaty, Kazakhstan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Amity University",
+      "location": "Noida, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Don State Technical University",
+      "location": "Rostov-on-Don, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Ilia State University",
+      "location": "Tbilisi, Georgia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Oakland University",
+      "location": "Rochester, MI, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Palacký University Olomouc",
+      "location": "Olomouc, Czech Republic",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Pavol Jozef Šafárik University in Košice",
+      "location": "Kosice, Slovakia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Reichman University",
+      "location": "Herzliya, Israel",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Westminster",
+      "location": "London, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Altai State University",
+      "location": "Barnaul, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "BINUS University",
+      "location": "West Jakarta, Indonesia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Chung Yuan Christian University",
+      "location": "Taoyuan, Taiwan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Cochin University of Science and Technology",
+      "location": "Kochi, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "IPB University",
+      "location": "Bogor, Indonesia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Irkutsk National Research Technical University",
+      "location": "Irkutsk, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Istanbul Medipol University",
+      "location": "Istanbul, Turkey",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Universiti Malaysia Sarawak (UNIMAS)",
+      "location": "Kota Samarahan, Malaysia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Pontifical Catholic University of Paraná",
+      "location": "Curitiba, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Silesian University of Technology",
+      "location": "Gliwice, Poland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Universiti Teknikal Malaysia Melaka",
+      "location": "Malacca, Malaysia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Tokyo University of Science",
+      "location": "Tokyo, Japan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Tunghai University",
+      "location": "Taichung, Taiwan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Ural Federal University",
+      "location": "Ekaterinburg, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Veltech University",
+      "location": "Morai, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Vignan’s Foundation for Science, Technology and Research",
+      "location": "Guntur, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Başkent University",
+      "location": "Ankara, Turkey",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Colima",
+      "location": "Colima, Mexico",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Federal University of Piauí",
+      "location": "Teresina, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Lucian Blaga University of Sibiu",
+      "location": "Sibiu, Romania",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Montenegro",
+      "location": "Podgorica, Montenegro",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Mustansiriyah University",
+      "location": "Baghdad, Iraq",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Northern (Arctic) Federal University named after M.V. Lomonosov",
+      "location": "Arkhangelsk, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Pedagogical and Technological University of Colombia",
+      "location": "Tunja, Colombia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Perm State University",
+      "location": "Perm, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Universidad de La Sabana - University of La Sabana",
+      "location": "Chia, Colombia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Technical University of Cluj-Napoca",
+      "location": "Cluj-Napoca, Romania",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Federal University of Technology – Paraná",
+      "location": "Curitiba, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "VSB - Technical University of Ostrava",
+      "location": "Ostrava, Czech Republic",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Wrocław University of Science and Technology",
+      "location": "Wroclaw, Poland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Università del Piemonte Orientale - UPO",
+      "location": "Alessandria, Italy",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Institut Tecnològic de Barcelona",
+      "location": "Barcelona, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Ivy Tech Community College",
+      "location": "Indianapolis, IN, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Baku Higher Oil School",
+      "location": "Baku, Azerbaijan",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Business Academy Aarhus",
+      "location": "Aarhus, Denmark",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "George Brown College",
+      "location": "Toronto, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Gujarat Technological University",
+      "location": "Gujarat, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Astana International University",
+      "location": "Astana, Kazakhstan",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Avans University of Applied Sciences - Avans Hogeschool",
+      "location": "Breda, The Netherlands",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Galgotias University",
+      "location": "Greater Noida, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Chandigarh University",
+      "location": "Mohali, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "CVR College Of Engineering",
+      "location": "Ibrahimpatnam, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Shivaji University",
+      "location": "Kolhapur, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Manav Rachna International Institute of Research and Studies - MRIIRS",
+      "location": "Faridabad, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "GIET University",
+      "location": "Gunupur, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Bennett University",
+      "location": "Greater Noida, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Grand View University in Des Moines",
+      "location": "Des Moines, IA, US",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Catholic University Of Colombia",
+      "location": "Bogotá, Colombia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Universidad Ean",
+      "location": "Bogotá, Colombia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Sivas Cumhuriyet University",
+      "location": "Sivas, Turkey",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Charotar University of Science and Technology - CHARUSAT",
+      "location": "Change, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "NIE Institute of Technology - The National Institute of Engineering",
+      "location": "Mysuru, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Suresh Gyan Vihar University",
+      "location": "Jaipur, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "TH Köln",
+      "location": "Cologne, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Manav Rachna University",
+      "location": "Faridabad, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Vidyavardhaka College of Engineering",
+      "location": "Mysore, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Swarrnim Startup & Innovation University",
+      "location": "Bhoyan Rathod, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "KAZGUU University Higher School of Economics",
+      "location": "Astana, Kazakhstan",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Central Queensland University",
+      "location": "Rockhampton, Australia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "The University of Jordan",
+      "location": "Amman, Jordan",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Lviv Polytechnic National University",
+      "location": "Lviv, Ukraine",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Palermo",
+      "location": "Palermo, Italy",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Polytechnic University of Catalonia - Universitat Politècnica de Catalunya - UPC",
+      "location": "Barcelona, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Texas Tech University",
+      "location": "Lubbock, TX, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Chile",
+      "location": "Santiago, Chile",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Chonbuk National University - Jeonbuk National University",
+      "location": "Jeonju, South Korea",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Christ University Bengaluru",
+      "location": "Bengaluru, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Kharkiv Aviation Institute",
+      "location": "Kharkiv, Ukraine",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "National Institute of Technology Srinagar",
+      "location": "Srinagar, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "National Technical University Kharkiv Polytechnic Institute",
+      "location": "Kharkiv, Ukraine",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Saint Petersburg Electrotechnical University (LETI)",
+      "location": "Saint Petersburg, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Wrocław University of Science and Technology",
+      "location": "Wroclaw, Poland",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Caldas",
+      "location": "Manizales, Colombia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Goa University",
+      "location": "Taleigao, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Istanbul Aydın University",
+      "location": "Istanbul, Turkey",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Nizhny Novgorod State Technical University",
+      "location": "Nizhny Novgorod, Russia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "National University of Science and Technology Politehnica Bucharest",
+      "location": "Bucharest, Romania",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "REVA University",
+      "location": "Bangalore, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Université Gustave Eiffel",
+      "location": "Paris, France",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Bunker Hill Community College",
+      "location": "Boston, MA, USA",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University for Technology and Design | Harbour.Space Barcelona",
+      "location": "Barcelona, Spain",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "California Institute of Arts & Technology - CIAT",
+      "location": "National City, CA, USA",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "George Brown College",
+      "location": "Toronto, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University Centre Peterborough",
+      "location": "Peterborough, UK",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Gujarat Technological University",
+      "location": "Ahmedabad, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "RIT Kosovo",
+      "location": "Pristina, Kosovo",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Knyagininsky Universitet",
+      "location": "Knyaginino, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Novi Sad",
+      "location": "Novi Sad, Serbia",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Amsterdam University of Applied Sciences (AUAS)",
+      "location": "Amsterdam, The Netherlands",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "UWE Bristol",
+      "location": "Bristol, UK",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Teknologisk Institut",
+      "location": "Taastrup, Denmark",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of the West of Scotland",
+      "location": "Glasgow, UK",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Birla Institute of Technology and Science, Pilani",
+      "location": "Pilani, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Florida Institute of Technology",
+      "location": "Melbourne, FL, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Alicante",
+      "location": "Alicante, Spain",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Annamalai University",
+      "location": "Chidambaram, India",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Hasanuddin University",
+      "location": "Makassar, Indonesia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "MIREA - Russian Technological University",
+      "location": "Moscow, Russia",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Obafemi Awolowo University",
+      "location": "Ife, Nigeria",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Pannonia",
+      "location": "Veszprém, Hungary",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "ATMIYA University",
+      "location": "Rajkot, India",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Ostbayerische Technische Hochschule Regensburg (OTH Regensburg)",
+      "location": "Regensburg, Germany",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Dayton",
+      "location": "Dayton, OH, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "East Carolina University",
+      "location": "Greenville, NC, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Universidad Tecnológica Nacional (UTN)",
+      "location": "Buenos Aires, Argentina",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "Montgomery College",
+      "location": "Germantown, MD, US",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Leeds",
+      "location": "Leeds, UK",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Instituto Federal de Santa Catarina (IFSC)",
+      "location": "Sao Jose, Brazil",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of British Columbia",
+      "location": "Vancouver, Canada",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Bridgeport",
+      "location": "Bridgeport, CT, USA",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "Lycée Gustave Eiffel",
+      "location": "Bordeaux, France",
+      "reason": "not in our university list"
+    },
+    {
+      "name": "University of Extremadura",
+      "location": "Badajos, Spain",
+      "reason": "searched: no_match"
+    },
+    {
+      "name": "University of Cauca",
+      "location": "Popayán, Colombia",
+      "reason": "not in our university list"
+    }
+  ],
+  "net_new": [
+    {
+      "name": "Constructor University",
+      "country": "Germany",
+      "pages": 8,
+      "course": true
+    },
+    {
+      "name": "Universitas Nusa Putra",
+      "country": "Indonesia",
+      "pages": 6,
+      "course": true
+    },
+    {
+      "name": "Atharva College of Engineering",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "National Institute of Applied Sciences of Toulouse",
+      "country": "France",
+      "pages": 2,
+      "course": false
+    },
+    {
+      "name": "Central Supélec",
+      "country": "France",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "DAV Institute of Engineering & Technology",
+      "country": "India",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Somaiya Vidyavihar",
+      "country": "India",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "ECPI University",
+      "country": "United States",
+      "pages": 2,
+      "course": false
+    },
+    {
+      "name": "Georgia Gwinnett College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "International Technological University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "NorthCap University",
+      "country": "India",
+      "pages": 13,
+      "course": true
+    },
+    {
+      "name": "American Public University System",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Full Sail University",
+      "country": "United States",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Baker College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Babson College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Bowie State University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Brown University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "California Institute of Technology",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Calvin College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Capitol Technology University",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Centenary College of Louisiana",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Champlain College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Colby College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Evergreen State College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Georgia Institute of Technology",
+      "country": "United States",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Harding University",
+      "country": "United States",
+      "pages": 2,
+      "course": false
+    },
+    {
+      "name": "Illinois Institute of Technology",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Indiana Institute of Technology",
+      "country": "United States",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "James Madison University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Langston University",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Lewis & Clark College",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Loyola Marymount University",
+      "country": "United States",
+      "pages": 9,
+      "course": true
+    },
+    {
+      "name": "Lynchburg College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Massachusetts Institute of Technology",
+      "country": "United States",
+      "pages": 6,
+      "course": false
+    },
+    {
+      "name": "Middle Georgia State College",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Monmouth University",
+      "country": "United States",
+      "pages": 6,
+      "course": true
+    },
+    {
+      "name": "Muskingum College",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "New Mexico State University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Northeastern University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Oregon State University",
+      "country": "United States",
+      "pages": 4,
+      "course": true
+    },
+    {
+      "name": "Otterbein College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Pace University",
+      "country": "United States",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Pacific University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Princeton University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Southern Methodist University",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Southern New Hampshire University",
+      "country": "United States",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Trinity College (CT)",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Delaware",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Hawaii at Manoa",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "University of Kentucky",
+      "country": "United States",
+      "pages": 3,
+      "course": false
+    },
+    {
+      "name": "University of Maryland, College Park",
+      "country": "United States",
+      "pages": 8,
+      "course": true
+    },
+    {
+      "name": "University of Nebraska, Lincoln",
+      "country": "United States",
+      "pages": 2,
+      "course": false
+    },
+    {
+      "name": "University of South Carolina",
+      "country": "United States",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "University of Texas at Arlington",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "University of Texas Permian Basin",
+      "country": "United States",
+      "pages": 3,
+      "course": false
+    },
+    {
+      "name": "Western Governors University",
+      "country": "United States",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Wichita State University",
+      "country": "United States",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Université de Blida",
+      "country": "Algeria",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Russian-Armenian (Slavonic) State University",
+      "country": "Armenia",
+      "pages": 7,
+      "course": false
+    },
+    {
+      "name": "Australian National University",
+      "country": "Australia",
+      "pages": 2,
+      "course": false
+    },
+    {
+      "name": "Universidad NUR",
+      "country": "Bolivia, Plurinational State of",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Universidad Privada Franz Tamayo (UNIFRANZ)",
+      "country": "Bolivia, Plurinational State of",
+      "pages": 3,
+      "course": false
+    },
+    {
+      "name": "Universidade Federal do Ceará",
+      "country": "Brazil",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidade Federal de Ouro Preto",
+      "country": "Brazil",
+      "pages": 4,
+      "course": true
+    },
+    {
+      "name": "Universidade Federal de Pernambuco",
+      "country": "Brazil",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Universidade Federal do Rio Grande do Norte",
+      "country": "Brazil",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Technical University of Sofia",
+      "country": "Bulgaria",
+      "pages": 5,
+      "course": true
+    },
+    {
+      "name": "University of Windsor",
+      "country": "Canada",
+      "pages": 1,
+      "course": false
+    },
+    {
+      "name": "Czech Technical University of Prague",
+      "country": "Czech Republic",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of South Bohemia",
+      "country": "Czech Republic",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Economics Prague",
+      "country": "Czech Republic",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Copenhagen",
+      "country": "Denmark",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "IT University of Copenhagen",
+      "country": "Denmark",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Arab Academy for Science & Technology",
+      "country": "Egypt",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Capitain General Gerardo Barrios",
+      "country": "El Salvador",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Diaconia University of Applied Sciences",
+      "country": "Finland",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Metropolia University of Applied Sciences",
+      "country": "Finland",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Ecole Nationale Supérieure des Mines de St-Etienne",
+      "country": "France",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Ecole Normale Supérieure de Paris",
+      "country": "France",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Université de Strasbourg",
+      "country": "France",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Ilia Chavchavadze State University",
+      "country": "Georgia",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Theologische Fakultät Paderborn",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Technische Universität Carolo-Wilhelmina zu Braunschweig",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Technische Universität München",
+      "country": "Germany",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Universität Bremen",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Technische Universität Dortmund",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Ludwig-Maximilians-Universität München",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universität Trier",
+      "country": "Germany",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Kumasi Technical University",
+      "country": "Ghana",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Athens University of Economics and Business",
+      "country": "Greece",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Hong Kong Shue Yan University",
+      "country": "Hong Kong",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Hong Kong Metropolitan University",
+      "country": "Hong Kong",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "University of Debrecen",
+      "country": "Hungary",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Christ University",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Dav University",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Indus University",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Narsee Monjee Institute of Management Studies",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Pandit Deendayal Energy University",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "PES University",
+      "country": "India",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Saurashtra University",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Thiagarajar College of Engineering",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Institut Teknologi Bandung",
+      "country": "Indonesia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universitas Negeri Surabaya",
+      "country": "Indonesia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universitas Riau",
+      "country": "Indonesia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universitas Semarang",
+      "country": "Indonesia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Polytechnic Institute of Milan",
+      "country": "Italy",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Parma",
+      "country": "Italy",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Arab Open University",
+      "country": "Jordan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Applied Science University",
+      "country": "Jordan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "German Jordanian University",
+      "country": "Jordan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Jadara University",
+      "country": "Jordan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Charotar University of Science and Technology",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Riga Technical University",
+      "country": "Latvia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Segi University College",
+      "country": "Malaysia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Tunku Abdul Rahman University of Management and Technology",
+      "country": "Malaysia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universiti Kebangsaan Malaysia",
+      "country": "Malaysia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Michoacana de San Nicolás de Hidalgo",
+      "country": "Mexico",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Hogeschool Inholland",
+      "country": "Netherlands",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Delft University of Technology",
+      "country": "Netherlands",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Utrecht University",
+      "country": "Netherlands",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Vrije Universiteit Amsterdam",
+      "country": "Netherlands",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional de Ingenieria",
+      "country": "Nicaragua",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Benson Idahosa University",
+      "country": "Nigeria",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Obafemi Awolowo University Ile-Ife",
+      "country": "Nigeria",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Dadabhoy Institute of Higher Education",
+      "country": "Pakistan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Zia-ud-Din University",
+      "country": "Pakistan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional del Altiplano",
+      "country": "Peru",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Instituto Superior Politécnico Gaya",
+      "country": "Portugal",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Universidade Lusófona de Humanidades e Technologias",
+      "country": "Portugal",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Higher School of Economics",
+      "country": "Russian Federation",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Moscow State Institute of Radiotechnics, Electronics and Automation (Technical University)",
+      "country": "Russian Federation",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Novosibirsk State Technical University",
+      "country": "Russian Federation",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "St. Petersburg State Polytechnical University",
+      "country": "Russian Federation",
+      "pages": 3,
+      "course": true
+    },
+    {
+      "name": "Université Cheikh Anta Diop",
+      "country": "Senegal",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Matej Bel University in Banská Bystrica",
+      "country": "Slovakia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universitat Oberta de Catalunya",
+      "country": "Spain",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Politécnica de Valencia",
+      "country": "Spain",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad de Valencia",
+      "country": "Spain",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Kotelawala Defence University",
+      "country": "Sri Lanka",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Geneva",
+      "country": "Switzerland",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "BFH - Bern University of Applied Sciences",
+      "country": "Switzerland",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Hochschule Luzern",
+      "country": "Switzerland",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Colorado Community College System",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Florida Gulf Coast University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Fordham University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Fort Hays State University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Kean College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Montana State University - Billings",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "New York University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "New England Institute of Technology",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Southern Utah University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Texas A&M University - College Station",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Texas Christian University",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Texas Southern University",
+      "country": "United States",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "University of California, Riverside",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Villanova University",
+      "country": "United States",
+      "pages": 4,
+      "course": true
+    },
+    {
+      "name": "Wentworth Institute of Technology",
+      "country": "United States",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Centre Universitaire de Jijel",
+      "country": "Algeria",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional de La Plata",
+      "country": "Argentina",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional de la Patagonia Austral",
+      "country": "Argentina",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional del Sur",
+      "country": "Argentina",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Tecnológica Nacional",
+      "country": "Argentina",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad Nacional de Avellaneda",
+      "country": "Argentina",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "American University of Armenia",
+      "country": "Armenia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Flinders University of South Australia",
+      "country": "Australia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Fachhochschule JOANNEUM",
+      "country": "Austria",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Johannes Kepler Universität Linz",
+      "country": "Austria",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Qafqaz University",
+      "country": "Azerbaijan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "American International University - Bangladesh",
+      "country": "Bangladesh",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Brest State Technical University",
+      "country": "Belarus",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Hogeschool Gent",
+      "country": "Belgium",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Pontifícia Universidade Católica de Minas Gerais",
+      "country": "Brazil",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Pontifícia Universidade Católica do Rio Grande do Sul",
+      "country": "Brazil",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "British Columbia Institute of Technology",
+      "country": "Canada",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Sheridan College",
+      "country": "Canada",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Vancouver Community College",
+      "country": "Canada",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Universidad de Los Andes",
+      "country": "Colombia",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Waseda University",
+      "country": "Japan",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Ahi Evran University",
+      "country": "Turkiye",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Bilecik University",
+      "country": "Turkiye",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Karadeniz Technical University",
+      "country": "Turkiye",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Ufuk University",
+      "country": "Turkiye",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "University of Chester",
+      "country": "United Kingdom",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Okan University",
+      "country": "Turkiye",
+      "pages": 2,
+      "course": true
+    },
+    {
+      "name": "Washtenaw Community College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "NHTI-Concord's Community College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Spokane Community College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Morehouse",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Polytechnic University of Timisoara",
+      "country": "Romania",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "St Joseph's College Of Engineering",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Sri Sai Ram Institute of Technology",
+      "country": "India",
+      "pages": 1,
+      "course": true
+    },
+    {
+      "name": "Dallas College",
+      "country": "United States",
+      "pages": 1,
+      "course": true
+    }
+  ],
+  "miss_reasons": {
+    "searched: no_match": 197,
+    "not in our university list": 158
+  }
+}

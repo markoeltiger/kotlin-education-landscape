@@ -1,0 +1,538 @@
+<meta charset="utf-8">
+<title>Kotlin Education Landscape</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+  :root{
+    --bg:#16131f; --panel:#1e1a2b; --panel-2:#252035; --line:#322b47;
+    --ink:#ece8f5; --muted:#9b92b5; --faint:#6d6486;
+    --kt-a:#7f52ff; --kt-b:#e94d8a; --kt-c:#ff8a3d;
+    --grid:#2a2440;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  header{
+    padding:34px 40px 26px; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#1b1727,#16131f);
+  }
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 12px;
+  }
+  h1{
+    margin:0; font-size:clamp(26px,4vw,44px); font-weight:800; letter-spacing:-.02em;
+    background:linear-gradient(95deg,var(--kt-a),var(--kt-b) 55%,var(--kt-c));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .sub{color:var(--muted); margin:10px 0 0; max-width:60ch; font-size:14px}
+  main{padding:28px 40px 60px; max-width:1280px; margin:0 auto}
+
+  .loader{
+    border:1px dashed var(--line); border-radius:14px; padding:48px;
+    text-align:center; background:var(--panel); margin-top:24px;
+  }
+  .loader p{color:var(--muted); margin:8px 0 20px}
+  .btn{
+    display:inline-block; cursor:pointer; border:none; border-radius:9px;
+    padding:12px 22px; font-weight:600; font-size:14px; color:#fff;
+    background:linear-gradient(95deg,var(--kt-a),var(--kt-b));
+  }
+  .btn:hover{filter:brightness(1.08)}
+
+  .controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0 24px}
+  .toggle{
+    display:inline-flex; align-items:center; gap:9px; cursor:pointer;
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:7px 14px; font-size:13px; color:var(--muted); user-select:none;
+  }
+  .toggle input{accent-color:var(--kt-a)}
+  .toggle.on{color:var(--ink); border-color:var(--kt-a)}
+  .sel,.search{
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:7px 14px; font-size:13px; color:var(--ink); font-family:inherit; outline:none;
+  }
+  .sel:focus,.search:focus{border-color:var(--kt-a)}
+  .search{min-width:200px}
+  .search::placeholder{color:var(--faint)}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;
+    font-size:12px;padding:6px 12px;border-radius:999px;background:var(--kt-a)22;
+    border:1px solid var(--kt-a);color:var(--ink);cursor:pointer;
+  }
+  .pill b{color:var(--kt-c)}
+  .pill:hover{background:var(--kt-a)33}
+  .reload{margin-left:auto;font-size:12px;color:var(--faint);cursor:pointer;background:none;border:none}
+  .reload:hover{color:var(--muted)}
+
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:13px;
+    padding:18px 20px; position:relative; overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--kt-a))}
+  .card .n{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .card .l{color:var(--muted);font-size:12px;margin-top:4px;letter-spacing:.02em}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px 22px;
+  }
+  .panel.wide{grid-column:1 / -1}
+  .panel h3{
+    margin:0 0 4px; font-size:14px; font-weight:600;
+  }
+  .panel .hint{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);margin:0 0 16px;letter-spacing:.04em}
+  svg{display:block;width:100%;overflow:visible}
+  .bar rect{transition:opacity .15s}
+  .bar:hover rect{opacity:.82}
+  .bar-label{fill:var(--ink);font-size:12px}
+  .bar-val{fill:var(--muted);font-size:11px;font-family:"JetBrains Mono",monospace}
+  .axis text{fill:var(--faint);font-size:10px;font-family:"JetBrains Mono",monospace}
+  .country{stroke:var(--bg);stroke-width:.4px}
+  .legend text{fill:var(--muted);font-size:10px;font-family:"JetBrains Mono",monospace}
+  .tip{
+    position:fixed;pointer-events:none;background:#0d0b14;border:1px solid var(--line);
+    border-radius:8px;padding:7px 11px;font-size:12px;color:var(--ink);opacity:0;transition:opacity .1s;z-index:9;
+  }
+  .tip .tv{font-family:"JetBrains Mono",monospace;color:var(--kt-c)}
+  .split{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+  .chip{
+    font-family:"JetBrains Mono",monospace;font-size:11px;padding:4px 10px;border-radius:7px;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--muted)
+  }
+  .chip b{color:var(--ink)}
+  .tscroll{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+  table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.dt thead th{
+    position:sticky;top:0;background:var(--panel-2);color:var(--muted);text-align:left;
+    padding:10px 12px;font-weight:600;cursor:pointer;user-select:none;white-space:nowrap;
+    border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;
+  }
+  table.dt thead th:hover{color:var(--ink)}
+  table.dt td{padding:9px 12px;border-bottom:1px solid var(--line)33;color:var(--ink)}
+  table.dt tbody tr:hover{background:var(--panel-2)66}
+  table.dt .tt{color:var(--muted);max-width:340px}
+  .tg{font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 8px;border-radius:5px}
+  .tg.primary{background:var(--kt-a)22;color:#c9b6ff}
+  .tg.secondary{background:#3d355622;color:var(--faint)}
+  footer{color:var(--faint);font-size:11px;text-align:center;padding:30px;font-family:"JetBrains Mono",monospace}
+  @media(max-width:880px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}main{padding:20px}header{padding:24px 20px}}
+</style>
+
+<header>
+  <p class="eyebrow">Kotlin Foundation · GSoC 2026 · discovery pipeline</p>
+  <h1>The Kotlin Education Landscape</h1>
+  <p class="sub">Where and how Kotlin is taught worldwide — discovered automatically across university sites, online platforms, and open-source repositories.</p>
+</header>
+
+<main>
+  <div id="loader" class="loader">
+    <div class="mono" style="color:var(--kt-a);font-size:13px;letter-spacing:.1em">LOAD DATASET</div>
+    <p>Select <span class="mono">kotlin_education_tableau.csv</span> to render the dashboard.</p>
+    <label class="btn">Choose CSV file<input id="file" type="file" accept=".csv" hidden></label>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="controls">
+      <label class="toggle on" id="tgl"><input type="checkbox" id="primaryOnly" checked> Primary educational only</label>
+      <select id="sourceFilter" class="sel">
+        <option value="">All sources</option>
+        <option value="university_website">Universities</option>
+        <option value="github">GitHub</option>
+        <option value="stepik">Stepik</option>
+        <option value="coursera">Coursera</option>
+      </select>
+      <select id="tierFilter" class="sel">
+        <option value="">All tiers</option>
+        <option value="primary">Primary only</option>
+        <option value="secondary">Secondary only</option>
+      </select>
+      <select id="starsFilter" class="sel">
+        <option value="">Any popularity</option>
+        <option value="0">★ 0+ </option>
+        <option value="10">★ 10+</option>
+        <option value="50">★ 50+</option>
+        <option value="100">★ 100+</option>
+        <option value="500">★ 500+</option>
+      </select>
+      <input id="search" class="search" placeholder="filter by name / provider…">
+      <span id="countryPill" class="pill" style="display:none"></span>
+      <span class="mono" style="font-size:12px;color:var(--faint)" id="rowcount"></span>
+      <button class="reload" id="reload">↻ load different file</button>
+    </div>
+
+    <div class="cards" id="cards"></div>
+
+    <div class="grid">
+      <div class="panel wide">
+        <h3>Where Kotlin is taught</h3>
+        <p class="hint">universities discovered per country · darker = more</p>
+        <div id="map"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Top countries</h3>
+        <p class="hint">university findings by country</p>
+        <div id="countries"></div>
+      </div>
+
+      <div class="panel">
+        <h3>By source</h3>
+        <p class="hint">where each record was discovered</p>
+        <div id="sources"></div>
+        <div class="split" id="tiersplit"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Learning type</h3>
+        <p class="hint">formal institutions vs informal / community</p>
+        <div id="learning"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Top providers</h3>
+        <p class="hint">institutions, platforms & channels</p>
+        <div id="providers"></div>
+      </div>
+
+      <div class="panel">
+        <h3>GitHub by type</h3>
+        <p class="hint">how open-source Kotlin learning content breaks down</p>
+        <div id="ghtypes"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Online course platforms</h3>
+        <p class="hint">MOOC records by platform</p>
+        <div id="platforms"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Signal tier</h3>
+        <p class="hint">high-confidence educational vs supporting</p>
+        <div id="tierDonut"></div>
+      </div>
+
+      <div class="panel">
+        <h3>GitHub popularity</h3>
+        <p class="hint">repos grouped by star count</p>
+        <div id="starsDist"></div>
+      </div>
+
+      <div class="panel wide">
+        <h3>Formal vs informal by country</h3>
+        <p class="hint">top countries · formal institutions vs community learning</p>
+        <div id="formalByCountry"></div>
+      </div>
+
+      <div class="panel wide">
+        <h3>All records</h3>
+        <p class="hint">click a column header to sort · filters apply live</p>
+        <div id="tableWrap"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>kotlin education landscape · self-contained snapshot · data from courses_unified</footer>
+<div class="tip" id="tip"></div>
+
+<script>
+const C={a:'#7f52ff',b:'#e94d8a',c:'#ff8a3d',muted:'#9b92b5'};
+let RAW=[];
+let activeCountry=null;
+const tip=document.getElementById('tip');
+function showTip(html,x,y){tip.innerHTML=html;tip.style.opacity=1;tip.style.left=(x+14)+'px';tip.style.top=(y+14)+'px';}
+function hideTip(){tip.style.opacity=0;}
+
+document.getElementById('file').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>{RAW=r.data;boot();}});
+});
+document.getElementById('reload').onclick=()=>{document.getElementById('app').style.display='none';document.getElementById('loader').style.display='block';};
+document.getElementById('primaryOnly').addEventListener('change',e=>{
+  document.getElementById('tgl').classList.toggle('on',e.target.checked);
+  render();
+});
+['sourceFilter','tierFilter','starsFilter'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('countryPill').addEventListener('click',()=>{activeCountry=null;render();});
+
+function setCountry(c){
+  activeCountry=(activeCountry===c)?null:c;
+  render();
+}
+
+function boot(){
+  document.getElementById('loader').style.display='none';
+  document.getElementById('app').style.display='block';
+  render();
+}
+
+function current(){
+  let d=RAW;
+  if(document.getElementById('primaryOnly').checked) d=d.filter(r=>r.signal_tier==='primary');
+  const src=document.getElementById('sourceFilter').value;
+  if(src) d=d.filter(r=>r.source===src);
+  const tier=document.getElementById('tierFilter').value;
+  if(tier) d=d.filter(r=>r.signal_tier===tier);
+  const stars=document.getElementById('starsFilter').value;
+  if(stars!=='') d=d.filter(r=>(+r.popularity||0)>=+stars);
+  if(activeCountry) d=d.filter(r=>r.country===activeCountry);
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  if(q) d=d.filter(r=>((r.title||'')+' '+(r.provider||'')+' '+(r.country||'')).toLowerCase().includes(q));
+  return d;
+}
+
+function render(){
+  const d=current();
+  document.getElementById('rowcount').textContent=d.length.toLocaleString()+' records shown';
+  drawCards(d);
+  drawMap(d);
+  drawCountries(d);
+  drawSources(d);
+  drawLearning(d);
+  drawProviders(d);
+  drawGhTypes(d);
+  drawPlatforms(d);
+  drawTierDonut(d);
+  drawStarsDist(d);
+  drawFormalByCountry(d);
+  drawTable(d);
+  const pill=document.getElementById('countryPill');
+  if(activeCountry){pill.style.display='inline-flex';pill.innerHTML=`▸ <b>${activeCountry}</b> ✕`;}
+  else pill.style.display='none';
+}
+
+function countBy(rows,key,filter){
+  const m=new Map();
+  rows.forEach(r=>{if(filter&&!filter(r))return;const v=r[key];if(!v)return;m.set(v,(m.get(v)||0)+1);});
+  return [...m.entries()].sort((a,b)=>b[1]-a[1]);
+}
+
+function drawCards(d){
+  const unis=d.filter(r=>r.source==='university_website');
+  const countries=new Set(unis.map(r=>r.country).filter(Boolean));
+  const primary=d.filter(r=>r.signal_tier==='primary').length;
+  const cards=[
+    {n:d.length,l:'total records',a:C.a},
+    {n:new Set(unis.map(r=>r.provider).filter(Boolean)).size,l:'universities',a:C.b},
+    {n:countries.size,l:'countries',a:C.c},
+    {n:primary,l:'primary educational',a:C.a},
+  ];
+  document.getElementById('cards').innerHTML=cards.map(c=>
+    `<div class="card" style="--accent:${c.a}"><div class="n">${c.n.toLocaleString()}</div><div class="l">${c.l}</div></div>`).join('');
+}
+
+function hbars(el,data,color,fmtLabel){
+  const box=document.getElementById(el); box.innerHTML='';
+  if(!data.length){box.innerHTML='<p class="hint">no data</p>';return;}
+  const max=d3.max(data,d=>d[1]);
+  const rh=30, pad=4, w=box.clientWidth||520, labelW=Math.min(170,w*0.4);
+  const h=data.length*(rh+pad);
+  const svg=d3.select(box).append('svg').attr('viewBox',`0 0 ${w} ${h}`);
+  const x=d3.scaleLinear().domain([0,max]).range([0,w-labelW-46]);
+  const g=svg.selectAll('.bar').data(data).join('g').attr('class','bar')
+    .attr('transform',(d,i)=>`translate(0,${i*(rh+pad)})`);
+  g.append('text').attr('class','bar-label').attr('x',0).attr('y',rh/2+4)
+    .text(d=>{const t=fmtLabel?fmtLabel(d[0]):d[0];return t.length>22?t.slice(0,21)+'…':t;});
+  g.append('rect').attr('x',labelW).attr('y',2).attr('height',rh-4).attr('rx',5)
+    .attr('width',d=>Math.max(2,x(d[1]))).attr('fill',color);
+  g.append('text').attr('class','bar-val').attr('x',d=>labelW+Math.max(2,x(d[1]))+8).attr('y',rh/2+4)
+    .text(d=>d[1].toLocaleString());
+  g.on('mousemove',(e,d)=>showTip(`${d[0]} · <span class="tv">${d[1]}</span>`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+}
+
+function drawCountries(d){
+  const data=countBy(d.filter(r=>r.source==='university_website'),'country').slice(0,12);
+  hbars('countries',data,C.b);
+}
+function drawSources(d){
+  hbars('sources',countBy(d,'source'),C.a,s=>s.replace('_',' '));
+  const t=countBy(d,'signal_tier');
+  document.getElementById('tiersplit').innerHTML=t.map(([k,v])=>
+    `<span class="chip">${k} <b>${v.toLocaleString()}</b></span>`).join('');
+}
+function drawLearning(d){
+  hbars('learning',countBy(d,'learning_type'),C.c);
+}
+function drawProviders(d){
+  const data=countBy(d,'provider').slice(0,12);
+  hbars('providers',data,C.a);
+}
+function drawGhTypes(d){
+  const data=countBy(d.filter(r=>r.source==='github'),'subtype');
+  hbars('ghtypes',data,C.c,s=>(s||'').replace(/_/g,' '));
+}
+function drawPlatforms(d){
+  const data=countBy(d.filter(r=>r.category==='online_course'),'source');
+  hbars('platforms',data,C.b);
+}
+
+function drawTierDonut(d){
+  const box=document.getElementById('tierDonut'); box.innerHTML='';
+  const data=countBy(d,'signal_tier');
+  if(!data.length){box.innerHTML='<p class="hint">no data</p>';return;}
+  const total=d3.sum(data,x=>x[1]);
+  const w=box.clientWidth||300, h=220, r=Math.min(w,h)/2-10;
+  const svg=d3.select(box).append('svg').attr('viewBox',`0 0 ${w} ${h}`);
+  const g=svg.append('g').attr('transform',`translate(${w/2},${h/2})`);
+  const color={primary:C.a,secondary:'#3d3556'};
+  const pie=d3.pie().value(x=>x[1]).sort(null)(data);
+  const arc=d3.arc().innerRadius(r*0.58).outerRadius(r);
+  g.selectAll('path').data(pie).join('path').attr('d',arc)
+    .attr('fill',x=>color[x.data[0]]||C.b).attr('stroke','#16131f').attr('stroke-width',2)
+    .on('mousemove',(e,x)=>showTip(`${x.data[0]} · <span class="tv">${x.data[1].toLocaleString()}</span> (${(100*x.data[1]/total).toFixed(0)}%)`,e.clientX,e.clientY))
+    .on('mouseleave',hideTip);
+  g.append('text').attr('text-anchor','middle').attr('dy','-2').attr('fill',C.muted).attr('font-size','11').attr('font-family','JetBrains Mono').text('total');
+  g.append('text').attr('text-anchor','middle').attr('dy','16').attr('fill','#ece8f5').attr('font-size','20').attr('font-weight','700').attr('font-family','JetBrains Mono').text(total.toLocaleString());
+  const lg=svg.append('g').attr('transform',`translate(12,${h-30})`);
+  data.forEach((x,i)=>{const gr=lg.append('g').attr('transform',`translate(${i*130},0)`);
+    gr.append('rect').attr('width',11).attr('height',11).attr('rx',2).attr('fill',color[x[0]]||C.b);
+    gr.append('text').attr('x',16).attr('y',10).attr('fill',C.muted).attr('font-size','11').text(`${x[0]} ${x[1].toLocaleString()}`);});
+}
+
+function drawStarsDist(d){
+  const gh=d.filter(r=>r.source==='github').map(r=>+r.popularity||0);
+  const buckets=[['0',0,0],['1–9',1,9],['10–49',10,49],['50–99',50,99],['100–499',100,499],['500+',500,1e9]];
+  const data=buckets.map(([lbl,lo,hi])=>[lbl,gh.filter(s=>s>=lo&&s<=hi).length]).filter(x=>x[1]>0);
+  hbars('starsDist',data,C.c);
+}
+
+function drawFormalByCountry(d){
+  const uni=d.filter(r=>r.country);
+  const byC=new Map();
+  uni.forEach(r=>{
+    if(!byC.has(r.country)) byC.set(r.country,{formal:0,informal:0});
+    byC.get(r.country)[r.learning_type==='formal'?'formal':'informal']++;
+  });
+  const top=[...byC.entries()].sort((a,b)=>(b[1].formal+b[1].informal)-(a[1].formal+a[1].informal)).slice(0,10);
+  const box=document.getElementById('formalByCountry'); box.innerHTML='';
+  if(!top.length){box.innerHTML='<p class="hint">no data</p>';return;}
+  const max=d3.max(top,x=>x[1].formal+x[1].informal);
+  const rh=28,pad=5,w=box.clientWidth||800,labelW=170;
+  const svg=d3.select(box).append('svg').attr('viewBox',`0 0 ${w} ${top.length*(rh+pad)}`);
+  const x=d3.scaleLinear().domain([0,max]).range([0,w-labelW-60]);
+  const g=svg.selectAll('.row').data(top).join('g').attr('transform',(d,i)=>`translate(0,${i*(rh+pad)})`);
+  g.append('text').attr('class','bar-label').attr('y',rh/2+4).text(d=>d[0].length>22?d[0].slice(0,21)+'…':d[0]);
+  g.append('rect').attr('x',labelW).attr('y',2).attr('height',rh-4).attr('rx',4).attr('fill',C.a)
+    .attr('width',d=>Math.max(1,x(d[1].formal)))
+    .on('mousemove',(e,d)=>showTip(`formal · <span class="tv">${d[1].formal}</span>`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  g.append('rect').attr('y',2).attr('height',rh-4).attr('rx',4).attr('fill',C.c)
+    .attr('x',d=>labelW+Math.max(1,x(d[1].formal))+2)
+    .attr('width',d=>Math.max(0,x(d[1].informal)))
+    .on('mousemove',(e,d)=>showTip(`informal · <span class="tv">${d[1].informal}</span>`,e.clientX,e.clientY)).on('mouseleave',hideTip);
+  g.append('text').attr('class','bar-val').attr('y',rh/2+4)
+    .attr('x',d=>labelW+Math.max(1,x(d[1].formal))+Math.max(0,x(d[1].informal))+10)
+    .text(d=>d[1].formal+d[1].informal);
+  const lg=svg.append('g').attr('transform',`translate(${labelW},${top.length*(rh+pad)-2})`);
+  [['formal',C.a],['informal',C.c]].forEach((p,i)=>{const gr=lg.append('g').attr('transform',`translate(${i*90},0)`);
+    gr.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',p[1]);
+    gr.append('text').attr('x',15).attr('y',9).attr('fill',C.muted).attr('font-size','10').text(p[0]);});
+}
+
+let tableSort={key:'popularity',dir:-1};
+function drawTable(d){
+  const box=document.getElementById('tableWrap');
+  const cols=[['title','title'],['source','source'],['provider','provider'],['country','country'],['signal_tier','tier'],['popularity','★']];
+  const rows=[...d].sort((a,b)=>{
+    let va=a[tableSort.key]||'',vb=b[tableSort.key]||'';
+    if(tableSort.key==='popularity'){va=+va||0;vb=+vb||0;return (va-vb)*tableSort.dir;}
+    return String(va).localeCompare(String(vb))*tableSort.dir;
+  }).slice(0,100);
+  let html='<div class="tscroll"><table class="dt"><thead><tr>';
+  cols.forEach(([k,lbl])=>{const arr=tableSort.key===k?(tableSort.dir<0?' ▾':' ▴'):'';html+=`<th data-k="${k}">${lbl}${arr}</th>`;});
+  html+='</tr></thead><tbody>';
+  rows.forEach(r=>{
+    html+=`<tr><td class="tt">${(r.title||'').slice(0,70)}</td><td>${r.source||''}</td><td>${(r.provider||'').slice(0,30)}</td><td>${r.country||''}</td><td><span class="tg ${r.signal_tier}">${r.signal_tier||''}</span></td><td class="mono">${r.popularity||''}</td></tr>`;
+  });
+  html+='</tbody></table></div>';
+  html+=`<p class="hint" style="margin-top:10px">showing ${Math.min(100,d.length)} of ${d.length.toLocaleString()} · sorted by ${tableSort.key}</p>`;
+  box.innerHTML=html;
+  box.querySelectorAll('th').forEach(th=>th.onclick=()=>{
+    const k=th.dataset.k;
+    if(tableSort.key===k)tableSort.dir*=-1;else{tableSort.key=k;tableSort.dir=(k==='popularity')?-1:1;}
+    drawTable(current());
+  });
+}
+
+let WORLD=null;
+// our CSV country names -> the names used in the world-atlas topojson
+const MAP_ALIAS={
+  "United States":"United States of America",
+  "USA":"United States of America",
+  "United States of America":"United States of America",
+  "Russia":"Russia","Russian Federation":"Russia",
+  "United Kingdom":"United Kingdom","UK":"United Kingdom",
+  "Czech Republic":"Czechia","Czechia":"Czechia",
+  "South Korea":"South Korea","Korea, Republic of":"South Korea",
+  "Turkey":"Turkey","Türkiye":"Turkey","Turkiye":"Turkey",
+  "Serbia":"Republic of Serbia",
+  "Tanzania":"United Republic of Tanzania",
+  "Bosnia and Herzegovina":"Bosnia and Herz.",
+  "Dominican Republic":"Dominican Rep.",
+  "North Macedonia":"North Macedonia","Macedonia":"North Macedonia",
+};
+function mapName(c){return MAP_ALIAS[c]||c;}
+
+function drawMap(d){
+  const box=document.getElementById('map');
+  const counts=new Map();
+  d.filter(r=>r.source==='university_website'&&r.country).forEach(r=>{
+    const k=mapName(r.country);
+    counts.set(k,(counts.get(k)||0)+1);
+  });
+  const draw=()=>{
+    box.innerHTML='';
+    const w=box.clientWidth||900, h=Math.max(380,w*0.46);
+    const svg=d3.select(box).append('svg').attr('viewBox',`0 0 ${w} ${h}`);
+    const proj=d3.geoNaturalEarth1().fitSize([w,h],{type:'Sphere'});
+    const path=d3.geoPath(proj);
+    const vals=[...counts.values()].sort((a,b)=>a-b);
+    const max=vals[vals.length-1]||1;
+    // log-based ramp so the largest (US) is unmistakably darkest, but small
+    // counts still register. multi-stop purple->pink->orange = Kotlin identity.
+    const ramp=d3.scaleLinear()
+      .domain([0, Math.log(max+1)*0.5, Math.log(max+1)])
+      .range(['#2e2747','#6f3fd6','#b94bb0'])
+      .interpolate(d3.interpolateRgb);
+    const fill=n=>n? ramp(Math.log(n+1)) : '#201b30';
+    svg.append('path').attr('d',path({type:'Sphere'})).attr('fill','#19152466').attr('stroke',C.muted+'22');
+    const feats=topojson.feature(WORLD,WORLD.objects.countries).features;
+    svg.append('g').selectAll('path').data(feats).join('path')
+      .attr('class','country').attr('d',path)
+      .attr('fill',f=>fill(counts.get(f.properties.name)||0))
+      .attr('stroke',f=>{const orig=Object.keys(MAP_ALIAS).find(k=>MAP_ALIAS[k]===f.properties.name)||f.properties.name;return orig===activeCountry?C.c:'#16131f';})
+      .attr('stroke-width',f=>{const orig=Object.keys(MAP_ALIAS).find(k=>MAP_ALIAS[k]===f.properties.name)||f.properties.name;return orig===activeCountry?2:0.4;})
+      .style('cursor',f=>(counts.get(f.properties.name)?'pointer':'default'))
+      .on('mousemove',(e,f)=>{const n=counts.get(f.properties.name)||0;showTip(`${f.properties.name} · <span class="tv">${n}</span> ${n===1?'finding':'findings'}${n?' · click to filter':''}`,e.clientX,e.clientY);})
+      .on('mouseleave',hideTip)
+      .on('click',(e,f)=>{
+        const n=counts.get(f.properties.name)||0; if(!n)return;
+        // translate atlas name back to our CSV name
+        const orig=Object.keys(MAP_ALIAS).find(k=>MAP_ALIAS[k]===f.properties.name)||f.properties.name;
+        setCountry(orig);
+      });
+    // legend with real value anchors
+    const lg=svg.append('g').attr('class','legend').attr('transform',`translate(${w-200},${h-30})`);
+    const stops=[1, Math.round(max*0.15)||2, Math.round(max*0.4)||5, Math.round(max*0.7)||10, max];
+    stops.forEach((v,i)=>{
+      lg.append('rect').attr('x',i*38).attr('width',38).attr('height',9).attr('fill',fill(v));
+      lg.append('text').attr('x',i*38).attr('y',22).attr('font-size','9').text(v);
+    });
+    lg.append('text').attr('x',0).attr('y',-6).text('universities per country');
+  };
+  if(WORLD){draw();return;}
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(w=>{WORLD=w;draw();})
+    .catch(()=>{box.innerHTML='<p class="hint">map could not load (offline). Charts below still work.</p>';});
+}
+window.addEventListener('resize',()=>{if(RAW.length)render();});
+</script>

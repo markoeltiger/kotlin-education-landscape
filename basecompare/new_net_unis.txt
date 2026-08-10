@@ -1,0 +1,509 @@
+University Title Aissms	City	Country	Teaching Kotlin			
+Aalto University	Espoo	Finland	Introduction to the the Kotlin programming language			
+AARHUS GYMNASIUM	Aarhus	Denmark	Kotlin development 			
+Aarhus University	Aarhus	Denmark	CMSC 436: Programming Handheld Systems			
+Aberystwyth University	Aberystwyth	UK	CS31620 Mobile Development with Android			
+AGH University of Science and Technology	Krakow	Poland	Object-Oriented Programming			
+Al-Farabi Kazakh National University	Almaty	Kazakhstan	Object-oriented programming 4			
+Altai State University	Barnaul	Russia	Разработка кроссплатформенных мобильных приложений			
+American University of Beirut	Beirut	Lebanon	CMPS 279. Mobile Applications Development			
+American University of Sharjah	Sharjah	United Arab Emirates	CMP 354 –Mobile Application Development			
+Amirkabir University of Technology	Tehran	Iran	Mobile Programming course			
+Amity University	Noida	India	KOTLIN			
+Ammersee-Gymnasium	Munich	Germany	Informatik mit Kotlin			
+Amrita Vishwa Vidyapeetham	Coimbatore	India	23CSE460 FEATURES IN MODERN PROGRAMMING LANGUAGES			
+Amsterdam University of Applied Sciences (AUAS)	Amsterdam	The Netherlands	MOBILE DEVELOPMENT			
+Anna University	Chennai	India	CCS332 APP DEVELOPMENT			
+Annamalai University	Chidambaram	India	Kotlin for Android App Development			
+Appalachian State University 	Boone, NC	USA	"CSCI	4540:	Mobile	Computing"			
+Arizona State University	Tempe, AZ	US	CIS265DA Advanced Android Application Development			
+Astana International University 	Astana	Kazakhstan	Kotlin Start вместе с Jusan Singularity			
+Athens University of Economics and Business	Athens	Greece	Mobile programming (Kotlin for Android & Swift for IOS)			
+ATMIYA University	Rajkot	India	20MCACC302 - Mobile App Development using Android in Kotlin 			
+Autonomous University of Madrid	Madrid	Spain	18771 - DESARROLLO DE APLICACIONES PARA DISPOSITIVOS MÓVILES			
+Avans University of Applied Sciences - Avans Hogeschool	Breda	Netherlands	Full stack development met Android			
+Babeş-Bolyai University	Cluj-Napoca	Romania	Mobile Applications			
+Baku Higher Oil School 	Baku	Azerbaijan	Mobile Development and Security			
+Bandung Institute of Technology (ITB)	Bandung	Indonesia	IF3210 Mobile App Development			
+Bar-Ilan University	Ramat Gan	Israel	Application development course			
+Başkent University	Ankara	Turkey	ANDROID GAME PROGRAMMING			
+Bauman Moscow State Technical University	Moscow	Russia	Разработка Android приложений на Kotlin			
+Baylor University	Waco, TX	US	CSI 4144: Competitive Learning			
+Beijing Institute of Technology	Beijing	China	Android programming			
+Belarusian State University	Minsk	Belarus	Разработка приложений под Android			
+Bennett University	Greater Noida	India	Android Development with Kotlin (CSET492)			
+Bern University of Applied Sciences	Bern	Switzerland	BTI1002 - Programming 1 with Kotlin			
+Bialystok University of Technology	Bialystok	Poland	Mobile Systems			
+Bilkent University	Ankara	Turkey	CTIS 487 Mobile Application Development			
+Bina Nusantara University (BINUS)	Jakarta	Indonesia	MOBILE APPLICATION PROGRAMMING			
+BINUS University	West Jakarta	Indonesia	MOBILE APPLICATION PROGRAMMING			
+Birkbeck, University of London	London	UK	SOFTWARE DESIGN AND PROGRAMMING			
+Birla Institute of Technology and Science, Pilani	Pilani	India	Practice School - I			
+Boğaziçi University	Istanbul	Turkey	CmpE 451 Project Development in Software Engineering			
+Boise State University	Boise, ID	US	CS 402 Mobile Application Development			
+Boston University	Boston, MA	US	MET CS 683 Mobile Application Development with Android			
+BRAC University	Dhaka	Bangladesh	CSE489 Andriod App Development			
+Brigham Young University	Provo, UT	US	IS 590R Android Mobile Development			
+Bucharest University of Economic Studies	Bucharest	Romania	Multi-paradigm programming in Kotlin			
+Budapest University of Technology and Economics	Budapest	Hungary	Kotlin-Based Software Development			
+Bunker Hill Community College	Boston, MA	USA	CSC-244 Android Development With Kotlin			
+Business Academy Aarhus	Aarhus	Denmark	Kotlin programming			
+California Institute of Arts & Technology - CIAT	National City, CA	USA	MAP 300A – Android App Development with Kotlin			
+California State University, Long Beach	Long Beach, CA	US	CECS 453 – Mobile Application Development			
+Cankaya University	Ankara	Turkey	CENG 407 Innovative System Design and Development I			
+Carleton University	Ottawa	Canada	Mobile App Development			
+Carnegie Mellon University	Pittsburgh, PA	US	67-443 Mobile Application Design and Development			
+Catholic University Of Colombia	Bogotá	Colombia	CT10126 Programación para Dispositivos Android			
+Central Queensland University	Rockhampton	Australia	COIT13234 Mobile Software Development			
+Champlain College Lennoxville	Sherbrooke	Canada	420-510-LE Mobile Applications			
+Chandigarh University	Mohali	India	Android Development with Kotlin			
+Chang Gung University	Taoyuan	Taiwan	Mobile application development			
+Charles University in Prague	Prague	Czech Republic	Developing Applications for Mobile Devices			
+Charotar University of Science and Technology - CHARUSAT 	Changa	India	CE381: MOBILE APPLICATION DEVELOPMENT			
+Chonbuk National University - Jeonbuk National University	Jeonju	South Korea	코틀린 기반 안드로이드 앱 개발 교육 - Kotlin-based Android app development training			
+Christ University Bengaluru India	Bengaluru	India	RM644E3 Mobile Application Development			
+Chulalongkorn University	Bangkok	Thailand	2110215 Programming Methodology I			
+Chung Yuan Christian University	Taoyuan	Taiwan	Android Kotlin智慧APP開發班			
+City University of Hong Kong	Hong Kong	China	EE5415 Mobile Applications Design and Development			
+Clark University	Worcester, MA	US	CSCI 245 - Mobile Software Development			
+Cochin University of Science and Technology	Kochi	India	KOTLIN PROGRAMMING 			
+Colorado School of Mines	Golden, CO	US	CSCI 448 - Mobile Application Development (Android)			
+Columbia University	New York, NY	US	ELEN 4901 MOBILE APP DEVELOPMENT ANDROID			
+Comenius University in Bratislava	Bratislava	Slovakia	1-AIN-472/12: Vývoj mobilných aplikácií			
+Constructor University - Jacobs University	Bremen	Germany	Kotlin and Kotlin Ecosystem			
+Cornell University	Ithaca, NY	US	CS 4120/4121/5120/5121 : Introduction to Compilers			
+Cracow University of Technology	Krakow	Poland	BIP: Mobile Programming and Technologies 			
+Curtin University	Perth	Australia	Mobile Application Development			
+CVR College Of Engineering	Ibrahimpatnam	India	Mobile Application Development			
+Czech Technical University in Prague	Prague	Czech Republic	Programování v jazyku Kotlin			
+Dalhousie University	Halifax	Canada	CSCI 5708: Mobile Computing 			
+Dartmouth College	Hanover, NH	US	CS 65: Smartphone Programming			
+Delft University of Technology	Delft	Netherlands	Modern Distributed Systems			
+Delhi Technological University	Delhi	India	AND202 Android Development			
+Don State Technical University	Rostov-on-Don	Russia	Введение в разработку приложений для ОС Android			
+Drexel University	Philadelphia, PA	US	CS 647: Distributed Systems			
+Duke University	Durham, NC	US	Complete Guide to Android Development with Kotlin for Beginners			
+Durban University of Technology	Durban	South Africa	Mobile Computing IIA			
+East Carolina University	Greenville, NC	US	Mobile Development			
+Eastern Mediterranean University	Famagusta	Northern Cyprus	ITEC399 – Mobile Application Development			
+École Polytechnique Fédérale de Lausanne (EPFL)	Lausanne	Switzerland	Lab on app development for tablets and smartphones			
+ENET'Com Sfax - École Nationale d'Électronique et des Télécommunications de Sfax	Sfax	Tunisia	Android Development with Kotlin			
+European Humanities University	Vilnius	Lithuania	Basics of Mobile Development			
+Federal University of Minas Gerais	Belo Horizonte	Brazil	PROGRAM ANALYSIS AND OPTIMIZATION – DCC888			
+Federal University of Piauí	Teresina	Brazil	APIs de Desenvolvimento para Dispositivos Móveis			
+Federal University of Technology – Paraná	Curitiba	Brazil	CURSO DE ESPECIALIZAÇÃO EM PROGRAMAÇÃO PARA DISPOSITIVOS MÓVEIS			
+Federation University Australia	Ballarat	Australia	Mobile Development Fundamentals (ITECH2000)			
+FH Joanneum	Graz	Austria	Mobile Software Development			
+Flensburg University of Applied Sciences	Flensburg	Germany	Web / mobile technologies			
+Flinders University	Adelaide	Australia	COMP2012 Mobile Application Development			
+Florida Institute of Technology	Melbourne, FL	US	CSE 4250 Programming Language Concepts			
+Free University of Bozen-Bolzano	Bolzano	Italy	Mobile and Physical Systems			
+Galgotias University	Greater Noida	India	Android App Development Using Kotlin			
+George Brown College	Toronto	Canada	Mobile Application Development and Strategy Program (Postgraduate) T440			
+George Mason University	Fairfax, VA	US	SWE 642 Software Engineering for the World Wide Web			
+George Washington University	Washington, D.C.	US	CSCI 6116. Advanced Application Development			
+Georgia Institute of Technology (Georgia Tech)	Atlanta, GA	US	Mastering Android Development			
+GIET University	Gunupur	India	Android App Development Using Kotlin			
+Goa University	Taleigao	India	CSA-606 Mobile App Development			
+Grand View University in Des Moines	Des Moines, IA	US	CPSC 242 Computer Science II			
+Griffith University	Brisbane	Australia	3701ICT Mobile Application Development			
+Gujarat Technological University	Ahmedabad	India	Mobile Computing using Android			
+Gustavus Adolphus College	Saint Peter, MN	US	MCS 178: Introduction to Computer Science II			
+Hanoi University of Science and Technology	Hanoi	Vietnam	IT4785 Programming for Mobile Devices			
+Harvard University	Cambridge, MA	US	CS50x Introduction to Computer Science			
+Hasanuddin University	Makassar	Indonesia	Kotlin Language for Java Developers			
+Hasselt University	Hasselt	Belgium	App Development			
+Hebrew University of Jerusalem	Jerusalem	Israel	Workshop in Modern Application Development (67503)			
+Heidelberg University	Heidelberg	Germany	Einfuhrung in die Programmierung mit Kotlin			
+Heriot-Watt University	Edinburgh	UK	Android development			
+Hofstra University	Hempstead, NY	US	CSC123/252: Programming Languages			
+Hong Kong Polytechnic University	Hong Kong	China	EIE3109 Mobile Systems and Application Development			
+HSE University - Higher School of Economics	Moscow	Russia	Язык Kotlin			
+I. K. Gujral Punjab Technical University	Kapurthala	India	Android Development with Kotlin			
+IES Luis Vives	Madrid	Spain	Programming. 1º Degree of Development of Multiplatform Applications			
+Ilia State University	Tbilisi	Georgia	Mobile Programming in Kotlin			
+Illinois Institute of Technology - Illinois Tech	Chicago, IL	US	CS425 - Database Organization			
+Imperial College London	London	UK	40009 Computing Practical 1			
+IMT Atlantique	‎Brest‎, ‎Nantes‎ and ‎Rennes	France	Introduction au développement Android			
+Indiana University	Bloomington, IN	US	Programming			
+Indraprastha Institute of Information Technology Delhi	New Delhi	India	Mobile Computing			
+Institut Tecnològic de Barcelona	Barcelona	Spain	M03 - Programming  			
+Instituto Federal de Santa Catarina (IFSC)	Sao Jose	Brazil	MOV786205 - Programação para Aplicativos Móveis			
+Instituto Superior de Engenharia de Lisboa - Lisbon Superior Engineering Institute (ISEL) - Engineering School of the Lisbon Polytechnic Institute	Lisbon	Portugal	PROGRAMMING-LEIC			
+Iowa State University	Ames, IA	US	COM S 430: CONCURRENT PROGRAMMING IN PRACTICE			
+IPB University	Bogor	Indonesia	Mobile apps development			
+Iran University of Science and Technology	Tehran	Iran	Fundamentals of Computer Programming			
+Irkutsk National Research Technical University	Irkutsk	Russia	Мобильная разработка на Kotlin			
+Irkutsk State University	Irkutsk	Russia	Б1.В.ДВ.05.01 Программирование для дизайнеров			
+ISCTE-University Institute of Lisbon	Lisbon	Portugal	Advanced Programming			
+Istanbul Aydın University	Istanbul	Turkey	UYG201  Kotlin Android Uygulama Geliştirme			
+Istanbul Medipol University	Istanbul	Turkey	BPR1213184 KOTLIN PROGRAMMING			
+ITMO University	Saint Petersburg	Russia	Основы программирования на языке Kotlin			
+Ivy Tech Community College	Indianapolis, IN	US	SDEV 264 - Mobile Application Development			
+Jagiellonian University	Krakow	Poland	Programowanie urządzeń mobilnych – Android			
+Jawaharlal Nehru Technological University Anantapur (JNTUA)	Anantapur	India	(20A35601P) MOBILE APPLICATION DEVELOPMENT FOR IOT			
+Johannes Gutenberg University of Mainz	Mainz	Germany	08.079.10070 Mobile Computing und Web Entwicklung			
+Johannes Kepler University of Linz	Linz	Austria	Programming in Kotlin			
+Johns Hopkins University	Baltimore, MD	US	605.603 - Object-Oriented and Functional Programming in Kotlin			
+Jordan University of Science and Technology	Irbid	Jordan	Mobile Phones Apps Development Using Android-Kotlin Language			
+Kanazawa University	Kanazawa	Japan	Introduction to smartphone application development			
+Kasetsart University	Bangkok	Thailand	01219244, Software Specification and Design Laboratory			
+Kazan Federal University	Kazan	Russia	Методы программирования мобильных приложений (Kotlin+Java)			
+KAZGUU University Higher School of Economics	Astana	Kazakhstan	Mobile Development			
+Kharkiv Aviation Institute	Kharkiv	Ukraine	Програмування під Android та iOS			
+Kharkiv National University of Radio Electronics - NURE	Kharkiv	Ukraine	Високорівневі мови програмування та фреймворки			
+King Saud University	Riyadh	Saudi Arabia	IS324: Modern Application Development			
+King’s College London - King's College London	London	UK	6CCS3CFL Compilers And Formal Languages			
+Knyagininsky Universitet	Knyaginino	Russia	Разработка мобильных приложений			
+Kristiania University College	Oslo	Norway	Enterpriseprogrammering 2 (PG6101)			
+KTH Royal Institute of Technology	Stockholm	Sweden	ID2216 Developing Mobile Applications			
+KU Leuven	Leuven	Belgium	App Development			
+Lakehead University	Thunder Bay	Canada	COMP 4411 Programming Languages			
+Laval University	Quebec	Canada	GIF-3101 Informatique mobile et applications			
+Leiden University	Leiden	Netherlands	Concepts of Programming Languages			
+Linköping University	Linkoping	Sweden	TDDC73 Interaction Programming			
+LMU Munich	Munich	Germany	Master-Praktikum: Mobile Application Development			
+Lodz University of Technology	Lodz	Poland	Mobile Systems			
+Lomonosov Moscow State University - MSU	Moscow	Russia	Программирование на языке Котлин			
+Lovely Professional University	Phagwara	India	CSE 224 Fundamentals of Android			
+Lovely Professional University	Phagwara	India	CSE 224 Fundamentals of Android			
+Lucian Blaga University of Sibiu	Sibiu	Romania	Informatica mobila			
+Lund University	Lund	Sweden	EDAN55 Advanced Algorithms			
+Lusófona University - Lusophone University of Humanities and Technologies	Lisbon	Portugal	Computação Móvel			
+LUT University - Lappeenranta-Lahti University of Technology LUT	Lappeenranta	Finland	CT70A9800 Full Stack Development			
+Lviv Polytechnic National University	Lviv	Ukraine	Programming for Mobile Platforms			
+Lycée Gustave Eiffel	Bordeaux	France	Android development			
+Mahidol University	Salaya	Thailand	EGCI 428 Mobile Device Programming			
+Malmö Yrkeshögskola	Malmo	Sweden	PROGRAMMERARE IPHONE OCH ANDROID			
+Manav Rachna International Institute of Research and Studies - MRIIRS	Faridabad	India	BCS-DS-577: Kotlin			
+Manav Rachna International Institute of Research and Studies - MRIIRS	Faridabad	India	BCS-DS-577: Kotlin			
+Manav Rachna University	Faridabad	India	Mobile Computing with Android (CSH319) T & P			
+Manchester Metropolitan University	Manchester	UK	Android Development Essential Training: Your First App with Kotlin			
+Marche Polytechnic University	Ancona	Italy	[W001053] - PROGRAMMAZIONE MOBILE			
+Marwadi University	Rajkot	India	01CT0713 Programming with Application Development (Android)			
+Masaryk University	Brno	Czech Republic	PV256 Introduction to Development for Android			
+McGill University	Montreal	Canada	BIEN 470: Bioengineering Design Projects			
+McMaster University	Hamilton	Canada	Computer Science 3MI3 - Principles of Programming Languages			
+Michigan State University	East Lansing, MI	US	CSE 498 Collaborative Design			
+Minneapolis College	Minneapolis, MN	US	ITEC 2417 - Android Mobile Programming			
+MIREA - Russian Technological University	Moscow	Russia	Разработка мобильных приложений			
+Missouri University of Science and Technology	Rolla, MO	US	Mobile App Development (CR-CP-002)			
+Monash University	Melbourne	Australia	FIT2081 – Mobile Application Development (Kotlin/Android)			
+Montana State University	Bozeman, MT	US	CSCI 494-002 Industry Methods			
+Monterrey Institute of Technology and Higher Education - Instituto Tecnológico y de Estudios Superiores de Monterrey (ITESM)	Monterrey	Mexico	Android Software developer			
+Montgomery College	Germantown, MD	US	CMSC234 Mobile Game & App Programming			
+Montpellier University	Montpellier	France	Développement mobile			
+Moscow Institute of Physics and Technology	Moscow	Russia	Введение в научное программирование на языке Kotlin			
+Mustansiriyah University	Baghdad	Iraq	Mobile Development Introduction to Android			
+Nantes Université - University of Nantes	Nantes	France	Développement Orienté Objet			
+Nanyang Technological University	Singapore	Singapore	CANdroid® -Apps development for newbies			
+National Autonomous University of Mexico	Mexico City	Mexico	Introducción a la programación con Kotlin			
+National Cheng Kung University (NCKU)	Tainan	Taiwan	雲端行動應用 - CLOUD AND MOBILE APPLICATIONS			
+National Institute of Technology Srinagar	Srinagar	India	Android Application Development - Kotlin			
+National Polytechnic University (IPN)	Mexico City	Mexico	Mobile Applications			
+National Research Nuclear University MEPhI	Moscow	Russia	Kotlin FullStack Developer			
+National Sun Yat-Sen University	Kaohsiung	Taiwan	DECISION SUPPORT SYSTEMS PROJECT (II)			
+National Taipei University of Technology	Taipei	Taiwan	354848 Mobile Phone Programming			
+National Technical University Kharkiv Polytechnic Institute	Kharkiv	Ukraine	Мова програмування Kotlin			
+National University of La Matanza - Universidad Nacional de La Matanza	Buenos Aires	Argentina	Tecnicatura en Desarrollo de Aplicaciones Móviles			
+National University of Science and Technology (MISiS)	Moscow	Russia	Программирование на Kotlin			
+National University of Science and Technology Politehnica Bucharest	Bucharest	Romania	Object Oriented Programming			
+National University of Singapore	Singapore	Singapore	CS2030S Programming Methodology II			
+National University of the South	Bahia Blanca	Argentina	Introducción a Kotlin			
+National Yang Ming Chiao Tung University	Hsinchu	Taiwan	Android程式設計 (使用 Kotlin			
+New Jersey Institute of Technology	Newark, NJ	US	CS 388: Android Application Development			
+New York University	New York, NY	US	Mobile Application Development (DM-UY 4193)			
+NIE Institute of Technology - The National Institute of Engineering	Mysuru	India	18CSMP68 - Jetpack Compose for Android Developers			
+Nizhny Novgorod State Technical University	Nizhny Novgorod	Russia	Разработка приложений на Kotlin			
+North South University	Dhaka	Bangladesh	CSE 499 Project/Internship/Special Laboratory Project			
+North-Eastern Federal University	Yakutsk	Russia	Б1.В.ДВ.05.02 Разработка мобильных приложений			
+Northeastern University - USA	Boston, MA	US	CS2500 Fundamentals of Computer Science			
+Northern (Arctic) Federal University named after M.V. Lomonosov	Arkhangelsk	Russia	Практическое использование Kotlin в Android-разработке			
+Northern Michigan University	Marquette, MI	USA	CS 345-01-23W: Android Programming			
+Northwestern University	Evanston, IL	US	Hello Kotlin: Android Bootcamp with App Factory			
+Norwegian University of Science and Technology	Trondheim	Norway	PROG2006 - Advanced Programming			
+Novosibirsk State University	Novosibirsk	Russia	Разработка Android приложений на Java и Kotlin			
+Oakland University	Rochester, MI	US	Cross Platform Mobile and Cloud Development			
+Obafemi Awolowo University	Ife	Nigeria	Kotlin Language for Java Developers			
+Oklahoma State University	Stillwater, OK	US	CS4153: Mobile Applications Development			
+Old Dominion University	Norfolk, VA	US	CS 410 Professional Workforce Development			
+Omsk State Technical University (OmSTU)	Omsk	Russia	Разработка мобильных приложений для Android			
+Omsk State University	Omsk	Russia	Технологии разработки программного обеспечения			
+Ontario Tech University (University of Ontario Institute of Technology)	Oshawa	Canada	CSCI 4020U Compilers			
+Open University of Catalonia	Barcelona	Spain	Mobile app development        			
+Oregon State University	Corvallis, OR	US	CS 492: Mobile Software Development			
+Ostbayerische Technische Hochschule Regensburg (OTH Regensburg)	Regensburg	Germany	Android Programming with Kotlin (KAPK)			
+Palacký University Olomouc	Olomouc	Czech Republic	Tvorba mobilních aplikací			
+Paris Sciences et Lettres – PSL Research University	Paris	France	MobApp – Introduction `a React Native			
+Pavol Jozef Šafárik University in Košice	Kosice	Slovakia	ÚINF/VMA1/21 - Vývoj mobilných aplikácií			
+Pedagogical and Technological University of Colombia	Tunja	Colombia	Programación Android con Kotlin			
+Perm State University	Perm	Russia	Разработка приложений для Android (начальный уровень)			
+Peter the Great St Petersburg Polytechnic University	Saint Petersburg	Russia	Введение в язык Котлин			
+Pohang University of Science and Technology (POSTECH)	Pohang	South Korea	Mobile & Ubiquitous Computing (CSED490D-01)			
+Politehnica University Timisoara	Timișoara	Romania	Mobile Systems and Applications			
+Polytechnic University of Catalonia - Universitat Politècnica de Catalunya - UPC	Barcelona	Spain	Programación de Teléfonos y Dispositivos Móviles Autónomos			
+Polytechnic University of Milan - Politecnico di Milano	Milan	Italy	Sviluppo Android E Reti 5g			
+Polytechnic University of Timişoara	Timisoara	Romania	Android (Kotlin)			
+Polytechnic University of Turin	Turin	Italy	Mobile application development			
+Polytechnic University of Valencia	Valencia	Spain	Programación en Android			
+Pontifical Catholic University of Chile	Santiago	Chile	Desarrollo de aplicaciones móviles			
+Pontifical Catholic University of Minas Gerais	Belo Horizonte	Brazil	Desenvolvimento Mobile			
+Pontifical Catholic University of Paraná	Curitiba	Brazil	Desenvolvimento de Aplicativos Móveis			
+Pontificia Universidad Católica de Chile	Santiago	Chile	Desarrollo de aplicaciones móviles			
+Portland State University	Portland, OR	US	CS 430P/530: Internet, Web, & Cloud Systems			
+Poznań University of Technology	Poznan	Poland	Mobile Application Development with AI Elements [S2SI1E>PAM]			
+Purdue University West Lafayette	West Lafayette, IN	US	CS 353: Principles of Concurrency and Parallelism			
+Qatar University	Doha	Qatar	Senior projects			
+Queen’s University	Kingston	Canada	ELEC 498: Computer Engineering Project			
+Reichman University	Herzliya	Israel	3695 Native Android Development with Kotlin			
+REVA University	Bangalore	India	Android Application Development using Kotlin			
+Rice University	Houston, TX	US	COMP 322: Fundamentals of Parallel Programming			
+RIT Kosovo	Pristina	Kosovo	KODE Project 			
+Rose-Hulman Institute of Technology	Terre Haute, IN	US	CSSE 483: Android Application Development			
+Rutgers University - Rutgers, the State University of New Jersey	New Brunswick, Newark, Camden, NJ	US	16:137:537 Mobile App Development from Concept to Market 			
+Sabancı University	Istanbul	Turkey	IT 535 Wireless and Mobile Programming			
+Saint Petersburg Electrotechnical University (LETI)	Saint Petersburg	Russia	Программирование на языке Kotlin			
+Saint Petersburg State University	Saint Petersburg	Russia	Основы технологий распределенных реестров			
+Samara University	Samara	Russia	Технологии и инструментальные средства разработки программного обеспечения для мобильных устройств			
+San Diego State University	San Diego, CA	US	CS 635 Advanced Object-Oriented Design & Programming			
+Sapienza University of Rome	Rome	Italy	1044415 - MOBILE APPLICATIONS AND CLOUD COMPUTING			
+Satbayev University	Almaty	Kazakhstan	CSE1792 Мобильные технологии Android			
+Savitribai Phule Pune University	Pune	India	CDS-242 Web and Mobile Application			
+Sharif University of Technology	Tehran	Iran	CE-429: Android Development			
+Shivaji University	Kolhapur	India	Android Development with Kotlin			
+Silesian University of Technology	Gliwice	Poland	Inżynieria aplikacji mobilnych i baz danych			
+Silpakorn University	Bangkok	Thailand	Digital Technology for Designing Interactive Applications			
+Simon Fraser University	Burnaby	Canada	CMPT 415 Special Research Projects			
+Sivas Cumhuriyet University	Sivas	Turkey	Mobile Programming			
+Srinakharinwirot University	Bangkok	Thailand	Android Basics with Kotlin			
+SRM Institute of Science and Technology	Chennai	India	Mobile Application Development			
+Staffordshire University	Stoke-on-Trent	UK	MOBILE APP DEVELOPMENT COMP50011			
+Stanford University	Stanford, CA	US	CS194A: Android Programming Workshop			
+Stellenbosch University	Stellenbosch	South Africa	Computer Science 771: Honors Project			
+Stockholm University	Stockholm	Sweden	IB916N Programmering för mobiler			
+Sungkyunkwan University (SKKU)	Seoul	South Korea	Programming Language & Compiler			
+Suresh Gyan Vihar University	Jaipur	India	CA 216 Android Development (Java/Kotlin)			
+Swansea University	Swansea	UK	CSC306 - Writing Mobile Apps			
+Swarrnim Startup & Innovation University	Bhoyan Rathod	India	Advance Mobile App Development			
+Swinburne University of Technology	Melbourne	Australia	COS 30017 Software Development for Mobile Devices			
+TalTech IT College	Tallinn	Estonia	Native Mobile Applications			
+Technical University of Cluj-Napoca	Cluj-Napoca	Romania	Comunicații Mobile			
+Technical University of Darmstadt	Darmstadt	Germany	Projektseminar Softwaresysteme			
+Technical University of Denmark	Lyngby	Denmark	Advanced Mobile Application Development			
+Technical University of Košice	Kosice	Slovakia	Úvod do vývoja aplikácií pre chytré zariadenia			
+Technical University of Madrid	Madrid	Spain	Mobile App Development (615001061)			
+Technical University of Munich	Munich	Germany	Bachelor's Practical course - Kotlin (IN0012)			
+Technion Israel Institute of Technology	Haifa	Israel	02360351 Distributed Systems			
+Technological University Dublin	Dublin	Ireland	Computing with Software Development			
+Teknologisk Institut	Taastrup	Denmark	Kotlin Development			
+Tel Aviv University	Tel Aviv	Israel	Concepts in Programming Languages			
+Télécom SudParis	Paris	France	Développement mobile et Intelligence Artificielle			
+Telkom University	Bandung	Indonesia	Mobile Application Development			
+Temple University	Philadelphia, PA	US	CIS 3296 Software Design			
+Texas A&M University	College Station, TX	US	ECEN 489: Mobile Applications with Android			
+Texas Tech University	Lubbock, TX	US	Android Developer			
+TH Köln	Cologne	Germany	Algorithmen und Programmierung II			
+Thammasat University	Bangkok	Thailand	Basic Android Application Development			
+Thapar University	Patiala	India	Experiential Learning (EL)			
+The Chinese University of Hong Kong	Hong Kong	China	CSCI3100 - Software Engineering			
+The Hong Kong University of Science and Technology	Hong Kong	China	ISOM3000G Mobile Applications Development for Business			
+The Ohio State University	Columbus, OH	US	CSE 5236: Mobile Application Development			
+The University of Aizu	Aizuwakamatsu	Japan	Android Programming with Kotlin online from OTH Regensburg			
+The University of Chicago	Chicago, IL	US	MPCS 51132. Full Stack Software Engineering			
+The University of Jordan	Amman	Jordan	Android Kotlin Development Fundamentals			
+The University of the Antilles - Université des Antilles	Schoelcher	Martinique	Licence Professionnelle Métiers de l'informatique - Informatique Embarquée et Mobile			
+The University of Tokyo	Tokyo	Japan	ソフトウェアII 第7回			
+Tokyo University of Science	Tokyo	Japan	Introduction to multilingual programming for AI and IoT utilization			
+Tomsk Polytechnic University	Tomsk	Russia	Разработка программного обеспечения для ОС Android / 2020			
+Tomsk State University	Tomsk	Russia	Разработчик мобильных приложений на платформе Android			
+TU Braunschweig	Braunschweig	Germany	Programming Languages - Concepts and Applications			
+TU Dortmund University	Dortmund	Germany	Automated Detection of Software Vulnerabilities via Static Program Analysis			
+TU Dresden	Dresden	Germany	FRaMED - Development Of Graphical Editor Product Lines			
+Tunghai University	Taichung	Taiwan	Mobile Device Development and Applications			
+UiT The Arctic University of Norway - University of Tromso	Tromso	Norway	DTE-2603 Programmering for mobil			
+Ulm University	Ulm	Germany	Parallele Programmierung			
+Umeå University	Umea	Sweden	Utveckling av mobila applikationer			
+Universidad de La Sabana - University of La Sabana	Chia	Colombia	PROGRAMACIÓN ANDROID CON KOTLIN Y JAVA			
+Universidad de La Sabana - University of La Sabana	Chia	Colombia	PROGRAMACIÓN ANDROID CON KOTLIN Y JAVA			
+Universidad Ean	Bogotá	Colombia	Desarrollo Móvil			
+Universidad Peruana de Ciencias Aplicadas (UPC)	Santiago de Surco	Peru	CC238, Aplicaciones para Dispositivos Móviles			
+Universidad Politécnica de Madrid	Madrid	Spain	615001061 - Mobile App Development			
+Universidad Rey Juan Carlos	Madrid	Spain	Laboratorio de Sistemas Móviles y Ubicuos			
+Universidad Tecnológica de Puebla (UTP)	Puebla	Mexico	Mobile Application Development			
+Universidad Tecnológica Nacional (UTN)	Buenos Aires	Argentina	Introducción a la programación en Android con Kotlin			
+Università del Piemonte Orientale - UPO	Alessandria	Italy	Applicazioni mobili			
+Università della Svizzera Italiana	Lugano	Switzerland	Engineering of Domain Specific Languages			
+Universitas Lambung Mangkurat	Banjarmasin	Indonesia	Mobile Programming			
+Université Gustave Eiffel	Paris	France	OUAP-4331 Android development for Smartphones with Kotlin			
+Université Libre de Bruxelles	Brussels	Belgium	INFO-H2001 Programmation orientée objet			
+Université Paris-Saclay (Paris-Sud University)	Paris	France	INFORMATIQUE ET INGÉNIERIE MATHÉMATIQUE			
+Université Saint-Joseph de Beyrouth	Beirut	Lebanon	Programmation Android			
+Universiti Malaysia Sarawak (UNIMAS)	Kota Samarahan	Malaysia	Samarahan App Challenge 3.0			
+Universiti Teknikal Malaysia Melaka	Malacca	Malaysia	MSMD 5113 Native Mobile Development I			
+University Centre Peterborough	Peterborough	UK	Mobile app development with Kotlin			
+University College Cork	Cork	Ireland	CS4092 Special Topics in Computing			
+University College Dublin	Dublin	Ireland	COMP30970 Competitive Programming			
+University for Technology and Design | Harbour.Space Barcelona	Barcelona	Spain	CS213 Mobile Development			
+University of Alabama at Birmingham	Birmingham, AL	US	CS 422L - Mobile App Development Lab			
+University of Alaska Fairbanks	Fairbanks, AK	US	CS331 Programming Languages 			
+University of Alberta	Edmonton	Canada	EXSM 3956 - Mobile Development I			
+University of Alicante	Alicante	Spain	Desarrollo de Software para Dispositivos Móviles			
+University of Applied Sciences and Arts Northwestern Switzerland - Fachhochschule Nordwestschweiz FHNW	Brugg	Switzerland	Entwicklung mobiler Applikationen			
+University of Arkansas	Fayetteville, AR	US	CSCE 4623 – Mobile Programming			
+University of Auvergne - Clermont	Clermont-Ferrand	France	Licence professionnelle Métiers de l'informatique : conception, développement et test de logiciels			
+University of Bayreuth	Bayreuth	Germany	INF 225: Advanced Software Engineering 			
+University of Belgrade	Belgrade	Serbia	Programming Languages			
+University of Bergen	Bergen	Norway	INF237 Algorithms Engineering			
+University of Bologna	Bologna	Italy	28006 - Foundations of Informatics T-2			
+University of Bremen	Bremen	Germany	Programmiersprachen			
+University of Brescia	Brescia	Italy	MOBILE PROGRAMMING			
+University of Bridgeport	Bridgeport, CT	USA	CPSC 301 - Programming Languages			
+University of British Columbia	Vancouver	Canada	CPEN 321: Software Engineering			
+University of Caldas	Manizales	Colombia	De regreso a la programación desde las perspectivas			
+University of Calgary	Calgary	Canada	CPSC_599-4 Special Topics in Computer Science (Competitive Programming)			
+University of California, Davis - UC Davis	Davis, CA	US	ECS 189E: Android and iOS Fundamentals			
+University of California, Irvine	Irvine, CA	US	CS221: Information Retrieval			
+University of California, Los Angeles	Los Angeles, CA	US	Computer Science 131. Programming Languages			
+University of California, San Diego	San Diego, CA	US	CSE-41336 Introduction to Mobile App Development			
+University of California, Santa Barbara - UC Santa Barbara	Santa Barbara, CA	US	CS184 - Introduction to Mobile Application Development (using Android)			
+University of California, Santa Cruz	Santa Cruz, CA	US	Mobile Application Development - Android and iOS, Introduction | CMPR.X421			
+University of Cambridge	Cambridge	UK	Kotlin: Essential Training			
+University of Camerino (Unicam)	Camerino	Italy	Progettazione di Applicazioni Web e Mobili			
+University of Canterbury	Christchurch	New Zealand	SENG303 - Mobile Application Design and Development			
+University of Cauca	Popayán	Colombia	Mobile Application Development			
+University of Central Florida	Orlando, FL	US	COP 4331C - Processes for Object-Oriented Software Development			
+University of Chester	Chester	UK	Android Development			
+University of Chile	Santiago	Chile	Desarrollo de Aplicaciones Móviles			
+University of Cincinnati	Cincinnati, OH	US	IT3048C: Mobile Device Programming			
+University of Colima	Colima	Mexico	Bases de datos en Android con Kotlin			
+University of Cologne	Cologne	Germany	Basissysteme der Informationsverarbeitung II			
+University of Colorado Boulder	Boulder, CO	US	ATLS 4120/5120 Mobile Application Development			
+University of Connecticut	Storrs, CT	US	CSE 3200 Mobile Application Development			
+University of Cyprus	Nicosia	Cyprus	EPL421 Systems Programming			
+University of Dayton	Dayton, OH	US	CPS 452: Emerging Programming Languages			
+University of Edinburgh	Edinburgh	UK	Computer Science Large Practical			
+University of Engineering and Management	Jaipur	India	PCCCS-706A: Mobile Computing			
+University of Engineering and Technology, Taxila	Taxila	Pakistan	Mobile Application Development			
+University of Essex	Colchester	UK	CE881-7-AU-CO: Mobile and Social Application Programming			
+University of Exeter	Exeter	UK	ECM2425 Mobile and Ubiquitous Computing			
+University of Extremadura	Badajos	Spain	Desarrollo de aplicaciones para dispositivos móviles			
+University of Florida	Gainesville, FL	US	DIG4634 Wearable and Mobile App Development			
+University of Fortaleza (UNIFOR)	Fortaleza	Brazil	Desenvolvimento para plataformas móveis			
+University of Genoa	Genoa	Italy	PROGRAMMAZIONE MOBILE			
+University of Georgia	Athens, GA	US	CSCI 4060/6060 Mobile Software Development			
+University of Granada	Granada	Spain	Programación de Dispositivos Móviles			
+University of Greenwich	London	UK	COMP - 1815 - JVM Programming Languages			
+University of Guadalajara	Guadalajara	Mexico	Programación de Dispositivos Móviles			
+University of Guelph	Guelph	Canada	CIS*4030 Mobile Computing			
+University of Hamburg	Hamburg	Germany	64-866 Masteproject with integrated seminar about Smart Cities			
+University of Hong Kong	Hong Kong	China	COMP4801 Final Year Project			
+University of Houston	Houston, TX	US	DIGM 4381 Mobile Application Design			
+University of Illinois at Chicago	Chicago, IL	US	CS 476 – Programming Language Design			
+University of Illinois at Urbana-Champaign	Champaign, IL	US	CS 124: An Introduction to Computer Science			
+University of Innsbruck	Innsbruck	Austria	Specialisation Seminar			
+University of Insubria	Varese	Italy	PROGRAMMAZIONE DI DISPOSITIVI MOBILI			
+University of Jaén	Jaen	Spain	74012007 - Technology and Development in Mobile Devices			
+University of Klagenfurt	Klagenfurt	Austria	623.950 App Development			
+University of Lahore	Lahore	Pakistan	Mobile Application Development			
+University of Latvia	Riga	Latvia	Objektorientētā programmēšana			
+University of Leeds	Leeds	UK	COMP2850 Software Engineering			
+University of Lisbon	Lisbon	Portugal	Computação Móvel			
+University of Ljubljana	Ljubljiana	Slovenia	63776 PROGRAMMING OF ENERGY-CONSTRAINED DEVICES			
+University of Luxembourg	Luxembourg	Luxembourg	Mobile Application Development			
+University of Maryland	College Park, MD	US	CMSC 436: Programming Handheld Systems			
+University of Maryland, Baltimore County	Baltimore, MD	US	CMSC 331 Principles of Programming Languages			
+University of Melbourne	Melbourne	Australia	Mobile Computing Systems Programming (COMP90018)			
+University of Miami	Miami, FL	US	Kotlin Multiplatform Development			
+University of Michigan-Ann Arbor	Ann Arbor, MI	US	EECS 441 Mobile App Development for Entrepreneurs			
+University of Milano-Bicocca	Milan	Italy	Mobile Programming 2526-3-E3101Q135			
+University of Missouri - Mizzou - Columbia	Columbia, MO	US	INFOTC 4410 - Android App Development I			
+University of Missouri-St Louis	St. Louis, MO	US	CMP SCI 4020 Introduction to Android Apps: Android Fundamentals			
+University of Modena and Reggio Emilia	Modena	Italy	Programmazione Mobile			
+University of Montana Missoula	Missoula, MT	US	MART 462 - Mobile Game Programming			
+University of Montenegro	Podgorica	Montenegro	PROGRAMIRANJE NAPREDNI KURS			
+University of Montreal	Montreal	Canada	IFT 1155 - Programmation mobile à plateforme libre			
+University of Nevada - Reno	Reno, NV	US	Math/CS Numerical methods I 466/666			
+University of North Carolina at Chapel Hill	Chapel Hill, NC	US	COMP 523: Software Engineering Laboratory			
+University of Notre Dame	Notre Dame, IN	US	CSE 40842 – Hackers in the Bazaar			
+University of Novi Sad	Novi Sad	Serbia	Programming in Kotlin			
+University of Oslo	Oslo	Norway	IN2000 – Software Engineering			
+University of Oulu	Oulu	Finland	521046A Mobile Computing			
+University of Oxford	Oxford	UK	Agile Engineering Practices			
+University of Padua	Padua	Italy	IN01122661 - PROGRAMMAZIONE DI SISTEMI EMBEDDED			
+University of Palermo	Palermo	Italy	WEB AND MOBILE PROGRAMMING			
+University of Pannonia	Veszprém	Hungary	Kotlin programming (VEMISAB332K)			
+University of Parma	Parma	Italy	PROGRAMMING OF MOBILE SYSTEMS			
+University of Pennsylvania	Philadelphia, PA	US	CIS 1952 Android Programming			
+University of Perugia	Perugia	Italy	GP004142 COMPUTER PROGRAMMING 3 / Informatics			
+University of Pisa	Pisa	Italy	MOBILE AND SOCIAL SENSING SYSTEMS			
+University of Plymouth	Plymouth	UK	Games Development			
+University of Porto	Porto	Portugal	Compiladores			
+University of Rochester	Rochester, NY	US	CSC 214-1 Mobile App Development			
+University of Rome II – Tor Vergata	Rome	Italy	Mobile programming			
+University of Rovira i Virgili	Tarragona	Spain	MOBILE APPLICATIONS AND SERVICES			
+University of Salerno	Fisciano	Italy	Mobile Programming			
+University of Santo Tomas	Manila	Philippines	Web and Mobile App Development			
+University of São Paulo	Sao Paulo	Brazil	MAC0350 - Introdução ao Desenvolvimento de Sistemas de Software			
+University of Sargodha	Sargodha	Pakistan	CS-4548 Mobile Application Development			
+University of Sheffield	Sheffield	UK	COM6510 Software Development for Mobile Devices			
+University of South Bohemia in České Budějovice	Ceske Bedejovice	Czech Republic	SMART DEVICE SYSTEMS			
+University of South Carolina-Columbia	Columbia, SC	US	CSCE 490/492 Capstone Computing Project			
+University of South Wales	Ponty pridd	UK	ISS3S664 Advanced Internet and Mobile Computing			
+University of Southampton	Southampton	UK	COMP6239 Mobile Applications Development			
+University of Southern California	Los Angeles, CA	US	CSCI 571: Web Technologies			
+University of Tartu	Tartu	Estonia	Mobile Application Development			
+University of Tasmania	Hobart	Australia	Mobile Application Development KIT305			
+University of Technology Sydney	Sydney	Australia	41039 Programming 1			
+University of Texas at Austin	Austin, TX	US	CS 371M Mobile Computing (Android Programming)			
+University of Texas at El Paso	El Paso, TX	US	CS 4330/5390 - Mobile Application Development			
+University of the Andes, Colombia	Bogota	Colombia	ISIS3510 | Construcción de Aplicaciones Móviles			
+University of the Sinos Valley	Sao Leopoldo	Brazil	Desenvolvimento de Aplicações para Plataformas Móveis			
+University of the West of Scotland	Glasgow	UK	COMP08068 Programming for Mobile Devices			
+University of the West of Scotland	Paisley	UK	Android development			
+University of Toronto	Toronto	Canada	ECE 1778: Creative Applications for Mobile Devices			
+University of Trento	Trento	Italy	Introduction to web programming			
+University of Turin	Turin	Italy	Mobile Device Programming			
+University of Turku	Turku	Finland	Käyttöliittymät			
+University of Twente	Enschede	Netherlands	Software Security 201600051			
+University of Utah	Salt Lake City, UT	US	CS 6018 Application System Design			
+University of Vaasa	Vaasa	Finland	ICAT3130 Mobile Application Development			
+University of Vic – Central University of Catalonia	Vic	Spain	Android Application Development			
+University of Virginia	Charlottesville, VA	US	CS 4720 Mobile Application Development			
+University of Warsaw	Warsaw	Poland	Programming in Kotlin			
+University of Washington	Seattle, Washington	US	INFO 448 Android Mobile Development			
+University of Waterloo	Waterloo	Canada	CS349 User Interfaces			
+University of Westminster	London	UK	5COSC023W - Mobile Application Development			
+University of Wisconsin - Parkside	Kenosha, WI	US	App Factory			
+University of Wollongong	Wollongong	Australia	CSIT242 Mobile Application Development			
+University of Würzburg	Wurzburg	Germany	SS23: Einführung in die Programmierung mit Kotlin			
+University of Wyoming	Laramie, WY	US	Cosc 4730: Mobile Programming			
+University of Zagreb	Zagreb	Croatia	Razvoj usluga i aplikacija za operacijski sustav Android			
+University Rey Juan Carlos	Madrid	Spain	Yes			
+UPC - Peruvian University of Applied Sciences (Peru)	Lima	Peru	Desarrollo Para Plataforma Móviles			
+UPES	Dehradun	India	Mobile Application Development Using Android (CSMC3025)			
+Uppsala University	Uppsala	Sweden	Game Design			
+Ural Federal University	Ekaterinburg	Russia	1156435 Язык программирования Kotlin			
+Utah State University	Logan, UT	US	CS 1440 - Methods in Computer Science			
+UWE Bristol	Bristol	UK	Kotlin and Android			
+Vanderbilt University	Nashville, TN	US	CS 891: Concurrent Java Programming in Android 			
+Varsity College	Sandton	South Africa	Mobile app development			
+Veltech University	Morai	India	1151CS201 Mobile Application Development			
+Victoria University	Melbourne	Australia	NIT3213 MOBILE APPLICATION DEVELOPMENT			
+Vidyavardhaka College of Engineering	Mysore	India	22CS47: Mobile Application Development			
+Vignan’s Foundation for Science, Technology and Research	Guntur	India	Android Development with Kotlin			
+Vilnius University	Vilnius	Lithuania	Software Engineering			
+Virginia Polytechnic Institute and State University - Virginia Tech	Blacksburg, VA	US	CS3304 Comparative Languages Schedule			
+Visvesvaraya Technological University	Belgaum	India	“Train the Trainer” ( TTT ) program on Android Development using Kotlin			
+VIT University	Vellore	India	Programming Languages for Industry 4.0 (VAC2334)			
+Voronezh State University	Voronezh	Russia	Mobile Application Programming Basics			
+VSB - Technical University of Ostrava	Ostrava	Czech Republic	Design of Applications for Mobile Devices II			
+Warsaw University of Technology	Warsaw	Poland	Systemy i Aplikacje Mobilne			
+Waterford Institute of Technology - South East	Waterford	Ireland	Android Programming in Kotlin			
+Western Colorado University	Gunnison, CO	USA	CS 310: Programming Projects in Kotlin			
+Worcester Polytechnic Institute	Worcester, MA	US	CS 528: Ubiquitous and Mobile Computing			
+Wrocław University of Science and Technology	Wroclaw	Poland	INZ004470 Programowanie w chmurze			
+Yale University	New Haven, CT	US	CPSC 365: Algorithms			
+			- Modern Android Apps with Jetpack Compose: an open-enrollment course for professionals and students			
+			https://www.tecsup.edu.pe/cursos/apps-android-modernas-con-jetpack-compose/- Software Design program where Android with Kotlin and Jetpack Compose is part of the core curriculum			
+			https://mail.google.com/mail/u/0/#search/Lyc%C3%A9e+Gustave+Eiffel/FMfcgzQcpwssZfXjXTbXBXKtkwhMzDWM			
+			https://mail.google.com/mail/u/0/#inbox/FMfcgzQgMVljcRthWXRNsXTvKjxLCnNr			

@@ -1,0 +1,141 @@
+<meta charset="utf-8">
+<title>Baseline Comparison — Kotlin Education</title>
+<style>
+  :root{
+    --bg:#16131f;--panel:#1e1a2b;--panel2:#252035;--line:#322b47;
+    --ink:#ece8f5;--muted:#9b92b5;--faint:#6d6486;
+    --a:#7f52ff;--b:#e94d8a;--c:#ff8a3d;--good:#4bd4a0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:40px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+  .wrap{max-width:1000px;margin:0 auto}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--faint);margin:0 0 10px}
+  h1{margin:0 0 6px;font-size:32px;font-weight:800;letter-spacing:-.02em;
+    background:linear-gradient(95deg,var(--a),var(--b) 60%,var(--c));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:var(--muted);margin:0 0 30px;font-size:14px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+  .card .n{font-family:"JetBrains Mono",monospace;font-size:34px;font-weight:700}
+  .card .l{color:var(--muted);font-size:12.5px;margin-top:4px}
+  .card .s{color:var(--faint);font-size:11px;margin-top:8px;line-height:1.4}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px}
+  .panel h3{margin:0 0 2px;font-size:15px}
+  .panel .hint{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);margin:0 0 20px}
+  svg{display:block;width:100%;overflow:visible}
+  .lbl{fill:var(--ink);font-size:13px}
+  .val{fill:var(--muted);font-size:12px;font-family:"JetBrains Mono",monospace}
+  .cap{fill:var(--faint);font-size:11px;font-family:"JetBrains Mono",monospace}
+  .note{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    font-size:13px;color:var(--muted);line-height:1.55}
+  .note b{color:var(--ink)}
+  .tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;
+    padding:2px 8px;border-radius:5px;background:var(--a)22;color:#c9b6ff;margin-right:6px}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">baseline comparison · pipeline vs kotlinlang.org/education</p>
+  <h1>What the pipeline found vs the official list</h1>
+  <p class="sub">Automated discovery (243 universities) measured against the Kotlin Foundation's manually-curated list (408 universities).</p>
+
+  <div class="cards">
+    <div class="card" style="--ac:var(--good)">
+      <div class="n">192</div>
+      <div class="l">net-new discoveries</div>
+      <div class="s">universities teaching Kotlin the official list does <b>not</b> have</div>
+    </div>
+    <div class="card" style="--ac:var(--a)">
+      <div class="n">53<span style="font-size:16px;color:var(--faint)"> / 408</span></div>
+      <div class="l">rediscovered (on both lists)</div>
+      <div class="s">independently confirmed — likely undercounted by name-matching</div>
+    </div>
+    <div class="card" style="--ac:var(--b)">
+      <div class="n">355</div>
+      <div class="l">missed (only on official)</div>
+      <div class="s">not found — two distinct, fixable causes below</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>The two lists overlap — they measure different things</h3>
+    <p class="hint">discovery vs curation · not the same universe</p>
+    <svg id="venn" viewBox="0 0 700 240"></svg>
+  </div>
+
+  <div class="panel">
+    <h3>Why 355 were missed</h3>
+    <p class="hint">every miss traced to a cause in the pipeline's own logs</p>
+    <svg id="reasons" viewBox="0 0 700 170"></svg>
+    <div class="note" style="margin-top:8px">
+      <span class="tag">158 never searched</span> the school wasn't in the input university list — the pipeline can't find what it never queries. <b>Fix: broaden the input list.</b><br><br>
+      <span class="tag">197 no_match</span> the school <b>was</b> searched, but every result was filtered out — Kotlin lives on a subdomain, inside a PDF syllabus, on a non-English page, or the strict filter dropped it. <b>Fix: broader domains, relaxed filter, real-Google (Serper), localization.</b>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Discovery coverage</h3>
+    <p class="hint">of the 408 official universities</p>
+    <svg id="bar" viewBox="0 0 700 120"></svg>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+const C={a:'#7f52ff',b:'#e94d8a',c:'#ff8a3d',good:'#4bd4a0',muted:'#9b92b5',faint:'#6d6486',line:'#322b47'};
+
+// ---- Venn ----
+(function(){
+  const svg=d3.select('#venn');
+  const cx1=270,cx2=430,cy=120,r=120;
+  svg.append('circle').attr('cx',cx1).attr('cy',cy).attr('r',r).attr('fill',C.good+'26').attr('stroke',C.good).attr('stroke-width',1.5);
+  svg.append('circle').attr('cx',cx2).attr('cy',cy).attr('r',r).attr('fill',C.a+'26').attr('stroke',C.a).attr('stroke-width',1.5);
+  svg.append('text').attr('x',175).attr('y',cy-4).attr('text-anchor','middle').attr('class','val').attr('fill',C.good).text('192');
+  svg.append('text').attr('x',175).attr('y',cy+16).attr('text-anchor','middle').attr('class','cap').text('ours only');
+  svg.append('text').attr('x',350).attr('y',cy-4).attr('text-anchor','middle').attr('class','val').attr('fill',C.ink).text('53');
+  svg.append('text').attr('x',350).attr('y',cy+16).attr('text-anchor','middle').attr('class','cap').text('both');
+  svg.append('text').attr('x',525).attr('y',cy-4).attr('text-anchor','middle').attr('class','val').attr('fill',C.a).text('355');
+  svg.append('text').attr('x',525).attr('y',cy+16).attr('text-anchor','middle').attr('class','cap').text('official only');
+  svg.append('text').attr('x',175).attr('y',18).attr('text-anchor','middle').attr('class','lbl').attr('fill',C.good).text('Pipeline · 243');
+  svg.append('text').attr('x',525).attr('y',18).attr('text-anchor','middle').attr('class','lbl').attr('fill',C.a).text('Official · 408');
+})();
+
+// ---- Reasons (stacked horizontal) ----
+(function(){
+  const svg=d3.select('#reasons');
+  const data=[{k:'not in our input list',v:158,c:C.c},{k:'searched · no match',v:197,c:C.b}];
+  const total=355,W=700,x0=20,x1=680,y=40,h=44;
+  const sc=d3.scaleLinear().domain([0,total]).range([0,x1-x0]);
+  let acc=0;
+  data.forEach(d=>{
+    svg.append('rect').attr('x',x0+sc(acc)).attr('y',y).attr('width',sc(d.v)).attr('height',h).attr('fill',d.c).attr('rx',4)
+      .attr('stroke',C.bg).attr('stroke-width',2);
+    svg.append('text').attr('x',x0+sc(acc)+sc(d.v)/2).attr('y',y+h/2+5).attr('text-anchor','middle').attr('class','val').attr('fill','#16131f').attr('font-weight','700').text(d.v);
+    acc+=d.v;
+  });
+  // labels
+  let acc2=0;
+  data.forEach(d=>{
+    svg.append('rect').attr('x',x0+sc(acc2)).attr('y',y+h+16).attr('width',10).attr('height',10).attr('rx',2).attr('fill',d.c);
+    svg.append('text').attr('x',x0+sc(acc2)+16).attr('y',y+h+25).attr('class','cap').text(d.k);
+    acc2+=d.v;
+  });
+})();
+
+// ---- Coverage bar ----
+(function(){
+  const svg=d3.select('#bar');
+  const W=700,x0=20,x1=680,y=30,h=40,total=408;
+  const sc=d3.scaleLinear().domain([0,total]).range([0,x1-x0]);
+  // track
+  svg.append('rect').attr('x',x0).attr('y',y).attr('width',x1-x0).attr('height',h).attr('rx',6).attr('fill',C.line+'55');
+  // rediscovered portion
+  svg.append('rect').attr('x',x0).attr('y',y).attr('width',sc(53)).attr('height',h).attr('rx',6).attr('fill',C.a);
+  svg.append('text').attr('x',x0+8).attr('y',y+h+22).attr('class','cap').attr('fill',C.a).text('53 rediscovered (13%)');
+  svg.append('text').attr('x',x1).attr('y',y+h+22).attr('text-anchor','end').attr('class','cap').text('408 official total');
+  svg.append('text').attr('x',x0).attr('y',y-8).attr('class','cap').text('note: rediscovered is undercounted — name-matching splits pairs like "MIT" / "Massachusetts Institute of Technology"');
+})();
+</script>

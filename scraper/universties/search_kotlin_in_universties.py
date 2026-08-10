@@ -258,6 +258,7 @@ def main():
         progress.update_one(
             {"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
             {"$set": {
+<<<<<<< HEAD
                 "name": name, "countr"""
 Browser-based Google search for `kotlin site:<domain>` across universities.
 
@@ -456,6 +457,9 @@ def main():
 
 if __name__ == "__main__":
     main()y": uni.get("country"),
+=======
+                "name": name, "country": uni.get("country"),
+>>>>>>> 3070bbde996f25b601c5c7f20d05d9a450f1cc52
                 "alpha_two_code": uni.get("alpha_two_code"),
                 "domain": domains[0] if domains else None,
                 "status": status, "engine": used_engine,

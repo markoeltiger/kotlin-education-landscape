@@ -1,0 +1,107 @@
+import { c as createServerFn, i as TSS_SERVER_FUNCTION } from "./createServerFn-CIHAFgYl.mjs";
+import { t as require_lib } from "../_libs/mongodb.mjs";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+//#region node_modules/.nitro/vite/services/ssr/assets/api-data-ogJeRuqf.js
+var import_lib = require_lib();
+var createServerRpc = (serverFnMeta, splitImportFn) => {
+	const url = "/_serverFn/" + serverFnMeta.id;
+	return Object.assign(splitImportFn, {
+		url,
+		serverFnMeta,
+		[TSS_SERVER_FUNCTION]: true
+	});
+};
+function getMongoUri() {
+	if (process.env.MONGODB_URI) return process.env.MONGODB_URI;
+	if (process.env.MONGO_URI) return process.env.MONGO_URI;
+	if (process.env.VITE_MONGODB_URI) return process.env.VITE_MONGODB_URI;
+	const envPaths = [
+		join(process.cwd(), ".env.local"),
+		join(process.cwd(), ".env"),
+		join(process.cwd(), "../.env")
+	];
+	for (const envPath of envPaths) try {
+		if (existsSync(envPath)) {
+			const match = readFileSync(envPath, "utf-8").match(/^(?:MONGODB_URI|MONGO_URI|VITE_MONGODB_URI)=(.*)$/m);
+			if (match && match[1]) {
+				const uri = match[1].trim().replace(/^["']|["']$/g, "");
+				if (uri) return uri;
+			}
+		}
+	} catch {}
+	return "mongodb://markoeltiger8_db_user:hvtPyW7XyWvo9c9y@ac-jhbcezo-shard-00-00.ul5d133.mongodb.net:27017,ac-jhbcezo-shard-00-01.ul5d133.mongodb.net:27017,ac-jhbcezo-shard-00-02.ul5d133.mongodb.net:27017/?ssl=true&replicaSet=atlas-fxnozm-shard-0&authSource=admin&appName=Cluster0";
+}
+var clientPromise = null;
+function getClientPromise() {
+	const uri = getMongoUri();
+	if (!clientPromise) {
+		const globalWithMongo = global;
+		if (!globalWithMongo._mongoClientPromise) {
+			console.log(`[mongo] Initializing MongoClient connection to MongoDB Atlas...`);
+			globalWithMongo._mongoClientPromise = new import_lib.MongoClient(uri, { serverSelectionTimeoutMS: 1e4 }).connect();
+		}
+		clientPromise = globalWithMongo._mongoClientPromise;
+	}
+	return clientPromise;
+}
+async function getDb(dbName = "kotlin_edu") {
+	return (await getClientPromise()).db(dbName);
+}
+/** Returns null instead of throwing when MongoDB is unavailable */
+async function getDbSafe(dbName = "kotlin_edu") {
+	try {
+		return await getDb(dbName);
+	} catch (err) {
+		console.error("[mongo] Connection error:", err.message);
+		return null;
+	}
+}
+var getApiData_createServerFn_handler = createServerRpc({
+	id: "8e06fae4a2d24719e6eea33c258187b27767656003397f7a7a1fa1015039e721",
+	name: "getApiData",
+	filename: "src/lib/api-data.ts"
+}, (opts) => getApiData.__executeServer(opts));
+var getApiData = createServerFn({ method: "GET" }).handler(getApiData_createServerFn_handler, async () => {
+	try {
+		const db = await getDbSafe();
+		if (db) {
+			let courses = await db.collection("courses_unified").find({}, { projection: { _id: 0 } }).toArray();
+			if (!courses || courses.length === 0) courses = await db.collection("courses").find({}, { projection: { _id: 0 } }).toArray();
+			let serp = await db.collection("serp_progress").find({}, { projection: { _id: 0 } }).toArray();
+			if (!serp || serp.length === 0) serp = await db.collection("serp").find({}, { projection: { _id: 0 } }).toArray();
+			let baseline = await db.collection("baseline").findOne({}, { projection: { _id: 0 } });
+			return {
+				courses,
+				serp,
+				baseline: baseline || null
+			};
+		}
+	} catch (err) {
+		console.error("[apiData] MongoDB query error:", err);
+	}
+	try {
+		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
+		const serpPath = join(process.cwd(), "public/data/serp_progress.json");
+		const baselinePath = join(process.cwd(), "public/data/baseline_comparison.json");
+		const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
+		const serp = JSON.parse(readFileSync(serpPath, "utf-8"));
+		let baseline = null;
+		try {
+			baseline = JSON.parse(readFileSync(baselinePath, "utf-8"));
+		} catch {}
+		return {
+			courses,
+			serp,
+			baseline
+		};
+	} catch (e) {
+		return {
+			courses: [],
+			serp: [],
+			baseline: null
+		};
+	}
+});
+//#endregion
+export { getApiData_createServerFn_handler };

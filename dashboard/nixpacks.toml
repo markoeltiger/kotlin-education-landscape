@@ -1,0 +1,18 @@
+providers = ["node"]
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm install --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
+
+[variables]
+NIXPACKS_NODE_VERSION = "20"
+NODE_ENV = "production"
+HOST = "0.0.0.0"
