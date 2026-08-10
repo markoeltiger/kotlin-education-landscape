@@ -1,14 +1,15 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
-import { _ as useRouter, c as HeadContent, d as Outlet, h as Link, m as createRootRouteWithContext, s as Scripts, u as createRouter } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route$1 } from "./routes-CBVicKh-.mjs";
+import { c as HeadContent, d as createRouter, f as Outlet, g as Link, h as createRootRouteWithContext, l as useLocation, s as Scripts, v as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
+import { t as Route$1 } from "./programs-BypWN9hL.mjs";
+import { t as Route$2 } from "./routes-BIJQ6Lqp.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-DqX5H9kI.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-D81z4A-U.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-DR7iVZv9.css";
+var styles_default = "/assets/styles-CW4FYbyz.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -162,16 +163,45 @@ function RootShell({ children }) {
 }
 function RootComponent() {
 	const { queryClient } = Route.useRouteContext();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QueryClientProvider, {
+	const location = useLocation();
+	const isActive = (path) => location.pathname === path;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(QueryClientProvider, {
 		client: queryClient,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+			className: "border-b border-line bg-panel",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex items-center justify-between h-14",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: "/",
+							className: `text-sm font-medium transition-colors ${isActive("/") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"}`,
+							children: "Dashboard"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+							to: "/programs",
+							className: `text-sm font-medium transition-colors ${isActive("/programs") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"}`,
+							children: "Programs"
+						})]
+					})
+				})
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})]
 	});
 }
-var rootRouteChildren = { IndexRoute: Route$1.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => Route
-}) };
+var rootRouteChildren = {
+	IndexRoute: Route$2.update({
+		id: "/",
+		path: "/",
+		getParentRoute: () => Route
+	}),
+	ProgramsRoute: Route$1.update({
+		id: "/programs",
+		path: "/programs",
+		getParentRoute: () => Route
+	})
+};
 var routeTree = Route._addFileChildren(rootRouteChildren)._addFileTypes();
 var getRouter = () => {
 	return createRouter({
