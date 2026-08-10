@@ -1,0 +1,754 @@
+[
+ {
+  "_id": "Constructor University|De",
+  "name": "Constructor University",
+  "country": "Germany",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Fundação Hermínio Ometto|BR",
+  "name": "Fundação Hermínio Ometto",
+  "country": "Brazil",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Hellenic College of Noah|GR",
+  "name": "Hellenic College of Noah",
+  "country": "Greece",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Antonio Nariño University|CO",
+  "name": "Antonio Nariño University",
+  "country": "Colombia",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 5
+ },
+ {
+  "_id": "Engineering Institute of Technology|AU",
+  "name": "Engineering Institute of Technology",
+  "country": "Australia",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Universitas Nusa Putra|ID",
+  "name": "Universitas Nusa Putra",
+  "country": "Indonesia",
+  "status": "found",
+  "kept": 2,
+  "raw": 10
+ },
+ {
+  "_id": "Regent University College of Science and Technology|GH",
+  "name": "Regent University College of Science and Technology",
+  "country": "Ghana",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Wroclaw Akademia Biznesu|PL",
+  "name": "Wroclaw Akademia Biznesu",
+  "country": "Poland",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Atharva College of Engineering|IN",
+  "name": "Atharva College of Engineering",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 4
+ },
+ {
+  "_id": "Toronto Baptist Seminary and Bible College|CA",
+  "name": "Toronto Baptist Seminary and Bible College",
+  "country": "Canada",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Universidade Comunitária da Região de Chapecó - Unochapecó|BR",
+  "name": "Universidade Comunitária da Região de Chapecó - Unochapecó",
+  "country": "Brazil",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "West Herts College|GB",
+  "name": "West Herts College",
+  "country": "United Kingdom",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Bhagwan Parshuram Institute of Technology|IN",
+  "name": "Bhagwan Parshuram Institute of Technology",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "National Institute of Applied Sciences of Toulouse|FR",
+  "name": "National Institute of Applied Sciences of Toulouse",
+  "country": "France",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 8
+ },
+ {
+  "_id": "Bugema University|UG",
+  "name": "Bugema University",
+  "country": "Uganda",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Mohamed bin Zayed University of Artificial Intelligence (MBZUAI)|AE",
+  "name": "Mohamed bin Zayed University of Artificial Intelligence (MBZUAI)",
+  "country": "United Arab Emirates",
+  "status": "found",
+  "kept": 1,
+  "raw": 4
+ },
+ {
+  "_id": "Centro Universitário de Brasília, UNICEUB|BR",
+  "name": "Centro Universitário de Brasília, UNICEUB",
+  "country": "Brazil",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Kharkiv National University|UA",
+  "name": "Kharkiv National University",
+  "country": "Ukraine",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Universidad Técnica Federico Santa María|CL",
+  "name": "Universidad Técnica Federico Santa María",
+  "country": "Chile",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 3
+ },
+ {
+  "_id": "IÉSEG School of Management|FR",
+  "name": "IÉSEG School of Management",
+  "country": "France",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Sun Yat-Sen University|CN",
+  "name": "Sun Yat-Sen University",
+  "country": "China",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Royal Holloway University of London|GB",
+  "name": "Royal Holloway University of London",
+  "country": "United Kingdom",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 4
+ },
+ {
+  "_id": "Hunan University|CN",
+  "name": "Hunan University",
+  "country": "China",
+  "status": "found",
+  "kept": 2,
+  "raw": 10
+ },
+ {
+  "_id": "University of Portsmouth|GB",
+  "name": "University of Portsmouth",
+  "country": "United Kingdom",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "Central Supélec|FR",
+  "name": "Central Supélec",
+  "country": "France",
+  "status": "found",
+  "kept": 1,
+  "raw": 10
+ },
+ {
+  "_id": "Académie de Paris|FR",
+  "name": "Académie de Paris",
+  "country": "France",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Académie d'Aix-Marseille|FR",
+  "name": "Académie d'Aix-Marseille",
+  "country": "France",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "Académie de Créteil|FR",
+  "name": "Académie de Créteil",
+  "country": "France",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Marywood University|US",
+  "name": "Marywood University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "University of Petroleum and Energy Studies|IN",
+  "name": "University of Petroleum and Energy Studies",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 2
+ },
+ {
+  "_id": "Ashoka University|IN",
+  "name": "Ashoka University",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Indian Institute of Information Technology Sri City|IN",
+  "name": "Indian Institute of Information Technology Sri City",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Cégep de Saint-Jérôme|CA",
+  "name": "Cégep de Saint-Jérôme",
+  "country": "Canada",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Lindenwood University|US",
+  "name": "Lindenwood University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "DAV Institute of Engineering & Technology|IN",
+  "name": "DAV Institute of Engineering & Technology",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 4
+ },
+ {
+  "_id": "Lovely Professional University|IN",
+  "name": "Lovely Professional University",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 10
+ },
+ {
+  "_id": "Sullivan University|US",
+  "name": "Sullivan University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Florida State College at Jacksonville|US",
+  "name": "Florida State College at Jacksonville",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Xavier University|US",
+  "name": "Xavier University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Tusculum College|US",
+  "name": "Tusculum College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Claremont School of Theology|US",
+  "name": "Claremont School of Theology",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Somaiya Vidyavihar|IN",
+  "name": "Somaiya Vidyavihar",
+  "country": "India",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 6
+ },
+ {
+  "_id": "Columbia College (SC)|US",
+  "name": "Columbia College (SC)",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "Chabot-Las Positas Community College District|US",
+  "name": "Chabot-Las Positas Community College District",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Keller Graduate School of Management|US",
+  "name": "Keller Graduate School of Management",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Monroe College|US",
+  "name": "Monroe College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "San Mateo County Community College District|US",
+  "name": "San Mateo County Community College District",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Los Rios Community College District|US",
+  "name": "Los Rios Community College District",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "DigiPen Institute of Technology|US",
+  "name": "DigiPen Institute of Technology",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "University of Pittsburgh Medical Center|US",
+  "name": "University of Pittsburgh Medical Center",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Claremont Graduate University|US",
+  "name": "Claremont Graduate University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "The University of Texas at Rio Grande Valley|US",
+  "name": "The University of Texas at Rio Grande Valley",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 3
+ },
+ {
+  "_id": "College of Mount Saint Vincent|US",
+  "name": "College of Mount Saint Vincent",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "University of Arkansas System eVersity|US",
+  "name": "University of Arkansas System eVersity",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "ECPI University|US",
+  "name": "ECPI University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 5
+ },
+ {
+  "_id": "University of Mary Washington|US",
+  "name": "University of Mary Washington",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Baldwin Wallace University|US",
+  "name": "Baldwin Wallace University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "California State University Channel Islands|US",
+  "name": "California State University Channel Islands",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Brandman University|US",
+  "name": "Brandman University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "United States Coast Guard Academy|US",
+  "name": "United States Coast Guard Academy",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Athens State University|US",
+  "name": "Athens State University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "The Scripps Research Institute|US",
+  "name": "The Scripps Research Institute",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Eastern Florida State College|US",
+  "name": "Eastern Florida State College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Western New England University|US",
+  "name": "Western New England University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "King University|US",
+  "name": "King University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "Georgia Gwinnett College|US",
+  "name": "Georgia Gwinnett College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 2
+ },
+ {
+  "_id": "Trident University|US",
+  "name": "Trident University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Alliant International University|US",
+  "name": "Alliant International University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Mississippi Valley State University|US",
+  "name": "Mississippi Valley State University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Roosevelt University|US",
+  "name": "Roosevelt University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "ITT Technical Institute|US",
+  "name": "ITT Technical Institute",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Illinois Eastern Community Colleges|US",
+  "name": "Illinois Eastern Community Colleges",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Park University|US",
+  "name": "Park University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Icahn School of Medicine at Mount Sinai|US",
+  "name": "Icahn School of Medicine at Mount Sinai",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Utah Valley University|US",
+  "name": "Utah Valley University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Wisconsin Lutheran College|US",
+  "name": "Wisconsin Lutheran College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Riverside Community College District|US",
+  "name": "Riverside Community College District",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Wake Forest Baptist Health|US",
+  "name": "Wake Forest Baptist Health",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "University of Massachusetts Boston|US",
+  "name": "University of Massachusetts Boston",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 3
+ },
+ {
+  "_id": "Florida Polytechnic University|US",
+  "name": "Florida Polytechnic University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Wagner College|US",
+  "name": "Wagner College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Wilmington University|US",
+  "name": "Wilmington University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "International Technological University|US",
+  "name": "International Technological University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 1
+ },
+ {
+  "_id": "Young Harris College|US",
+  "name": "Young Harris College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "University of Findlay|US",
+  "name": "University of Findlay",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Philadelphia College of Osteopathic Medicine|US",
+  "name": "Philadelphia College of Osteopathic Medicine",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Yosemite Community College District|US",
+  "name": "Yosemite Community College District",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Coastal Alabama Community College|US",
+  "name": "Coastal Alabama Community College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Purdue University Northwest|US",
+  "name": "Purdue University Northwest",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Columbia Basin College|US",
+  "name": "Columbia Basin College",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Seattle Colleges|US",
+  "name": "Seattle Colleges",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 4
+ },
+ {
+  "_id": "Lipscomb University|US",
+  "name": "Lipscomb University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 0
+ },
+ {
+  "_id": "Tiffin University|US",
+  "name": "Tiffin University",
+  "country": "United States",
+  "status": "no_match",
+  "kept": 0,
+  "raw": 4
+ },
+ {
+  "_id": "NorthCap University|IN",
+  "name": "NorthCap University",
+  "country": "India",
+  "status": "found",
+  "kept": 1,
+  "raw": 6
+ }
+]
