@@ -6,8 +6,9 @@ import { useCallback, useMemo, useState } from "react";
 import { Panel, Empty } from "../components/Panel";
 import { HorizontalBars, Donut } from "../components/Charts";
 import { fmt } from "../lib/format";
-import { readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync, existsSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 // Types for programs data
 interface Program {
@@ -58,7 +59,7 @@ export const Route = createFileRoute("/programs")({
       const programsPath = join(process.cwd(), 'public/data/programs.json');
       const programsContent = readFileSync(programsPath, 'utf-8');
       programs = JSON.parse(programsContent) as Program[];
-      console.log(`[programs] loaded ${programs.length} programs from programs.json`);
+      console.log(`[programs] loaded ${programs.length} programs from ${programsPath}`);
     } catch (error) {
       console.error('[programs] failed to load programs.json:', error);
     }
@@ -67,7 +68,7 @@ export const Route = createFileRoute("/programs")({
       const topicsPath = join(process.cwd(), 'public/data/topics.json');
       const topicsContent = readFileSync(topicsPath, 'utf-8');
       topics = JSON.parse(topicsContent) as TopicsData;
-      console.log('[programs] loaded topics.json');
+      console.log(`[programs] loaded topics from ${topicsPath}`);
     } catch (error) {
       console.error('[programs] failed to load topics.json:', error);
     }
