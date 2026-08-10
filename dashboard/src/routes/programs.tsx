@@ -131,17 +131,17 @@ function ProgramsPage() {
   );
 
   // Get unique values for filters
-  const countries = useMemo(() => {
+  const allCountries = useMemo(() => {
     const unique = Array.from(new Set(dataset.programs.map((p) => p.country))).sort();
     return unique;
   }, [dataset.programs]);
 
-  const levels = useMemo(() => {
+  const allLevels = useMemo(() => {
     const unique = Array.from(new Set(dataset.programs.map((p) => p.level))).sort();
     return unique;
   }, [dataset.programs]);
 
-  const topics = useMemo(() => {
+  const allTopics = useMemo(() => {
     const unique = Array.from(new Set(dataset.programs.flatMap((p) => p.topics))).sort();
     return unique;
   }, [dataset.programs]);
@@ -212,6 +212,26 @@ function ProgramsPage() {
       </header>
 
       <div className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 pb-10 sm:pb-12 md:pb-16">
+        {/* Programs summary at top */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="panel p-4 sm:p-5">
+            <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Total Programs</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{dataset.programs.length}</div>
+          </div>
+          <div className="panel p-4 sm:p-5">
+            <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Countries</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{allCountries.length}</div>
+          </div>
+          <div className="panel p-4 sm:p-5">
+            <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Topics</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{allTopics.length}</div>
+          </div>
+          <div className="panel p-4 sm:p-5">
+            <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Filtered</div>
+            <div className="text-2xl sm:text-3xl font-bold text-kt-purple mono">{sortedPrograms.length}</div>
+          </div>
+        </div>
+
         {/* Topics distribution chart (headline) */}
         <Panel title="Topics distribution" subtitle="Most taught Kotlin topics across all programs" className="mb-4 sm:mb-6">
           <HorizontalBars 
@@ -299,7 +319,7 @@ function ProgramsPage() {
                 className="w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-kt-purple"
               >
                 <option value="">All countries</option>
-                {countries.map((country) => (
+                {allCountries.map((country) => (
                   <option key={country} value={country}>{country}</option>
                 ))}
               </select>
@@ -314,7 +334,7 @@ function ProgramsPage() {
                 className="w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-kt-purple"
               >
                 <option value="">All levels</option>
-                {levels.map((level) => (
+                {allLevels.map((level) => (
                   <option key={level} value={level}>{level}</option>
                 ))}
               </select>
@@ -329,7 +349,7 @@ function ProgramsPage() {
                 className="w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-kt-purple"
               >
                 <option value="">All topics</option>
-                {topics.map((topic) => (
+                {allTopics.map((topic) => (
                   <option key={topic} value={topic}>{topic}</option>
                 ))}
               </select>
@@ -424,7 +444,6 @@ function ProgramsPage() {
                   <th className="text-left py-3 px-2 font-semibold text-ink">Topics</th>
                   <th className="text-left py-3 px-2 font-semibold text-ink">Credits</th>
                   <th className="text-left py-3 px-2 font-semibold text-ink">Language</th>
-                  <th className="text-left py-3 px-2 font-semibold text-ink">Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -436,7 +455,15 @@ function ProgramsPage() {
                   >
                     <td className="py-3 px-2 text-ink">{program.university}</td>
                     <td className="py-3 px-2">
-                      <span className="text-kt-purple hover:underline">{program.program_name}</span>
+                      <a
+                        href={program.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-kt-purple hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {program.program_name}
+                      </a>
                     </td>
                     <td className="py-3 px-2 text-muted-foreground">{program.country}</td>
                     <td className="py-3 px-2">
@@ -465,17 +492,6 @@ function ProgramsPage() {
                     </td>
                     <td className="py-3 px-2 text-muted-foreground mono text-xs">{program.credits || "-"}</td>
                     <td className="py-3 px-2 text-muted-foreground">{program.language_taught || "-"}</td>
-                    <td className="py-3 px-2">
-                      <a
-                        href={program.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-kt-purple hover:underline text-xs"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View →
-                      </a>
-                    </td>
                   </tr>
                 ))}
               </tbody>
