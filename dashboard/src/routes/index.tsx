@@ -4,12 +4,14 @@ import { z } from "zod";
 import { useCallback, useMemo, Suspense, lazy, useRef, useEffect } from "react";
 import Papa from "papaparse";
 
-import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline } from "../lib/dataset";
+import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline, type Insights } from "../lib/dataset";
 import { ActiveFilters, FilterRail } from "../components/FilterRail";
 import { StatCards } from "../components/StatCards";
 import { Panel } from "../components/Panel";
 import { WorldMap } from "../components/WorldMap";
 import { Donut, Funnel, Histogram, HorizontalBars, StackedBars } from "../components/Charts";
+import { InsightSummary } from "../components/InsightSummary";
+import { ChartInsight } from "../components/ChartInsight";
 import { fmt } from "../lib/format";
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -80,7 +82,19 @@ export const Route = createFileRoute("/")({
       // baseline file might not exist yet — this is fine
     }
     
-    return { courses, serp, baseline };
+    // AI-generated insights JSON: optional; contains precomputed insights
+    // about the dataset. If it fails to load, the dashboard works without insights.
+    let insights: Insights = null;
+    try {
+      const insightsPath = join(process.cwd(), 'public/data/insights.json');
+      insights = JSON.parse(readFileSync(insightsPath, 'utf-8')) as Insights;
+      console.log('[insights] loaded insights.json');
+    } catch {
+      // insights file might not exist or be invalid — this is fine
+      console.log('[insights] failed to load insights.json, continuing without insights');
+    }
+    
+    return { courses, serp, baseline, insights };
   },
   component: Dashboard,
 });
@@ -309,6 +323,11 @@ function Dashboard() {
             <ActiveFilters filters={filters} setFilters={setFilters} />
           </div>
 
+          {/* ── AI Summary hero card ─────────────────────────────────────────
+              Shows the overall AI-generated insight about the full dataset.
+              Displays only if insights.json loaded successfully. */}
+          <InsightSummary insight={dataset.insights?.overall} />
+
           {/* ── KPI stat cards ───────────────────────────────────────────────
               Six large-number cards summarising the filtered dataset.
               The "Primary signal" card highlights the signal-tier split with a
@@ -337,6 +356,7 @@ function Dashboard() {
               activeCountries={filters.countries}
               onToggleCountry={toggleCountry}
             />
+            <ChartInsight insight={dataset.insights?.map} />
 
             {/* Divider between map and table */}
             <div className="mt-4 sm:mt-6 border-t border-line pt-4 sm:pt-5">
@@ -372,11 +392,13 @@ function Dashboard() {
                 onClick={toggleCountry}
                 activeKey={filters.countries[0]}
               />
+              <ChartInsight insight={dataset.insights?.top_countries} />
             </Panel>
 
             <Panel title="Records by source" subtitle="Distribution">
               {/* Source breakdown bar chart */}
               <HorizontalBars data={sourceCounts} color="#C711E1" height={220} />
+              <ChartInsight insight={dataset.insights?.sources} />
               <div className="grid grid-cols-2 gap-6 mt-6">
                 {/* Signal-tier donut: primary vs secondary — measures dataset quality */}
                 <div>
@@ -386,6 +408,7 @@ function Dashboard() {
                     colors={["#7F52FF", "#3A3A3F"]}
                     centerLabel="records"
                   />
+                  <ChartInsight insight={dataset.insights?.signal_tier} />
                 </div>
                 {/* Learning-type donut: formal (university/MOOC) vs informal (GitHub) */}
                 <div>
@@ -395,6 +418,7 @@ function Dashboard() {
                     colors={["#C711E1", "#7F52FF"]}
                     centerLabel="records"
                   />
+                  <ChartInsight insight={dataset.insights?.learning_type} />
                 </div>
               </div>
             </Panel>
@@ -407,6 +431,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="GitHub by repository type" subtitle="Subtype breakdown">
               <HorizontalBars data={repoTypeCounts} color="#7F52FF" />
+              <ChartInsight insight={dataset.insights?.github_types} />
             </Panel>
             <Panel title="GitHub popularity" subtitle="Stars distribution">
               <HorizontalBars data={popularityBuckets} color="#C711E1" height={260} />
@@ -420,6 +445,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Panel title="Top 15 providers" subtitle="Owners & institutions">
               <HorizontalBars data={providerCounts} color="#7F52FF" />
+              <ChartInsight insight={dataset.insights?.top_providers} />
             </Panel>
             <Panel title="Formal vs informal" subtitle="Top 10 countries, stacked">
               <StackedBars
@@ -458,6 +484,7 @@ function Dashboard() {
                 },
               ]}
             />
+            <ChartInsight insight={dataset.insights?.baseline} />
           </Panel>
 
           {/* ── SERP outcome & engine breakdown ─────────────────────────────

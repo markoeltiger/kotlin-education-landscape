@@ -92,6 +92,14 @@
   border-radius: 6px;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
 /* Mobile-specific improvements */
 @media (max-width: 640px) {
   ::-webkit-scrollbar { width: 6px; height: 6px; }

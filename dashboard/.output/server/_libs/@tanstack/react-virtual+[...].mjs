@@ -1,9 +1,9 @@
 import { o as __toESM } from "../../_runtime.mjs";
-import { r as require_react } from "../react+tanstack__react-query.mjs";
-import { F as require_react_dom } from "./react-router+[...].mjs";
+import { n as require_react } from "../@radix-ui/react-compose-refs+[...].mjs";
+import { l as require_react_dom } from "../@radix-ui/react-dialog+[...].mjs";
 //#region node_modules/@tanstack/virtual-core/dist/esm/lazy-measurements.js
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
-var import_react_dom = require_react_dom();
+var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 function createLazyMeasurementsView(count, flat, getItemKey) {
 	const cache = new Array(count);
 	return new Proxy(cache, { get(target, prop, receiver) {

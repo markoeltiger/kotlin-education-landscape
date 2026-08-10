@@ -32,10 +32,27 @@ export type Baseline = {
   missed_searched_no_match: number;
 };
 
+export type Insights = {
+  overall?: string;
+  map?: string;
+  sources?: string;
+  signal_tier?: string;
+  learning_type?: string;
+  github_types?: string;
+  top_countries?: string;
+  top_providers?: string;
+  baseline?: string;
+  _meta?: {
+    model: string;
+    generated: boolean;
+  };
+};
+
 export type Dataset = {
   courses: Course[];
   serp: SerpRow[];
   baseline: Baseline | null;
+  insights: Insights | null;
 };
 
 export async function fetchDataset(): Promise<Dataset> {
@@ -46,16 +63,18 @@ export async function fetchDataset(): Promise<Dataset> {
       courses: data.courses || [],
       serp: data.serp || [],
       baseline: data.baseline || null,
+      insights: data.insights || null,
     };
   } catch (error) {
     console.error('Error fetching dataset:', error);
     // Fallback to static JSON files
-    const [c, s, b] = await Promise.all([
+    const [c, s, b, i] = await Promise.all([
       fetch("/data/courses_unified.json").then((r) => r.json() as Promise<Course[]>),
       fetch("/data/serp_progress.json").then((r) => r.json() as Promise<SerpRow[]>),
       fetch("/data/baseline_comparison.json").then((r) => (r.ok ? r.json() as Promise<Baseline> : null)).catch(() => null),
+      fetch("/data/insights.json").then((r) => (r.ok ? r.json() as Promise<Insights> : null)).catch(() => null),
     ]);
-    return { courses: c, serp: s, baseline: b };
+    return { courses: c, serp: s, baseline: b, insights: i };
   }
 }
 

@@ -26,84 +26,91 @@ var public_assets_data_default = {
 	"/favicon.ico": {
 		"type": "image/vnd.microsoft.icon",
 		"etag": "\"4f95-3RXc3p2mhEAs1WBwaIvE0Y0uu0Y\"",
-		"mtime": "2026-07-24T15:32:59.017Z",
+		"mtime": "2026-08-10T13:46:00.041Z",
 		"size": 20373,
 		"path": "../public/favicon.ico"
 	},
 	"/favicon.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"1a4-+rYjOtdvgx3STWwomPhfrygP0EM\"",
-		"mtime": "2026-07-24T15:32:59.017Z",
+		"mtime": "2026-08-10T13:46:00.041Z",
 		"size": 420,
 		"path": "../public/favicon.svg"
-	},
-	"/assets/DataTable-D7Dm3nt5.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"6e64-5J0hT5Cli5K4ZsElKIP77enbvKA\"",
-		"mtime": "2026-07-24T15:32:58.675Z",
-		"size": 28260,
-		"path": "../public/assets/DataTable-D7Dm3nt5.js"
 	},
 	"/kotlin_education_tableau_universities.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"16a29-AIo3yh2So/OL2NnjHBrqflElX3E\"",
-		"mtime": "2026-07-24T15:32:59.018Z",
+		"mtime": "2026-08-10T13:46:00.043Z",
 		"size": 92713,
 		"path": "../public/kotlin_education_tableau_universities.csv"
+	},
+	"/assets/DataTable-DK3TRUTS.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"6e83-Lsq/f5Q2VH40bLWojkH0uFg5yVY\"",
+		"mtime": "2026-08-10T13:45:59.589Z",
+		"size": 28291,
+		"path": "../public/assets/DataTable-DK3TRUTS.js"
 	},
 	"/assets/format-CkOFoDvF.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"80-DXprVUq3lOzjYz7fxrbIukkhpKA\"",
-		"mtime": "2026-07-24T15:32:58.675Z",
+		"mtime": "2026-08-10T13:45:59.589Z",
 		"size": 128,
 		"path": "../public/assets/format-CkOFoDvF.js"
 	},
-	"/assets/styles-CjKSHSKb.css": {
+	"/assets/routes-B_9IrS-D.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"31de2-4jZDvWdWRTIpEL1B85cuPSFelIM\"",
+		"mtime": "2026-08-10T13:45:59.589Z",
+		"size": 204258,
+		"path": "../public/assets/routes-B_9IrS-D.js"
+	},
+	"/assets/styles-DR7iVZv9.css": {
 		"type": "text/css; charset=utf-8",
-		"etag": "\"108dc-sJyN1VHSE3T4iSP9OQasTjYH74s\"",
-		"mtime": "2026-07-24T15:32:58.676Z",
-		"size": 67804,
-		"path": "../public/assets/styles-CjKSHSKb.css"
+		"etag": "\"11354-4g0oJehmNSrf+eLO9ncTqYb0C3o\"",
+		"mtime": "2026-08-10T13:45:59.590Z",
+		"size": 70484,
+		"path": "../public/assets/styles-DR7iVZv9.css"
 	},
 	"/data/baseline_comparison.json": {
 		"type": "application/json",
 		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
-		"mtime": "2026-07-24T15:32:59.017Z",
+		"mtime": "2026-08-10T13:46:00.040Z",
 		"size": 112,
 		"path": "../public/data/baseline_comparison.json"
 	},
-	"/assets/routes-xgP2fPUa.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"1eb63-0NCfcoDRr/Bj9+v4SnOw6KESPSA\"",
-		"mtime": "2026-07-24T15:32:58.675Z",
-		"size": 125795,
-		"path": "../public/assets/routes-xgP2fPUa.js"
+	"/data/insights.json": {
+		"type": "application/json",
+		"etag": "\"1255-2ypdIlixOQ2I8vpBvswhFtewRvs\"",
+		"mtime": "2026-08-10T13:46:00.040Z",
+		"size": 4693,
+		"path": "../public/data/insights.json"
 	},
-	"/assets/index-BUeImt7F.js": {
+	"/assets/index-bUydJDQh.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"69081-tLqBVjsLTyN3dsWsqK1ijVrJGCs\"",
-		"mtime": "2026-07-24T15:32:58.674Z",
-		"size": 430209,
-		"path": "../public/assets/index-BUeImt7F.js"
+		"etag": "\"691a4-AXRw081y0wHWrm5aU85vEvIbF9c\"",
+		"mtime": "2026-08-10T13:45:59.588Z",
+		"size": 430500,
+		"path": "../public/assets/index-bUydJDQh.js"
 	},
 	"/data/serp_progress.json": {
 		"type": "application/json",
 		"etag": "\"1725fa-vZzHydDZn45KMjQ11Y5UrSWYA5A\"",
-		"mtime": "2026-07-24T15:32:59.023Z",
+		"mtime": "2026-08-10T13:46:00.045Z",
 		"size": 1517050,
 		"path": "../public/data/serp_progress.json"
 	},
 	"/kotlin_education_tableau.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"1ff18f-OvxQHYrllfoyHzXkOzyu7TEnSj4\"",
-		"mtime": "2026-07-24T15:32:59.026Z",
+		"mtime": "2026-08-10T13:46:00.047Z",
 		"size": 2093455,
 		"path": "../public/kotlin_education_tableau.csv"
 	},
 	"/data/courses_unified.json": {
 		"type": "application/json",
 		"etag": "\"43ebe9-NuH7Ld0SxUktzIVDH5zqNwTUHiU\"",
-		"mtime": "2026-07-24T15:32:59.028Z",
+		"mtime": "2026-08-10T13:46:00.049Z",
 		"size": 4451305,
 		"path": "../public/data/courses_unified.json"
 	}
