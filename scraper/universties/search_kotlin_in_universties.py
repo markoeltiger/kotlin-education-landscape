@@ -260,7 +260,208 @@ def main():
         progress.update_one(
             {"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
             {"$set": {
+<<<<<<< HEAD
+                "name": name, "countr"""
+Browser-based Google search for `kotlin site:<domain>` across universities.
+
+HONEST WARNING: Google aggressively CAPTCHAs automated browsers. This script uses
+slow, human-like pacing and anti-detection flags to last as long as possible, but
+expect CAPTCHAs after some number of queries from a single IP. It is fully
+resumable — every result is saved immediately, and when Google blocks you, stop
+the script and rerun later (or from another network); it skips what's done.
+
+Run headful (visible browser) so you can solve a CAPTCHA by hand if you want to
+keep a session alive:  python browser_search.py --headful
+"""
+import argparse
+import json
+import os
+import random
+import sys
+import time
+from pathlib import Path
+
+from dotenv import load_dotenv
+from pymongo import MongoClient, ASCENDING
+
+load_dotenv()
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sys.exit("Playwright not installed. Run:\n  pip install playwright\n  playwright install chromium")
+
+INPUT = os.environ.get("UNI_INPUT", "world_universities_and_domains.json")
+
+COURSE_WORDS = ("course", "syllabus", "module", "curriculum", "lecture", "semester",
+                "bachelor", "master", "undergraduate", "graduate", "programme",
+                "program", "degree", "faculty", "handbook", "diploma")
+
+
+def human_pause(a=2.5, b=6.0):
+    time.sleep(random.uniform(a, b))
+
+
+def looks_like_course(text):
+    t = (text or "").lower()
+    return any(w in t for w in COURSE_WORDS)
+
+
+def parse_results(page):
+    """Extract organic results from a Google results page."""
+    out = []
+    # Google's result blocks — this selector drifts over time; adjust if it breaks
+    anchors = page.query_selector_all("a:has(h3)")
+    for a in anchors:
+        try:
+            href = a.get_attribute("href") or ""
+            h3 = a.query_selector("h3")
+            title = h3.inner_text() if h3 else ""
+            if href.startswith("http") and "google." not in href:
+                out.append({"url": href, "title": title})
+        except Exception:
+            continue
+    return out
+
+
+def is_captcha(page):
+    url = page.url.lower()
+    if "sorry/index" in url or "/sorry" in url:
+        return True
+    try:
+        if page.query_selector("form#captcha-form, iframe[src*='recaptcha']"):
+            return True
+        body = (page.inner_text("body") or "").lower()
+        if "unusual traffic" in body or "not a robot" in body:
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def load_universities(done):
+    unis = json.loads(Path(INPUT).read_text(encoding="utf-8"))
+    unis = [u for u in unis if u.get("domains")]
+    return [u for u in unis
+            if f"{u['name']}|{u.get('alpha_two_code') or ''}" not in done]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--headful", action="store_true",
+                    help="show the browser (lets you solve CAPTCHAs by hand)")
+    ap.add_argument("--limit", type=int, default=0, help="max universities this run (0 = all)")
+    ap.add_argument("--min-pause", type=float, default=3.0)
+    ap.add_argument("--max-pause", type=float, default=8.0)
+    ap.add_argument("--course-only", action="store_true")
+    args = ap.parse_args()
+
+    uri = os.environ.get("MONGODB_URI")
+    if not uri:
+        sys.exit("MONGODB_URI not set")
+    client = MongoClient(uri, serverSelectionTimeoutMS=15000)
+    client.admin.command("ping")
+    db = client["kotlin_edu"]
+    findings = db["university_findings"]
+    progress = db["serp_progress"]
+    findings.create_index([("url", ASCENDING)], unique=True)
+
+    done = {d["_id"] for d in progress.find({"status": {"$ne": "failed"}}, {"_id": 1})}
+    unis = load_universities(done)
+    if args.limit:
+        unis = unis[:args.limit]
+    print(f"{len(unis)} universities to search (browser mode)\n")
+
+    written = captchas = searched = 0
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=not args.headful,
+            args=["--disable-blink-features=AutomationControlled",
+                  "--no-sandbox", "--disable-dev-shm-usage"])
+        ctx = browser.new_context(
+            user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/125.0.0.0 Safari/537.36"),
+            viewport={"width": 1366, "height": 768},
+            locale="en-US")
+        # light stealth: hide webdriver flag
+        ctx.add_init_script(
+            "Object.defineProperty(navigator,'webdriver',{get:()=>undefined})")
+        page = ctx.new_page()
+
+        for i, uni in enumerate(unis, 1):
+            name = uni["name"]
+            domain = uni["domains"][0]
+            q = f"kotlin site:{domain}"
+            try:
+                page.goto("https://www.google.com/search?q=" +
+                          q.replace(" ", "+").replace(":", "%3A"),
+                          wait_until="domcontentloaded", timeout=30000)
+            except Exception as e:
+                print(f"[{i}/{len(unis)}] {name:<32.32} nav error: {type(e).__name__}")
+                continue
+
+            searched += 1
+            if is_captcha(page):
+                captchas += 1
+                print(f"[{i}/{len(unis)}] {name:<32.32} !! CAPTCHA")
+                if args.headful:
+                    print("   >> Solve the CAPTCHA in the browser window, then press Enter here...")
+                    input()
+                    if is_captcha(page):
+                        print("   still blocked — stopping. progress saved.")
+                        break
+                else:
+                    print("   Google is blocking automated search. Progress saved.")
+                    print("   Try: --headful to solve by hand, wait a few hours, or switch networks.")
+                    break
+
+            results = parse_results(page)
+            kept = 0
+            for r in results:
+                if domain not in r["url"]:
+                    continue
+                if "kotlin" not in (r["title"] + r["url"]).lower():
+                    continue
+                is_course = looks_like_course(r["title"])
+                if args.course_only and not is_course:
+                    continue
+                res = findings.update_one(
+                    {"url": r["url"]},
+                    {"$setOnInsert": {
+                        "url": r["url"], "university": name,
+                        "country": uni.get("country"),
+                        "alpha_two_code": uni.get("alpha_two_code"),
+                        "title": r["title"], "course_signal": is_course,
+                        "source": "university_website", "discovery": "browser:google",
+                        "found_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    }}, upsert=True)
+                kept += 1
+                if res.upserted_id is not None:
+                    written += 1
+
+            status = "found" if kept else "no_match"
+            progress.update_one(
+                {"_id": f"{name}|{uni.get('alpha_two_code') or ''}"},
+                {"$set": {"name": name, "country": uni.get("country"),
+                          "status": status, "engine": "browser:google",
+                          "kept": kept, "last_run": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}},
+                upsert=True)
+            print(f"[{i}/{len(unis)}] {name:<32.32} kept={kept}")
+            human_pause(args.min_pause, args.max_pause)
+
+        browser.close()
+
+    print(f"\nsearched {searched} · wrote {written} new findings · {captchas} captcha(s)")
+    if captchas:
+        print("Google blocked automated search (expected). Everything found is saved.")
+
+
+if __name__ == "__main__":
+    main()y": uni.get("country"),
+=======
                 "name": name, "country": uni.get("country"),
+>>>>>>> 3070bbde996f25b601c5c7f20d05d9a450f1cc52
                 "alpha_two_code": uni.get("alpha_two_code"),
                 "domain": domains[0] if domains else None,
                 "status": status, "engine": used_engine,

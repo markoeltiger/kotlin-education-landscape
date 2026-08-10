@@ -1,0 +1,79 @@
+[
+ {
+  "url": "https://library.nusaputra.ac.id/index.php?author=KOTLIN&search=Search",
+  "university": "Universitas Nusa Putra",
+  "country": "Indonesia",
+  "alpha_two_code": "ID",
+  "title": "Online Public Access Catalog (OPAC)",
+  "course_signal": true,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:57:10Z"
+ },
+ {
+  "url": "https://library.nusaputra.ac.id/index.php?p=show_detail&id=4010&keywords=",
+  "university": "Universitas Nusa Putra",
+  "country": "Indonesia",
+  "alpha_two_code": "ID",
+  "title": "MEMBUAT APLIKASI MAPBOX PADA KOTLIN",
+  "course_signal": false,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:57:10Z"
+ },
+ {
+  "url": "https://librarysearch.mbzuai.ac.ae/discovery/fulldisplay?docid=alma9922759209106&context=L&vid=971MBZUAI_INST:971MBZUAI_INST&lang=en&search_scope=MyInstitution&adaptor=Local%20Search%20Engine&tab=LibraryCatalog&query=sub%2Cequals%2CFunctional%20programming%20(Computer%20science)%2CAND&mode=advanced&offset=30",
+  "university": "Mohamed bin Zayed University of Artificial Intelligence (MBZUAI)",
+  "country": "United Arab Emirates",
+  "alpha_two_code": "AE",
+  "title": "The joy of Kotlin - Mohamed bin Zayed University of Artificial ...",
+  "course_signal": true,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:57:57Z"
+ },
+ {
+  "url": "http://opac.hnu.edu.cn:8888/opac/search?q=Kotlin&searchType=standard&isFacet=true&view=standard&rows=10&sortWay=score&sortOrder=desc&f_pubdate=2017&searchWay0=marc&logical0=AND&f_author=%E7%8E%8B%E5%BF%97%E5%BC%BA",
+  "university": "Hunan University",
+  "country": "China",
+  "alpha_two_code": "CN",
+  "title": "检索结果 - 湖南大学",
+  "course_signal": false,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:58:29Z"
+ },
+ {
+  "url": "http://opac.hnu.edu.cn:8888/opac/search?q=Atom&searchType=standard&isFacet=true&view=standard&rows=10&sortWay=score&sortOrder=desc&f_pubdate=2023&searchWay0=marc&logical0=AND&f_subject=kotlin",
+  "university": "Hunan University",
+  "country": "China",
+  "alpha_two_code": "CN",
+  "title": "检索结果 - 湖南大学",
+  "course_signal": false,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:58:29Z"
+ },
+ {
+  "url": "https://gitlab-student.centralesupelec.fr/2019granierr/ashurbanipal/-/tree/2b531944a323ba88468092ac2394fd2174f0c111/src/main/kotlin",
+  "university": "Central Supélec",
+  "country": "France",
+  "alpha_two_code": "FR",
+  "title": "src/main/kotlin · 2b531944a323ba88468092ac2394fd2174f0c111",
+  "course_signal": false,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-01T17:58:39Z"
+ },
+ {
+  "url": "https://sait.ncuindia.edu/courses/kotlin-for-java-developers/",
+  "university": "NorthCap University",
+  "country": "India",
+  "alpha_two_code": "IN",
+  "title": "Kotlin Language for Java Developers",
+  "course_signal": true,
+  "source": "university_website",
+  "discovery": "browser:google",
+  "found_at": "2026-08-02T01:27:30Z"
+ }
+]
