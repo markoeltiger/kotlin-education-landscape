@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useLocation,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -113,9 +114,36 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <QueryClientProvider client={queryClient}>
+      <nav className="border-b border-line bg-panel">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6">
+          <div className="flex items-center justify-between h-14">
+            <div className="flex items-center gap-6">
+              <Link
+                to="/"
+                className={`text-sm font-medium transition-colors ${
+                  isActive("/") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/programs"
+                className={`text-sm font-medium transition-colors ${
+                  isActive("/programs") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"
+                }`}
+              >
+                Programs
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
       <Outlet />
     </QueryClientProvider>
   );
