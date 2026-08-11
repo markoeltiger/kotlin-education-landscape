@@ -1,26 +1,26 @@
-//#region \0tanstack-start-manifest:v
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-Dz6Orn9Q.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "/Users/markseif/Desktop/Projects/kotlin-education-landscape/dashboard/src/routes/__root.tsx",
 		children: ["/", "/programs"],
 		preloads: [
-			"/assets/index-Dz19Qe_8.js",
+			"/assets/index-M9DnvEpX.js",
 			"/assets/jsx-runtime-Bc41UEzt.js",
-			"/assets/preload-helper-CDTucOP_.js",
-			"/assets/routes-DuU5G_a_.js",
-			"/assets/programs-gLRF35bp.js"
+			"/assets/preload-helper-C5yV35kO.js",
+			"/assets/routes-Bu7t7Edm.js",
+			"/assets/programs-Cvt8WOe8.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-Dz19Qe_8.js"
+			src: "/assets/index-M9DnvEpX.js"
 		} }]
 	},
 	"/": {
 		filePath: "/Users/markseif/Desktop/Projects/kotlin-education-landscape/dashboard/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-BHg7Zooa.js",
+			"/assets/routes-DSVtYTA2.js",
 			"/assets/format-CkOFoDvF.js",
 			"/assets/Charts-D33x4DbY.js"
 		]
@@ -28,7 +28,7 @@ var tsrStartManifest = () => ({ routes: {
 	"/programs": {
 		filePath: "/Users/markseif/Desktop/Projects/kotlin-education-landscape/dashboard/src/routes/programs.tsx",
 		children: void 0,
-		preloads: ["/assets/programs-Cnvx2v5q.js", "/assets/Charts-D33x4DbY.js"]
+		preloads: ["/assets/programs-CTHd6WOb.js", "/assets/Charts-D33x4DbY.js"]
 	}
 } });
 //#endregion

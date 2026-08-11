@@ -1,12 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { useCallback, useMemo, Suspense, lazy, useRef } from "react";
+import { useCallback, useMemo, Suspense, lazy, useRef, useState } from "react";
 
 import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline, type Insights } from "../lib/dataset";
 import { ActiveFilters, FilterRail } from "../components/FilterRail";
 import { StatCards } from "../components/StatCards";
-import { Panel } from "../components/Panel";
+import { Panel, Empty } from "../components/Panel";
 import { WorldMap } from "../components/WorldMap";
 import { Donut, Funnel, Histogram, HorizontalBars, StackedBars } from "../components/Charts";
 import { InsightSummary } from "../components/InsightSummary";
@@ -25,20 +25,7 @@ const DataTable = lazy(() =>
   import("../components/DataTable").then((m) => ({ default: m.DataTable }))
 );
 
-// ─── URL search-param schema ─────────────────────────────────────────────────
-// All filter state lives in the URL so the dashboard is shareable / bookmarkable.
-const searchSchema = z.object({
-  sources: fallback(z.array(z.string()), []).default([]),
-  tiers: fallback(z.array(z.string()), []).default([]),
-  learning_types: fallback(z.array(z.string()), []).default([]),
-  countries: fallback(z.array(z.string()), []).default([]),
-  conf_min: fallback(z.number(), 0).default(0),
-  conf_max: fallback(z.number(), 1).default(1),
-  search: fallback(z.string(), "").default(""),
-});
-
-export const Route = createFileRoute("/")(({
-  validateSearch: zodValidator(searchSchema),
+export const Route = createFileRoute("/")({
   // ── Server-side data loader ────────────────────────────────────────────────
   // Reads courses_unified.json and serp_progress.json at request time on the server
   // so no additional client fetches are needed; the parsed data is serialised into the HTML payload.
@@ -82,7 +69,7 @@ export const Route = createFileRoute("/")(({
     return { courses, serp, baseline, insights, meta };
   },
   component: Dashboard,
-}));
+});
 
 // ─── Section divider ──────────────────────────────────────────────────────────
 function SectionDivider({ label, description }: { label: string; description?: string }) {
@@ -127,32 +114,58 @@ function DatasetTimestamp({ generatedAt }: { generatedAt: string }) {
   );
 }
 
+// ─── Top GitHub Repos list with relative bar backplate ─────────────────────
+function TopGitHubReposList({ repos }: { repos: Course[] }) {
+  if (!repos.length) return <Empty />;
+  const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {repos.map((r, i) => {
+        const pct = (r.popularity / maxStars) * 100;
+        return (
+          <div
+            key={r.url}
+            className="relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors"
+          >
+            {/* The bar backplate */}
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500"
+              style={{ width: `${pct}%`, zIndex: 0 }}
+            />
+            {/* Content */}
+            <div className="relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4">
+              <span className="mono text-[11px] text-muted-foreground w-5 shrink-0 text-right">
+                {i + 1}.
+              </span>
+              <a
+                href={r.url}
+                target="_blank"
+                rel="noreferrer"
+                className="mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none"
+                title={r.title}
+              >
+                {r.title}
+              </a>
+              {r.subtype && (
+                <span className="mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0">
+                  {r.subtype}
+                </span>
+              )}
+            </div>
+            <div className="relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0">
+              ★ {fmt(r.popularity)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function Dashboard() {
   const dataset = Route.useLoaderData();
-  const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/" });
-
-  // ── Filter state (URL-backed) ──────────────────────────────────────────────
-  // `filters` is derived from URL search params; `setFilters` writes back to the
-  // URL so every filter change is bookmarkable and browser-back-navigable.
-  const filters: Filters = useMemo(() => {
-    return { ...emptyFilters, ...search };
-  }, [search]);
-
-  const setFilters = useCallback(
-    (next: Filters | ((prev: Filters) => Filters)) => {
-      navigate({
-        search: (prev: Partial<Filters>) => {
-          const merged: Filters = { ...emptyFilters, ...prev };
-          const value =
-            typeof next === "function" ? (next as (p: Filters) => Filters)(merged) : next;
-          return value;
-        },
-        replace: true,
-      });
-    },
-    [navigate],
-  );
+  const [filters, setFilters] = useState<Filters>(emptyFilters);
 
   // ── Derived datasets ───────────────────────────────────────────────────────
   // `filtered` is the full dataset with all URL filters applied; every chart and
@@ -273,6 +286,18 @@ function Dashboard() {
     () => topN(groupBy(filtered.filter((r) => r.source === "stepik" || r.source === "coursera"), (r) => r.source), 10),
     [filtered],
   );
+
+  // Top 15 universities by course count
+  const topUniversities = useMemo(() => {
+    const uniCourses = filtered.filter((r) => r.source === "university_website" && r.provider);
+    return topN(groupBy(uniCourses, (r) => r.provider), 15);
+  }, [filtered]);
+
+  // Top 15 GitHub repositories by star count
+  const topGitHubRepos = useMemo(() => {
+    const gh = filtered.filter((r) => r.source === "github");
+    return gh.slice().sort((a, b) => b.popularity - a.popularity).slice(0, 15);
+  }, [filtered]);
 
   // ── Crawl-pipeline stats ───────────────────────────────────────────────────
   // Derived from the SERP data (not the filtered courses) — shows the funnel
@@ -492,7 +517,7 @@ function Dashboard() {
             </div>
           </Panel>
 
-          {/* ── Top countries + formal vs non-formal breakdown ───────────────  */}
+          {/* ── Top countries + top universities + formal vs non-formal breakdown ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Top-15 country bar chart — clicking a bar also toggles the filter */}
             <Panel title="Top 15 countries" subtitle="Universities teaching Kotlin">
@@ -504,14 +529,19 @@ function Dashboard() {
               <ChartInsight insight={dataset.insights?.top_countries} />
             </Panel>
 
-            <Panel title="Formal vs non-formal" subtitle="Top 10 countries, stacked">
-              <StackedBars
-                data={formalInformal}
-                keys={["formal", "non-formal"]}
-                colors={["#7F52FF", "#C711E1"]}
-              />
+            {/* Top-15 universities bar chart */}
+            <Panel title="Top 15 universities" subtitle="By course count">
+              <HorizontalBars data={topUniversities} color="#7F52FF" />
             </Panel>
           </div>
+
+          <Panel title="Formal vs non-formal" subtitle="Top 10 countries, stacked">
+            <StackedBars
+              data={formalInformal}
+              keys={["formal", "non-formal"]}
+              colors={["#7F52FF", "#C711E1"]}
+            />
+          </Panel>
 
           {/* ═══════════════════════════════════════════════════════════════════
               SECTION: MOOCs
@@ -548,6 +578,10 @@ function Dashboard() {
               <HorizontalBars data={popularityBuckets} color="#C711E1" height={260} />
             </Panel>
           </div>
+
+          <Panel title="Top 15 GitHub repositories" subtitle="By star count · click to visit">
+            <TopGitHubReposList repos={topGitHubRepos} />
+          </Panel>
 
           {/* ═══════════════════════════════════════════════════════════════════
               SECTION: SEARCH STATISTICS

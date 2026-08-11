@@ -1,21 +1,9 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-import { fallback, zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
-//#region src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-e_lgXrdA.js");
-var searchSchema = z.object({
-	sources: fallback(z.array(z.string()), []).default([]),
-	tiers: fallback(z.array(z.string()), []).default([]),
-	learning_types: fallback(z.array(z.string()), []).default([]),
-	countries: fallback(z.array(z.string()), []).default([]),
-	conf_min: fallback(z.number(), 0).default(0),
-	conf_max: fallback(z.number(), 1).default(1),
-	search: fallback(z.string(), "").default("")
-});
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C2tI9vhQ.js
+var $$splitComponentImporter = () => import("./routes-CVAEk-jr.mjs");
 var Route = createFileRoute("/")({
-	validateSearch: zodValidator(searchSchema),
 	loader: async () => {
 		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
 		const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));

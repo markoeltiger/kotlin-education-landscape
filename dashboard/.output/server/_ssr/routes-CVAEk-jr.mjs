@@ -6,15 +6,14 @@ import { t as log } from "../_libs/d3-scale+internmap.mjs";
 import { m as select_default, t as zoom_default } from "../_libs/d3+[...].mjs";
 import { t as hcl_default } from "../_libs/d3-interpolate.mjs";
 import { n as path_default, r as graticule10, t as naturalEarth1_default } from "../_libs/d3-geo.mjs";
-import { a as HorizontalBars, c as classNames, i as Histogram, l as fmt, o as Panel, r as Funnel, s as StackedBars, t as Donut, u as useResizeObserver } from "./Charts-Jm0x-9AT.mjs";
+import { a as HorizontalBars, c as classNames, i as Histogram, l as fmt, n as Empty, o as Panel, r as Funnel, s as StackedBars, t as Donut, u as useResizeObserver } from "./Charts-Jm0x-9AT.mjs";
 import { a as DialogOverlay, c as DialogTrigger, i as DialogDescription, n as DialogClose, o as DialogPortal, r as DialogContent, s as DialogTitle, t as Dialog } from "../_libs/@radix-ui/react-dialog+[...].mjs";
-import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route } from "./routes-BUR9LaBu.mjs";
+import { t as Route } from "./routes-C2tI9vhQ.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as X } from "../_libs/lucide-react.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { t as feature_default } from "../_libs/topojson-client.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-e_lgXrdA.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CVAEk-jr.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var emptyFilters = {
@@ -922,28 +921,55 @@ function DatasetTimestamp({ generatedAt }) {
 		]
 	});
 }
+function TopGitHubReposList({ repos }) {
+	if (!repos.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "grid grid-cols-1 md:grid-cols-2 gap-3",
+		children: repos.map((r, i) => {
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500",
+						style: {
+							width: `${r.popularity / maxStars * 100}%`,
+							zIndex: 0
+						}
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "mono text-[11px] text-muted-foreground w-5 shrink-0 text-right",
+								children: [i + 1, "."]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: r.url,
+								target: "_blank",
+								rel: "noreferrer",
+								className: "mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none",
+								title: r.title,
+								children: r.title
+							}),
+							r.subtype && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0",
+								children: r.subtype
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0",
+						children: ["★ ", fmt(r.popularity)]
+					})
+				]
+			}, r.url);
+		})
+	});
+}
 function Dashboard() {
 	const dataset = Route.useLoaderData();
-	const search = Route.useSearch();
-	const navigate = useNavigate({ from: "/" });
-	const filters = (0, import_react.useMemo)(() => {
-		return {
-			...emptyFilters,
-			...search
-		};
-	}, [search]);
-	const setFilters = (0, import_react.useCallback)((next) => {
-		navigate({
-			search: (prev) => {
-				const merged = {
-					...emptyFilters,
-					...prev
-				};
-				return typeof next === "function" ? next(merged) : next;
-			},
-			replace: true
-		});
-	}, [navigate]);
+	const [filters, setFilters] = (0, import_react.useState)(emptyFilters);
 	const filtered = (0, import_react.useMemo)(() => applyFilters(dataset.courses, filters), [dataset, filters]);
 	const totals = (0, import_react.useMemo)(() => {
 		const uniProviders = new Set(filtered.filter((r) => r.source === "university_website" && r.provider).map((r) => r.provider));
@@ -1011,6 +1037,12 @@ function Dashboard() {
 		});
 	}, [countryCounts, filtered]);
 	const moocCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "stepik" || r.source === "coursera"), (r) => r.source), 10), [filtered]);
+	const topUniversities = (0, import_react.useMemo)(() => {
+		return topN(groupBy(filtered.filter((r) => r.source === "university_website" && r.provider), (r) => r.provider), 15);
+	}, [filtered]);
+	const topGitHubRepos = (0, import_react.useMemo)(() => {
+		return filtered.filter((r) => r.source === "github").slice().sort((a, b) => b.popularity - a.popularity).slice(0, 15);
+	}, [filtered]);
 	const crawlStats = (0, import_react.useMemo)(() => {
 		const s = dataset.serp;
 		return {
@@ -1219,14 +1251,22 @@ function Dashboard() {
 									activeKey: filters.countries[0]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.top_countries })]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-								title: "Formal vs non-formal",
-								subtitle: "Top 10 countries, stacked",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
-									data: formalInformal,
-									keys: ["formal", "non-formal"],
-									colors: ["#7F52FF", "#C711E1"]
+								title: "Top 15 universities",
+								subtitle: "By course count",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+									data: topUniversities,
+									color: "#7F52FF"
 								})
 							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+							title: "Formal vs non-formal",
+							subtitle: "Top 10 countries, stacked",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
+								data: formalInformal,
+								keys: ["formal", "non-formal"],
+								colors: ["#7F52FF", "#C711E1"]
+							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
 							label: "MOOCs",
@@ -1263,6 +1303,11 @@ function Dashboard() {
 									height: 260
 								})
 							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+							title: "Top 15 GitHub repositories",
+							subtitle: "By star count · click to visit",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopGitHubReposList, { repos: topGitHubRepos })
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
 							label: "Search Statistics",
