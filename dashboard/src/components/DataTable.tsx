@@ -28,6 +28,7 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
 
   const [sortKey, setSortKey] = useState<keyof Course>("popularity");
   const [dir, setDir] = useState<"asc" | "desc">("desc");
+  const [headerScroll, setHeaderScroll] = useState(0);
 
   const sorted = useMemo(() => {
     if (!actualRows || !Array.isArray(actualRows)) return [];
@@ -189,11 +190,12 @@ function Cell({
   return (
     <div
       className={classNames(
-        "px-3 py-2 text-[12px] flex items-center min-w-0 truncate",
+        "px-3 py-2 text-[12px] flex items-center min-w-0",
         mono && "mono",
         muted ? "text-muted-foreground" : "text-ink",
         align === "right" && "justify-end tabular-nums",
       )}
+      style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
     >
       {children}
     </div>

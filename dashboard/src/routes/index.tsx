@@ -8,7 +8,7 @@ import { ActiveFilters, FilterRail } from "../components/FilterRail";
 import { StatCards } from "../components/StatCards";
 import { Panel, Empty } from "../components/Panel";
 import { WorldMap } from "../components/WorldMap";
-import { Donut, Funnel, Histogram, HorizontalBars, StackedBars } from "../components/Charts";
+import { Donut, Funnel, Histogram, HorizontalBars, StackedBars, GitHubRepoBars, MoocCourseTable } from "../components/Charts";
 import { InsightSummary } from "../components/InsightSummary";
 import { ChartInsight } from "../components/ChartInsight";
 import { fmt } from "../lib/format";
@@ -114,55 +114,6 @@ function DatasetTimestamp({ generatedAt }: { generatedAt: string }) {
   );
 }
 
-// ─── Top GitHub Repos list with relative bar backplate ─────────────────────
-function TopGitHubReposList({ repos }: { repos: Course[] }) {
-  if (!repos.length) return <Empty />;
-  const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-      {repos.map((r, i) => {
-        const pct = (r.popularity / maxStars) * 100;
-        return (
-          <div
-            key={r.url}
-            className="relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors"
-          >
-            {/* The bar backplate */}
-            <div
-              className="absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500"
-              style={{ width: `${pct}%`, zIndex: 0 }}
-            />
-            {/* Content */}
-            <div className="relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4">
-              <span className="mono text-[11px] text-muted-foreground w-5 shrink-0 text-right">
-                {i + 1}.
-              </span>
-              <a
-                href={r.url}
-                target="_blank"
-                rel="noreferrer"
-                className="mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none"
-                title={r.title}
-              >
-                {r.title}
-              </a>
-              {r.subtype && (
-                <span className="mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0">
-                  {r.subtype}
-                </span>
-              )}
-            </div>
-            <div className="relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0">
-              ★ {fmt(r.popularity)}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 function Dashboard() {
   const dataset = Route.useLoaderData();
   const [filters, setFilters] = useState<Filters>(emptyFilters);
@@ -239,8 +190,40 @@ function Dashboard() {
   // Top 15 providers / owners across all sources
   const providerCounts = useMemo(() => topN(groupBy(filtered, (r) => r.provider), 15), [filtered]);
 
-  // Kotlin-confidence histogram values
+  // Kotlin-confidence histogram values - use 10 bins for 0.0-0.1, 0.1-0.2, etc.
   const confidenceValues = useMemo(() => filtered.map((r) => r.kotlin_confidence), [filtered]);
+  const confidenceBins = 10;
+
+  // Top-15 universities by course count (Formal Education section)
+  const universityCourseCounts = useMemo(() => {
+    const uniCourses = filtered.filter((r) => r.source === "university_website");
+    return topN(groupBy(uniCourses, (r) => r.provider), 15);
+  }, [filtered]);
+
+  // Courses vs mentions for universities (Formal Education section)
+  const universityCoursesVsMentions = useMemo(() => {
+    const uniCourses = filtered.filter((r) => r.source === "university_website");
+    const courses = uniCourses.filter((r) => r.signal_tier === "primary").length;
+    const mentions = uniCourses.filter((r) => r.signal_tier === "secondary").length;
+    return [
+      ["Courses", courses],
+      ["Mentions of Kotlin", mentions],
+    ];
+  }, [filtered]);
+
+  // Top-15 GitHub repos by stars (GitHub section)
+  const topGitHubRepos = useMemo(() => {
+    const ghRepos = filtered.filter((r) => r.source === "github");
+    return ghRepos
+      .filter((r) => r.popularity > 0)
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, 15);
+  }, [filtered]);
+
+  // MOOC course list (MOOCs section)
+  const moocCourses = useMemo(() => {
+    return filtered.filter((r) => r.source === "coursera" || r.source === "stepik");
+  }, [filtered]);
 
   // GitHub star popularity distribution — bucketed into log-friendly ranges
   const popularityBuckets = useMemo(() => {
@@ -517,7 +500,7 @@ function Dashboard() {
             </div>
           </Panel>
 
-          {/* ── Top countries + top universities + formal vs non-formal breakdown ── */}
+          {/* ── Top countries + top universities + courses vs mentions breakdown ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Top-15 country bar chart — clicking a bar also toggles the filter */}
             <Panel title="Top 15 countries" subtitle="Universities teaching Kotlin">
@@ -531,17 +514,29 @@ function Dashboard() {
 
             {/* Top-15 universities bar chart */}
             <Panel title="Top 15 universities" subtitle="By course count">
-              <HorizontalBars data={topUniversities} color="#7F52FF" />
+              <HorizontalBars data={universityCourseCounts} color="#7F52FF" />
             </Panel>
           </div>
 
-          <Panel title="Formal vs non-formal" subtitle="Top 10 countries, stacked">
-            <StackedBars
-              data={formalInformal}
-              keys={["formal", "non-formal"]}
-              colors={["#7F52FF", "#C711E1"]}
-            />
-          </Panel>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {/* Courses vs mentions donut */}
+            <Panel title="Courses vs mentions" subtitle="University records by signal tier">
+              <Donut
+                data={universityCoursesVsMentions}
+                colors={["#7F52FF", "#C711E1"]}
+                centerLabel="records"
+              />
+            </Panel>
+
+            {/* Formal vs non-formal stacked bar */}
+            <Panel title="Formal vs non-formal" subtitle="Top 10 countries, stacked">
+              <StackedBars
+                data={formalInformal}
+                keys={["formal", "non-formal"]}
+                colors={["#7F52FF", "#C711E1"]}
+              />
+            </Panel>
+          </div>
 
           {/* ═══════════════════════════════════════════════════════════════════
               SECTION: MOOCs
@@ -552,9 +547,20 @@ function Dashboard() {
             description="Non-formal online courses — Massively Open Online Courses on platforms like Coursera and Stepik."
           />
 
-          <Panel title="MOOC platform distribution" subtitle="Courses by platform">
-            <HorizontalBars data={moocCounts} color="#C711E1" height={160} />
-          </Panel>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <Panel title="MOOC platform distribution" subtitle="Courses by platform">
+              <HorizontalBars data={moocCounts} color="#C711E1" height={160} />
+            </Panel>
+            
+            <Panel title="All MOOC courses" subtitle={`${moocCourses.length} courses from Coursera and Stepik`}>
+              <MoocCourseTable courses={moocCourses.map(c => ({
+                title: c.title,
+                provider: c.provider,
+                source: c.source,
+                url: c.url
+              }))} />
+            </Panel>
+          </div>
 
           {/* ═══════════════════════════════════════════════════════════════════
               SECTION: GITHUB
@@ -580,7 +586,48 @@ function Dashboard() {
           </div>
 
           <Panel title="Top 15 GitHub repositories" subtitle="By star count · click to visit">
-            <TopGitHubReposList repos={topGitHubRepos} />
+            <GitHubRepoBars repos={topGitHubRepos.map(r => ({
+              title: r.title,
+              url: r.url,
+              popularity: r.popularity,
+              subtype: r.subtype
+            }))} />
+          </Panel>
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: ABOUT THIS DATA
+              Terminology and methodology documentation.
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider
+            label="About this data"
+            description="Terminology, methodology, and data source documentation."
+          />
+
+          <Panel title="Terminology & methodology" subtitle="How to interpret this dashboard">
+            <div className="space-y-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed">
+              <div>
+                <span className="text-ink font-semibold">Primary vs Secondary signal</span><br />
+                <span className="text-[color:var(--kt-purple)] mono text-[11px]">Primary</span> — genuinely course-like content (a real course/program page).{" "}
+                <span className="text-muted-foreground mono text-[11px]">Secondary</span> — supporting material or a page that merely mentions Kotlin.
+              </div>
+              <div>
+                <span className="text-ink font-semibold">Formal / Non-formal learning</span><br />
+                <span className="text-[color:var(--kt-purple)] mono text-[11px]">Formal</span> — university courses.{" "}
+                <span className="text-muted-foreground mono text-[11px]">Non-formal</span> — MOOCs; a GitHub repo is Formal if it accompanies a university course, Non-formal if standalone or tied to a MOOC.
+              </div>
+              <div>
+                <span className="text-ink font-semibold">Kotlin confidence</span><br />
+                The classifier's confidence (0–1) that a resource genuinely teaches Kotlin.
+              </div>
+              <div>
+                <span className="text-ink font-semibold">Methodology</span><br />
+                Data is discovered via an automated pipeline that searches university websites, GitHub, and MOOC platforms for evidence of Kotlin teaching, then classifies and normalizes the results.
+              </div>
+              <div className="mt-4 pt-4 border-t border-line">
+                <span className="text-ink font-semibold">Map-click filtering</span><br />
+                Dashboard-click filtering only works on the map (by country). Clicking a country on the world map toggles a country filter.
+              </div>
+            </div>
           </Panel>
 
           {/* ═══════════════════════════════════════════════════════════════════
@@ -592,32 +639,6 @@ function Dashboard() {
             description="Pipeline telemetry — how the automated scraping and discovery process performed."
           />
 
-          {/* ── Methodology blurb ───────────────────────────────────────────── */}
-          <div className="panel p-4 sm:p-5">
-            <div className="eyebrow text-[10px] sm:text-[11px] mb-2">Methodology</div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed">
-              <div>
-                <span className="text-ink font-semibold">Data scraping</span><br />
-                The pipeline searches for university names paired with "Kotlin" using major search
-                engines (Google, Bing). Result pages are fetched and parsed to extract course
-                listings and syllabi.
-              </div>
-              <div>
-                <span className="text-ink font-semibold">Signal tier</span><br />
-                <span className="text-[color:var(--kt-purple)] mono text-[11px]">Primary</span> — Kotlin
-                is the explicit focus of the course or resource.{" "}
-                <span className="text-muted-foreground mono text-[11px]">Secondary</span> — Kotlin is
-                mentioned as a supplementary or comparable language within a broader curriculum.
-              </div>
-              <div>
-                <span className="text-ink font-semibold">Kotlin confidence</span><br />
-                A machine-learning classifier assigns a score (0–1) estimating how likely it is
-                that a page genuinely teaches Kotlin, rather than merely mentioning it in passing.
-                Higher scores indicate stronger Kotlin focus.
-              </div>
-            </div>
-          </div>
-
           {/* ── Kotlin-confidence histogram ──────────────────────────────────
               The classifier assigns a confidence score (0–1) to every record
               indicating how likely the content is Kotlin-specific.
@@ -627,7 +648,7 @@ function Dashboard() {
             title="Kotlin-confidence distribution"
             subtitle="Classifier score histogram · bars centered on ticks"
           >
-            <Histogram values={confidenceValues} bins={20} height={240} />
+            <Histogram values={confidenceValues} bins={confidenceBins} height={240} />
           </Panel>
 
           {/* ── Crawl-pipeline funnel ────────────────────────────────────────

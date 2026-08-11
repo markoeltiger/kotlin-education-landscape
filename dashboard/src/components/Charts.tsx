@@ -249,7 +249,7 @@ export function StackedBars({
 
 export function Histogram({
   values,
-  bins = 20,
+  bins = 10,
   height = 200,
   color = "#7F52FF",
 }: {
@@ -270,7 +270,9 @@ export function Histogram({
     const h = height - margin.top - margin.bottom;
 
     const x = d3.scaleLinear().domain([0, 1]).range([0, w]);
-    const hist = d3.bin<number, number>().domain([0, 1]).thresholds(bins)(values);
+    // Use fixed thresholds for 0.0-0.1, 0.1-0.2, etc. buckets
+    const thresholds = Array.from({ length: bins }, (_, i) => i / bins);
+    const hist = d3.bin<number, number>().domain([0, 1]).thresholds(thresholds)(values);
     const y = d3.scaleLinear().domain([0, d3.max(hist, (d) => d.length) ?? 1]).range([h, 0]);
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -284,7 +286,7 @@ export function Histogram({
       .attr("fill", color)
       .attr("rx", 2)
       .append("title")
-      .text((d) => `${(d.x0 ?? 0).toFixed(2)}–${(d.x1 ?? 0).toFixed(2)}: ${fmt(d.length)} records`);
+      .text((d) => `${(d.x0 ?? 0).toFixed(1)}–${(d.x1 ?? 0).toFixed(1)}: ${fmt(d.length)} records`);
 
     // Center tick marks at bin midpoints so each bar sits under its label
     const midpoints = hist.map((d) => ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2);
@@ -321,6 +323,133 @@ export function Funnel({
   steps: { label: string; value: number }[];
   height?: number;
 }) {
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+  if (!steps.length) return <Empty />;
+  const max = Math.max(...steps.map((s) => s.value));
+  const colors = ["#7F52FF", "#9E3AE7", "#C711E1", "#E44857"];
+  return (
+    <div ref={ref} className="w-full flex flex-col gap-2" style={{ minHeight: height }}>
+      {steps.map((s, i) => {
+        const pct = (s.value / max) * 100;
+        return (
+          <div key={s.label} className="flex items-center gap-3">
+            <div className="w-40 shrink-0">
+              <div className="eyebrow">{s.label}</div>
+              <div className="mono text-xl font-bold text-ink tabular-nums">{fmt(s.value)}</div>
+            </div>
+            <div className="flex-1 h-8 bg-panel-2 rounded-md overflow-hidden border border-line">
+              <div
+                className="h-full transition-all"
+                style={{
+                  width: `${pct}%`,
+                  background: colors[i % colors.length],
+                }}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Simple horizontal bars with links for GitHub repos
+export function GitHubRepoBars({
+  repos,
+  height = 400,
+}: {
+  repos: Array<{ title: string; url: string; popularity: number; subtype?: string }>;
+  height?: number;
+}) {
+  if (!repos.length) return <Empty />;
+  const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ maxHeight: height, overflowY: "auto" }}>
+      {repos.map((r, i) => {
+        const pct = (r.popularity / maxStars) * 100;
+        return (
+          <div
+            key={r.url}
+            className="relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors"
+          >
+            {/* The bar backplate */}
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500"
+              style={{ width: `${pct}%`, zIndex: 0 }}
+            />
+            {/* Content */}
+            <div className="relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4">
+              <span className="mono text-[11px] text-muted-foreground w-5 shrink-0 text-right">
+                {i + 1}.
+              </span>
+              <a
+                href={r.url}
+                target="_blank"
+                rel="noreferrer"
+                className="mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none"
+                title={r.title}
+              >
+                {r.title}
+              </a>
+              {r.subtype && (
+                <span className="mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0">
+                  {r.subtype}
+                </span>
+              )}
+            </div>
+            <div className="relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0">
+              ★ {fmt(r.popularity)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Simple table for MOOC courses
+export function MoocCourseTable({
+  courses,
+}: {
+  courses: Array<{ title: string; provider: string; source: string; url: string }>;
+}) {
+  if (!courses.length) return <Empty />;
+  
+  return (
+    <div className="border border-line rounded-md overflow-hidden">
+      <table className="w-full text-left">
+        <thead className="bg-panel-2 border-b border-line">
+          <tr>
+            <th className="px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Title</th>
+            <th className="px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Provider</th>
+            <th className="px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Platform</th>
+            <th className="px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map((c, i) => (
+            <tr key={i} className="border-b border-line hover:bg-panel-2/40 transition-colors">
+              <td className="px-3 py-2 text-xs text-ink truncate max-w-xs" title={c.title}>{c.title}</td>
+              <td className="px-3 py-2 mono text-xs text-muted-foreground">{c.provider}</td>
+              <td className="px-3 py-2 mono text-xs text-muted-foreground capitalize">{c.source}</td>
+              <td className="px-3 py-2">
+                <a
+                  href={c.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mono text-[10px] text-[color:var(--kt-purple)] hover:underline"
+                >
+                  Open
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
   const { ref, width } = useResizeObserver<HTMLDivElement>();
   if (!steps.length) return <Empty />;
   const max = Math.max(...steps.map((s) => s.value));
