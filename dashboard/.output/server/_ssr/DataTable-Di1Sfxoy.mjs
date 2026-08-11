@@ -1,9 +1,9 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
-import { c as classNames, l as fmt } from "./Charts-Jm0x-9AT.mjs";
+import { d as fmt, u as classNames } from "./Charts-Cg3e7Nay.mjs";
 import { t as useVirtualizer } from "../_libs/@tanstack/react-virtual+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-BYW0vW46.js
+//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-Di1Sfxoy.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function toCsv(rows, columns) {
@@ -85,6 +85,7 @@ function DataTable({ rows, data }) {
 	}, []);
 	const [sortKey, setSortKey] = (0, import_react.useState)("popularity");
 	const [dir, setDir] = (0, import_react.useState)("desc");
+	const [headerScroll, setHeaderScroll] = (0, import_react.useState)(0);
 	const sorted = (0, import_react.useMemo)(() => {
 		if (!actualRows || !Array.isArray(actualRows)) return [];
 		const arr = actualRows.slice();
@@ -246,7 +247,12 @@ function DataTable({ rows, data }) {
 }
 function Cell({ children, mono, muted, align }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: classNames("px-3 py-2 text-[12px] flex items-center min-w-0 truncate", mono && "mono", muted ? "text-muted-foreground" : "text-ink", align === "right" && "justify-end tabular-nums"),
+		className: classNames("px-3 py-2 text-[12px] flex items-center min-w-0", mono && "mono", muted ? "text-muted-foreground" : "text-ink", align === "right" && "justify-end tabular-nums"),
+		style: {
+			textOverflow: "ellipsis",
+			whiteSpace: "nowrap",
+			overflow: "hidden"
+		},
 		children
 	});
 }

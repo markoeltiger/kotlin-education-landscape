@@ -450,32 +450,3 @@ export function MoocCourseTable({
     </div>
   );
 }
-  const { ref, width } = useResizeObserver<HTMLDivElement>();
-  if (!steps.length) return <Empty />;
-  const max = Math.max(...steps.map((s) => s.value));
-  const colors = ["#7F52FF", "#9E3AE7", "#C711E1", "#E44857"];
-  return (
-    <div ref={ref} className="w-full flex flex-col gap-2" style={{ minHeight: height }}>
-      {steps.map((s, i) => {
-        const pct = (s.value / max) * 100;
-        return (
-          <div key={s.label} className="flex items-center gap-3">
-            <div className="w-40 shrink-0">
-              <div className="eyebrow">{s.label}</div>
-              <div className="mono text-xl font-bold text-ink tabular-nums">{fmt(s.value)}</div>
-            </div>
-            <div className="flex-1 h-8 bg-panel-2 rounded-md overflow-hidden border border-line">
-              <div
-                className="h-full transition-all"
-                style={{
-                  width: `${pct}%`,
-                  background: colors[i % colors.length],
-                }}
-              />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}

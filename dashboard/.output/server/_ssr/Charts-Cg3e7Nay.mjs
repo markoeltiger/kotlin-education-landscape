@@ -6,7 +6,7 @@ import { n as linear, r as band } from "../_libs/d3-scale+internmap.mjs";
 import { n as axisLeft, t as axisBottom } from "../_libs/d3-axis.mjs";
 import { m as select_default } from "../_libs/d3+[...].mjs";
 import { n as arc_default, t as pie_default } from "../_libs/d3-shape.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/Charts-Jm0x-9AT.js
+//#region node_modules/.nitro/vite/services/ssr/assets/Charts-Cg3e7Nay.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var nf = new Intl.NumberFormat("en-US");
@@ -217,7 +217,7 @@ function StackedBars({ data, keys, colors, height = 320 }) {
 		}, k))
 	})] });
 }
-function Histogram({ values, bins = 20, height = 200, color = "#7F52FF" }) {
+function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 	const { ref, width } = useResizeObserver();
 	const svgRef = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
@@ -233,10 +233,11 @@ function Histogram({ values, bins = 20, height = 200, color = "#7F52FF" }) {
 		const w = width - margin.left - margin.right;
 		const h = height - margin.top - margin.bottom;
 		const x = linear().domain([0, 1]).range([0, w]);
-		const hist = bin().domain([0, 1]).thresholds(bins)(values);
+		const thresholds = Array.from({ length: bins }, (_, i) => i / bins);
+		const hist = bin().domain([0, 1]).thresholds(thresholds)(values);
 		const y = linear().domain([0, max(hist, (d) => d.length) ?? 1]).range([h, 0]);
 		const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-		g.selectAll("rect").data(hist).join("rect").attr("x", (d) => x(d.x0 ?? 0) + 1).attr("y", (d) => y(d.length)).attr("width", (d) => Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 2)).attr("height", (d) => h - y(d.length)).attr("fill", color).attr("rx", 2).append("title").text((d) => `${(d.x0 ?? 0).toFixed(2)}–${(d.x1 ?? 0).toFixed(2)}: ${fmt(d.length)} records`);
+		g.selectAll("rect").data(hist).join("rect").attr("x", (d) => x(d.x0 ?? 0) + 1).attr("y", (d) => y(d.length)).attr("width", (d) => Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 2)).attr("height", (d) => h - y(d.length)).attr("fill", color).attr("rx", 2).append("title").text((d) => `${(d.x0 ?? 0).toFixed(1)}–${(d.x1 ?? 0).toFixed(1)}: ${fmt(d.length)} records`);
 		const midpoints = hist.map((d) => ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2);
 		const xAxis = axisBottom(x).tickValues(midpoints).tickFormat((v) => v.toFixed(1)).tickSizeOuter(0);
 		g.append("g").attr("transform", `translate(0,${h})`).call(xAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1").attr("font-size", 9)).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
@@ -301,5 +302,112 @@ function Funnel({ steps, height = 220 }) {
 		})
 	});
 }
+function GitHubRepoBars({ repos, height = 400 }) {
+	if (!repos.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "grid grid-cols-1 md:grid-cols-2 gap-3",
+		style: {
+			maxHeight: height,
+			overflowY: "auto"
+		},
+		children: repos.map((r, i) => {
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500",
+						style: {
+							width: `${r.popularity / maxStars * 100}%`,
+							zIndex: 0
+						}
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "mono text-[11px] text-muted-foreground w-5 shrink-0 text-right",
+								children: [i + 1, "."]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: r.url,
+								target: "_blank",
+								rel: "noreferrer",
+								className: "mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none",
+								title: r.title,
+								children: r.title
+							}),
+							r.subtype && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0",
+								children: r.subtype
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0",
+						children: ["★ ", fmt(r.popularity)]
+					})
+				]
+			}, r.url);
+		})
+	});
+}
+function MoocCourseTable({ courses }) {
+	if (!courses.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "border border-line rounded-md overflow-hidden",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
+			className: "w-full text-left",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
+				className: "bg-panel-2 border-b border-line",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+						className: "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground",
+						children: "Title"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+						className: "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground",
+						children: "Provider"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+						className: "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground",
+						children: "Platform"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+						className: "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground",
+						children: "Link"
+					})
+				] })
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: courses.map((c, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
+				className: "border-b border-line hover:bg-panel-2/40 transition-colors",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+						className: "px-3 py-2 text-xs text-ink truncate max-w-xs",
+						title: c.title,
+						children: c.title
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+						className: "px-3 py-2 mono text-xs text-muted-foreground",
+						children: c.provider
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+						className: "px-3 py-2 mono text-xs text-muted-foreground capitalize",
+						children: c.source
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+						className: "px-3 py-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: c.url,
+							target: "_blank",
+							rel: "noreferrer",
+							className: "mono text-[10px] text-[color:var(--kt-purple)] hover:underline",
+							children: "Open"
+						})
+					})
+				]
+			}, i)) })]
+		})
+	});
+}
 //#endregion
-export { HorizontalBars as a, classNames as c, Histogram as i, fmt as l, Empty as n, Panel as o, Funnel as r, StackedBars as s, Donut as t, useResizeObserver as u };
+export { Histogram as a, Panel as c, fmt as d, useResizeObserver as f, GitHubRepoBars as i, StackedBars as l, Empty as n, HorizontalBars as o, Funnel as r, MoocCourseTable as s, Donut as t, classNames as u };

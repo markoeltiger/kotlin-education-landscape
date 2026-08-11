@@ -276,12 +276,6 @@ function Dashboard() {
     return topN(groupBy(uniCourses, (r) => r.provider), 15);
   }, [filtered]);
 
-  // Top 15 GitHub repositories by star count
-  const topGitHubRepos = useMemo(() => {
-    const gh = filtered.filter((r) => r.source === "github");
-    return gh.slice().sort((a, b) => b.popularity - a.popularity).slice(0, 15);
-  }, [filtered]);
-
   // ── Crawl-pipeline stats ───────────────────────────────────────────────────
   // Derived from the SERP data (not the filtered courses) — shows the funnel
   // from raw SERP queries down to unique institutions.

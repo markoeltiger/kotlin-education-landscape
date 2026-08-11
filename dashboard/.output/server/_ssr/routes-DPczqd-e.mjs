@@ -6,14 +6,14 @@ import { t as log } from "../_libs/d3-scale+internmap.mjs";
 import { m as select_default, t as zoom_default } from "../_libs/d3+[...].mjs";
 import { t as hcl_default } from "../_libs/d3-interpolate.mjs";
 import { n as path_default, r as graticule10, t as naturalEarth1_default } from "../_libs/d3-geo.mjs";
-import { a as HorizontalBars, c as classNames, i as Histogram, l as fmt, n as Empty, o as Panel, r as Funnel, s as StackedBars, t as Donut, u as useResizeObserver } from "./Charts-Jm0x-9AT.mjs";
+import { a as Histogram, c as Panel, d as fmt, f as useResizeObserver, i as GitHubRepoBars, l as StackedBars, o as HorizontalBars, r as Funnel, s as MoocCourseTable, t as Donut, u as classNames } from "./Charts-Cg3e7Nay.mjs";
 import { a as DialogOverlay, c as DialogTrigger, i as DialogDescription, n as DialogClose, o as DialogPortal, r as DialogContent, s as DialogTitle, t as Dialog } from "../_libs/@radix-ui/react-dialog+[...].mjs";
-import { t as Route } from "./routes-C2tI9vhQ.mjs";
+import { t as Route } from "./routes-Dm6pfN1e.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as X } from "../_libs/lucide-react.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { t as feature_default } from "../_libs/topojson-client.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CVAEk-jr.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DPczqd-e.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var emptyFilters = {
@@ -874,7 +874,7 @@ function ChartInsight({ insight }) {
 		})
 	});
 }
-var DataTable = (0, import_react.lazy)(() => import("./DataTable-BYW0vW46.mjs").then((m) => ({ default: m.DataTable })));
+var DataTable = (0, import_react.lazy)(() => import("./DataTable-Di1Sfxoy.mjs").then((m) => ({ default: m.DataTable })));
 function SectionDivider({ label, description }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex items-center gap-4 pt-2 sm:pt-4",
@@ -921,52 +921,6 @@ function DatasetTimestamp({ generatedAt }) {
 		]
 	});
 }
-function TopGitHubReposList({ repos }) {
-	if (!repos.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {});
-	const maxStars = Math.max(...repos.map((r) => r.popularity)) || 1;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "grid grid-cols-1 md:grid-cols-2 gap-3",
-		children: repos.map((r, i) => {
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "relative flex items-center justify-between p-2.5 rounded-md overflow-hidden bg-panel-2/30 border border-line/40 hover:border-line transition-colors",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "absolute left-0 top-0 bottom-0 bg-[color:var(--kt-purple)]/10 transition-all duration-500",
-						style: {
-							width: `${r.popularity / maxStars * 100}%`,
-							zIndex: 0
-						}
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "relative flex items-center gap-3 z-10 min-w-0 flex-1 pr-4",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "mono text-[11px] text-muted-foreground w-5 shrink-0 text-right",
-								children: [i + 1, "."]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-								href: r.url,
-								target: "_blank",
-								rel: "noreferrer",
-								className: "mono text-xs text-ink hover:text-[color:var(--kt-purple)] truncate font-medium focus:outline-none",
-								title: r.title,
-								children: r.title
-							}),
-							r.subtype && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-panel/80 text-muted-foreground border border-line/30 shrink-0",
-								children: r.subtype
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "relative z-10 mono text-xs font-bold text-[color:var(--kt-magenta)] tabular-nums shrink-0",
-						children: ["★ ", fmt(r.popularity)]
-					})
-				]
-			}, r.url);
-		})
-	});
-}
 function Dashboard() {
 	const dataset = Route.useLoaderData();
 	const [filters, setFilters] = (0, import_react.useState)(emptyFilters);
@@ -1003,6 +957,22 @@ function Dashboard() {
 	const repoTypeCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "github"), (r) => r.subtype || "other"), 10), [filtered]);
 	const providerCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.provider), 15), [filtered]);
 	const confidenceValues = (0, import_react.useMemo)(() => filtered.map((r) => r.kotlin_confidence), [filtered]);
+	const confidenceBins = 10;
+	const universityCourseCounts = (0, import_react.useMemo)(() => {
+		return topN(groupBy(filtered.filter((r) => r.source === "university_website"), (r) => r.provider), 15);
+	}, [filtered]);
+	const universityCoursesVsMentions = (0, import_react.useMemo)(() => {
+		const uniCourses = filtered.filter((r) => r.source === "university_website");
+		const courses = uniCourses.filter((r) => r.signal_tier === "primary").length;
+		const mentions = uniCourses.filter((r) => r.signal_tier === "secondary").length;
+		return [["Courses", courses], ["Mentions of Kotlin", mentions]];
+	}, [filtered]);
+	const topGitHubRepos = (0, import_react.useMemo)(() => {
+		return filtered.filter((r) => r.source === "github").filter((r) => r.popularity > 0).sort((a, b) => b.popularity - a.popularity).slice(0, 15);
+	}, [filtered]);
+	const moocCourses = (0, import_react.useMemo)(() => {
+		return filtered.filter((r) => r.source === "coursera" || r.source === "stepik");
+	}, [filtered]);
 	const popularityBuckets = (0, import_react.useMemo)(() => {
 		const gh = filtered.filter((r) => r.source === "github");
 		const buckets = [
@@ -1037,11 +1007,8 @@ function Dashboard() {
 		});
 	}, [countryCounts, filtered]);
 	const moocCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "stepik" || r.source === "coursera"), (r) => r.source), 10), [filtered]);
-	const topUniversities = (0, import_react.useMemo)(() => {
+	(0, import_react.useMemo)(() => {
 		return topN(groupBy(filtered.filter((r) => r.source === "university_website" && r.provider), (r) => r.provider), 15);
-	}, [filtered]);
-	const topGitHubRepos = (0, import_react.useMemo)(() => {
-		return filtered.filter((r) => r.source === "github").slice().sort((a, b) => b.popularity - a.popularity).slice(0, 15);
 	}, [filtered]);
 	const crawlStats = (0, import_react.useMemo)(() => {
 		const s = dataset.serp;
@@ -1254,32 +1221,55 @@ function Dashboard() {
 								title: "Top 15 universities",
 								subtitle: "By course count",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-									data: topUniversities,
+									data: universityCourseCounts,
 									color: "#7F52FF"
 								})
 							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-							title: "Formal vs non-formal",
-							subtitle: "Top 10 countries, stacked",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
-								data: formalInformal,
-								keys: ["formal", "non-formal"],
-								colors: ["#7F52FF", "#C711E1"]
-							})
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "Courses vs mentions",
+								subtitle: "University records by signal tier",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
+									data: universityCoursesVsMentions,
+									colors: ["#7F52FF", "#C711E1"],
+									centerLabel: "records"
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "Formal vs non-formal",
+								subtitle: "Top 10 countries, stacked",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
+									data: formalInformal,
+									keys: ["formal", "non-formal"],
+									colors: ["#7F52FF", "#C711E1"]
+								})
+							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
 							label: "MOOCs",
 							description: "Non-formal online courses — Massively Open Online Courses on platforms like Coursera and Stepik."
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-							title: "MOOC platform distribution",
-							subtitle: "Courses by platform",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-								data: moocCounts,
-								color: "#C711E1",
-								height: 160
-							})
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "MOOC platform distribution",
+								subtitle: "Courses by platform",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+									data: moocCounts,
+									color: "#C711E1",
+									height: 160
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "All MOOC courses",
+								subtitle: `${moocCourses.length} courses from Coursera and Stepik`,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MoocCourseTable, { courses: moocCourses.map((c) => ({
+									title: c.title,
+									provider: c.provider,
+									source: c.source,
+									url: c.url
+								})) })
+							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
 							label: "GitHub",
@@ -1307,45 +1297,58 @@ function Dashboard() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Top 15 GitHub repositories",
 							subtitle: "By star count · click to visit",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TopGitHubReposList, { repos: topGitHubRepos })
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GitHubRepoBars, { repos: topGitHubRepos.map((r) => ({
+								title: r.title,
+								url: r.url,
+								popularity: r.popularity,
+								subtype: r.subtype
+							})) })
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
-							label: "Search Statistics",
-							description: "Pipeline telemetry — how the automated scraping and discovery process performed."
+							label: "About this data",
+							description: "Terminology, methodology, and data source documentation."
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "panel p-4 sm:p-5",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "eyebrow text-[10px] sm:text-[11px] mb-2",
-								children: "Methodology"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+							title: "Terminology & methodology",
+							subtitle: "How to interpret this dashboard",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-ink font-semibold",
-											children: "Data scraping"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-										"The pipeline searches for university names paired with \"Kotlin\" using major search engines (Google, Bing). Result pages are fetched and parsed to extract course listings and syllabi."
-									] }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-ink font-semibold",
-											children: "Signal tier"
+											children: "Primary vs Secondary signal"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-[color:var(--kt-purple)] mono text-[11px]",
 											children: "Primary"
 										}),
-										" — Kotlin is the explicit focus of the course or resource.",
+										" — genuinely course-like content (a real course/program page).",
 										" ",
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "text-muted-foreground mono text-[11px]",
 											children: "Secondary"
 										}),
-										" — Kotlin is mentioned as a supplementary or comparable language within a broader curriculum."
+										" — supporting material or a page that merely mentions Kotlin."
+									] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-ink font-semibold",
+											children: "Formal / Non-formal learning"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-[color:var(--kt-purple)] mono text-[11px]",
+											children: "Formal"
+										}),
+										" — university courses.",
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground mono text-[11px]",
+											children: "Non-formal"
+										}),
+										" — MOOCs; a GitHub repo is Formal if it accompanies a university course, Non-formal if standalone or tied to a MOOC."
 									] }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -1353,17 +1356,40 @@ function Dashboard() {
 											children: "Kotlin confidence"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-										"A machine-learning classifier assigns a score (0–1) estimating how likely it is that a page genuinely teaches Kotlin, rather than merely mentioning it in passing. Higher scores indicate stronger Kotlin focus."
-									] })
+										"The classifier's confidence (0–1) that a resource genuinely teaches Kotlin."
+									] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-ink font-semibold",
+											children: "Methodology"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+										"Data is discovered via an automated pipeline that searches university websites, GitHub, and MOOC platforms for evidence of Kotlin teaching, then classifies and normalizes the results."
+									] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "mt-4 pt-4 border-t border-line",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-ink font-semibold",
+												children: "Map-click filtering"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+											"Dashboard-click filtering only works on the map (by country). Clicking a country on the world map toggles a country filter."
+										]
+									})
 								]
-							})]
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
+							label: "Search Statistics",
+							description: "Pipeline telemetry — how the automated scraping and discovery process performed."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Kotlin-confidence distribution",
 							subtitle: "Classifier score histogram · bars centered on ticks",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Histogram, {
 								values: confidenceValues,
-								bins: 20,
+								bins: confidenceBins,
 								height: 240
 							})
 						}),
