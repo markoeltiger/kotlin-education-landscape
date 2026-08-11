@@ -3,8 +3,8 @@ import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
 import { a as HorizontalBars, n as Empty, o as Panel, t as Donut } from "./Charts-_7q_Krp8.mjs";
 import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route } from "./programs-BypWN9hL.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/programs-Ddgujfo5.js
+import { t as Route } from "./programs-DQBSav9E.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/programs-C86b80-Z.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProgramsPage() {
@@ -46,13 +46,13 @@ function ProgramsPage() {
 			replace: true
 		});
 	}, [navigate]);
-	const countries = (0, import_react.useMemo)(() => {
+	const allCountries = (0, import_react.useMemo)(() => {
 		return Array.from(new Set(dataset.programs.map((p) => p.country))).sort();
 	}, [dataset.programs]);
-	const levels = (0, import_react.useMemo)(() => {
+	const allLevels = (0, import_react.useMemo)(() => {
 		return Array.from(new Set(dataset.programs.map((p) => p.level))).sort();
 	}, [dataset.programs]);
-	const topics = (0, import_react.useMemo)(() => {
+	const allTopics = (0, import_react.useMemo)(() => {
 		return Array.from(new Set(dataset.programs.flatMap((p) => p.topics))).sort();
 	}, [dataset.programs]);
 	const handleTopicClick = (0, import_react.useCallback)((topic) => {
@@ -115,6 +115,51 @@ function ProgramsPage() {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 pb-10 sm:pb-12 md:pb-16",
 			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "panel p-4 sm:p-5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "eyebrow text-[10px] sm:text-[11px] mb-1",
+								children: "Total Programs"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-2xl sm:text-3xl font-bold text-ink mono",
+								children: dataset.programs.length
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "panel p-4 sm:p-5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "eyebrow text-[10px] sm:text-[11px] mb-1",
+								children: "Countries"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-2xl sm:text-3xl font-bold text-ink mono",
+								children: allCountries.length
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "panel p-4 sm:p-5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "eyebrow text-[10px] sm:text-[11px] mb-1",
+								children: "Topics"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-2xl sm:text-3xl font-bold text-ink mono",
+								children: allTopics.length
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "panel p-4 sm:p-5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "eyebrow text-[10px] sm:text-[11px] mb-1",
+								children: "Filtered"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-2xl sm:text-3xl font-bold text-kt-purple mono",
+								children: sortedPrograms.length
+							})]
+						})
+					]
+				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 					title: "Topics distribution",
 					subtitle: "Most taught Kotlin topics across all programs",
@@ -205,7 +250,7 @@ function ProgramsPage() {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: "",
 									children: "All countries"
-								}), countries.map((country) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+								}), allCountries.map((country) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: country,
 									children: country
 								}, country))]
@@ -220,7 +265,7 @@ function ProgramsPage() {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: "",
 									children: "All levels"
-								}), levels.map((level) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+								}), allLevels.map((level) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: level,
 									children: level
 								}, level))]
@@ -235,7 +280,7 @@ function ProgramsPage() {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: "",
 									children: "All topics"
-								}), topics.map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+								}), allTopics.map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 									value: topic,
 									children: topic
 								}, topic))]
@@ -346,10 +391,6 @@ function ProgramsPage() {
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 											className: "text-left py-3 px-2 font-semibold text-ink",
 											children: "Language"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
-											className: "text-left py-3 px-2 font-semibold text-ink",
-											children: "Link"
 										})
 									]
 								}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: sortedPrograms.map((program, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
@@ -362,8 +403,12 @@ function ProgramsPage() {
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 											className: "py-3 px-2",
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+												href: program.url,
+												target: "_blank",
+												rel: "noopener noreferrer",
 												className: "text-kt-purple hover:underline",
+												onClick: (e) => e.stopPropagation(),
 												children: program.program_name
 											})
 										}),
@@ -402,17 +447,6 @@ function ProgramsPage() {
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 											className: "py-3 px-2 text-muted-foreground",
 											children: program.language_taught || "-"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
-											className: "py-3 px-2",
-											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-												href: program.url,
-												target: "_blank",
-												rel: "noopener noreferrer",
-												className: "text-kt-purple hover:underline text-xs",
-												onClick: (e) => e.stopPropagation(),
-												children: "View →"
-											})
 										})
 									]
 								}, index)) })]
