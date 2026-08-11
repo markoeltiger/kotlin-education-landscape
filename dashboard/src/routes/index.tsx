@@ -32,7 +32,15 @@ export const Route = createFileRoute("/")({
   loader: async (): Promise<Dataset> => {
     // Load courses from unified JSON file
     const coursesPath = join(process.cwd(), 'public/data/courses_unified.json');
-    const courses = JSON.parse(readFileSync(coursesPath, 'utf-8')) as Course[];
+    const coursesData = JSON.parse(readFileSync(coursesPath, 'utf-8'));
+    
+    // Handle both old format (array) and new format (object with meta + courses)
+    const courses = Array.isArray(coursesData) 
+      ? coursesData as Course[]
+      : (coursesData.courses || []);
+    const meta = Array.isArray(coursesData)
+      ? { generated_at: new Date().toISOString() }
+      : (coursesData.meta || { generated_at: new Date().toISOString() });
     
     console.log(`[json] loaded ${courses.length} courses from courses_unified.json.`);
     
@@ -62,9 +70,6 @@ export const Route = createFileRoute("/")({
       // insights file might not exist or be invalid — this is fine
       console.log('[insights] failed to load insights.json, continuing without insights');
     }
-    
-    // Add meta timestamp if not present in the data
-    const meta = { generated_at: new Date().toISOString() };
     
     return { courses, serp, baseline, insights, meta };
   },

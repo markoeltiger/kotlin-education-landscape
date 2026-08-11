@@ -1,12 +1,14 @@
 import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Dm6pfN1e.js
-var $$splitComponentImporter = () => import("./routes-DPczqd-e.mjs");
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Dad_G23S.js
+var $$splitComponentImporter = () => import("./routes-9uf7FfOo.mjs");
 var Route = createFileRoute("/")({
 	loader: async () => {
 		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
-		const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
+		const coursesData = JSON.parse(readFileSync(coursesPath, "utf-8"));
+		const courses = Array.isArray(coursesData) ? coursesData : coursesData.courses || [];
+		const meta = Array.isArray(coursesData) ? { generated_at: (/* @__PURE__ */ new Date()).toISOString() } : coursesData.meta || { generated_at: (/* @__PURE__ */ new Date()).toISOString() };
 		console.log(`[json] loaded ${courses.length} courses from courses_unified.json.`);
 		const serpPath = join(process.cwd(), "public/data/serp_progress.json");
 		const serp = JSON.parse(readFileSync(serpPath, "utf-8"));
@@ -23,7 +25,6 @@ var Route = createFileRoute("/")({
 		} catch {
 			console.log("[insights] failed to load insights.json, continuing without insights");
 		}
-		const meta = { generated_at: (/* @__PURE__ */ new Date()).toISOString() };
 		return {
 			courses,
 			serp,
