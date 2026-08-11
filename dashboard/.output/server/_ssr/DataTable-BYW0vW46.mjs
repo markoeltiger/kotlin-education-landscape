@@ -1,9 +1,9 @@
 import { o as __toESM } from "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
-import { c as classNames, l as fmt } from "./Charts-_7q_Krp8.mjs";
+import { c as classNames, l as fmt } from "./Charts-Jm0x-9AT.mjs";
 import { t as useVirtualizer } from "../_libs/@tanstack/react-virtual+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-BgVHYMOL.js
+//#region node_modules/.nitro/vite/services/ssr/assets/DataTable-BYW0vW46.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function toCsv(rows, columns) {
@@ -152,89 +152,95 @@ function DataTable({ rows, data }) {
 				className: "mono text-[11px] uppercase tracking-[0.16em] px-3 py-1.5 rounded-md border border-line text-ink hover:border-[color:var(--kt-purple)] hover:text-[color:var(--kt-purple)] transition-colors",
 				children: "Export CSV"
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "border border-line rounded-md overflow-hidden",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "grid bg-panel-2 border-b border-line sticky top-0 z-10",
-				style: { gridTemplateColumns: gridTemplate },
-				children: COLS.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-					onClick: () => onSort(c.key),
-					className: classNames("px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-left hover:text-ink transition-colors", sortKey === c.key ? "text-ink" : "text-muted-foreground", c.align === "right" && "text-right"),
-					children: [c.label, sortKey === c.key && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "ml-1",
-						children: dir === "asc" ? "↑" : "↓"
-					})]
-				}, String(c.key)))
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				ref: parentRef,
 				className: "overflow-auto",
 				style: { height: "min(520px, 60vh)" },
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					style: {
-						height: virt.getTotalSize(),
-						position: "relative"
-					},
-					children: virt.getVirtualItems().map((vi) => {
-						const r = sorted[vi.index];
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid absolute left-0 right-0 border-b border-line hover:bg-panel-2/60 transition-colors",
-							style: {
-								transform: `translateY(${vi.start}px)`,
-								height: vi.size,
-								gridTemplateColumns: gridTemplate
-							},
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-									href: r.url,
-									target: "_blank",
-									rel: "noreferrer",
-									className: "text-ink hover:text-[color:var(--kt-purple)] truncate block",
-									title: r.title,
-									children: r.title
-								}) }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									muted: true,
-									children: r.source
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-									tier: r.signal_tier,
-									children: r.signal_tier
-								}) }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									muted: true,
-									children: r.learning_type
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									children: r.provider
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									muted: true,
-									children: r.country || "—"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									muted: true,
-									children: r.subtype || "—"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									align: "right",
-									children: fmt(r.popularity)
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-									mono: true,
-									align: "right",
-									children: r.kotlin_confidence.toFixed(2)
-								})
-							]
-						}, vi.key);
-					})
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					style: { minWidth: `${COLS.reduce((acc, c) => {
+						const m = c.w.match(/(\d+)px/);
+						return acc + (m ? parseInt(m[1]) : 90);
+					}, 0)}px` },
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "grid bg-panel-2 border-b border-line sticky top-0 z-10",
+						style: { gridTemplateColumns: gridTemplate },
+						children: COLS.map((c) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							onClick: () => onSort(c.key),
+							className: classNames("px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-left hover:text-ink transition-colors", sortKey === c.key ? "text-ink" : "text-muted-foreground", c.align === "right" && "text-right"),
+							children: [c.label, sortKey === c.key && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "ml-1",
+								children: dir === "asc" ? "↑" : "↓"
+							})]
+						}, String(c.key)))
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						style: {
+							height: virt.getTotalSize(),
+							position: "relative"
+						},
+						children: virt.getVirtualItems().map((vi) => {
+							const r = sorted[vi.index];
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid absolute left-0 right-0 border-b border-line hover:bg-panel-2/60 transition-colors",
+								style: {
+									transform: `translateY(${vi.start}px)`,
+									height: vi.size,
+									gridTemplateColumns: gridTemplate
+								},
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+										href: r.url,
+										target: "_blank",
+										rel: "noreferrer",
+										className: "text-ink hover:text-[color:var(--kt-purple)] truncate block",
+										title: r.title,
+										children: r.title
+									}) }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										muted: true,
+										children: r.source
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+										tier: r.signal_tier,
+										children: r.signal_tier
+									}) }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										muted: true,
+										children: r.learning_type === "informal" ? "non-formal" : r.learning_type
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										children: r.provider
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										muted: true,
+										children: r.country || "—"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										muted: true,
+										children: r.subtype || "—"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										align: "right",
+										children: fmt(r.popularity)
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
+										mono: true,
+										align: "right",
+										children: r.kotlin_confidence.toFixed(2)
+									})
+								]
+							}, vi.key);
+						})
+					})]
 				})
-			})]
+			})
 		})]
 	});
 }

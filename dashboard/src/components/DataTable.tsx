@@ -98,64 +98,76 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
           Export CSV
         </button>
       </div>
+      {/* Single scroll container — header + rows share the same overflow-x-auto
+          so horizontal scroll moves both together. The header is sticky top-0
+          inside this container for vertical scroll. */}
       <div className="border border-line rounded-md overflow-hidden">
-        <div
-          className="grid bg-panel-2 border-b border-line sticky top-0 z-10"
-          style={{ gridTemplateColumns: gridTemplate }}
-        >
-          {COLS.map((c) => (
-            <button
-              key={String(c.key)}
-              onClick={() => onSort(c.key)}
-              className={classNames(
-                "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-left hover:text-ink transition-colors",
-                sortKey === c.key ? "text-ink" : "text-muted-foreground",
-                c.align === "right" && "text-right",
-              )}
-            >
-              {c.label}
-              {sortKey === c.key && <span className="ml-1">{dir === "asc" ? "↑" : "↓"}</span>}
-            </button>
-          ))}
-        </div>
         <div ref={parentRef} className="overflow-auto" style={{ height: 'min(520px, 60vh)' }}>
-          <div style={{ height: virt.getTotalSize(), position: "relative" }}>
-            {virt.getVirtualItems().map((vi) => {
-              const r = sorted[vi.index];
-              return (
-                <div
-                  key={vi.key}
-                  className="grid absolute left-0 right-0 border-b border-line hover:bg-panel-2/60 transition-colors"
-                  style={{
-                    transform: `translateY(${vi.start}px)`,
-                    height: vi.size,
-                    gridTemplateColumns: gridTemplate,
-                  }}
+          {/* Minimum width forces horizontal scroll when viewport is narrow */}
+          <div style={{ minWidth: `${COLS.reduce((acc, c) => {
+            // parse minmax(200px,2fr) -> 200, 90px -> 90, etc.
+            const m = c.w.match(/(\d+)px/);
+            return acc + (m ? parseInt(m[1]) : 90);
+          }, 0)}px` }}>
+            {/* Sticky header inside the scroll container */}
+            <div
+              className="grid bg-panel-2 border-b border-line sticky top-0 z-10"
+              style={{ gridTemplateColumns: gridTemplate }}
+            >
+              {COLS.map((c) => (
+                <button
+                  key={String(c.key)}
+                  onClick={() => onSort(c.key)}
+                  className={classNames(
+                    "px-3 py-2 mono text-[10px] uppercase tracking-[0.16em] text-left hover:text-ink transition-colors",
+                    sortKey === c.key ? "text-ink" : "text-muted-foreground",
+                    c.align === "right" && "text-right",
+                  )}
                 >
-                  <Cell>
-                    <a
-                      href={r.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-ink hover:text-[color:var(--kt-purple)] truncate block"
-                      title={r.title}
-                    >
-                      {r.title}
-                    </a>
-                  </Cell>
-                  <Cell mono muted>{r.source}</Cell>
-                  <Cell>
-                    <Badge tier={r.signal_tier as string}>{r.signal_tier}</Badge>
-                  </Cell>
-                  <Cell mono muted>{r.learning_type}</Cell>
-                  <Cell mono>{r.provider}</Cell>
-                  <Cell mono muted>{r.country || "—"}</Cell>
-                  <Cell mono muted>{r.subtype || "—"}</Cell>
-                  <Cell mono align="right">{fmt(r.popularity)}</Cell>
-                  <Cell mono align="right">{r.kotlin_confidence.toFixed(2)}</Cell>
-                </div>
-              );
-            })}
+                  {c.label}
+                  {sortKey === c.key && <span className="ml-1">{dir === "asc" ? "↑" : "↓"}</span>}
+                </button>
+              ))}
+            </div>
+            {/* Virtualised rows */}
+            <div style={{ height: virt.getTotalSize(), position: "relative" }}>
+              {virt.getVirtualItems().map((vi) => {
+                const r = sorted[vi.index];
+                return (
+                  <div
+                    key={vi.key}
+                    className="grid absolute left-0 right-0 border-b border-line hover:bg-panel-2/60 transition-colors"
+                    style={{
+                      transform: `translateY(${vi.start}px)`,
+                      height: vi.size,
+                      gridTemplateColumns: gridTemplate,
+                    }}
+                  >
+                    <Cell>
+                      <a
+                        href={r.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-ink hover:text-[color:var(--kt-purple)] truncate block"
+                        title={r.title}
+                      >
+                        {r.title}
+                      </a>
+                    </Cell>
+                    <Cell mono muted>{r.source}</Cell>
+                    <Cell>
+                      <Badge tier={r.signal_tier as string}>{r.signal_tier}</Badge>
+                    </Cell>
+                    <Cell mono muted>{r.learning_type === "informal" ? "non-formal" : r.learning_type}</Cell>
+                    <Cell mono>{r.provider}</Cell>
+                    <Cell mono muted>{r.country || "—"}</Cell>
+                    <Cell mono muted>{r.subtype || "—"}</Cell>
+                    <Cell mono align="right">{fmt(r.popularity)}</Cell>
+                    <Cell mono align="right">{r.kotlin_confidence.toFixed(2)}</Cell>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

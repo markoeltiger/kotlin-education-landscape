@@ -1,21 +1,20 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
+import { n as zodValidator, o as object, r as _enum, s as string, t as fallback } from "../_libs/tanstack__zod-adapter+zod.mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-import { fallback, zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
-//#region src/routes/programs.tsx
-var $$splitComponentImporter = () => import("./programs-C86b80-Z.js");
-var searchSchema = z.object({
-	search: fallback(z.string(), "").default(""),
-	country: fallback(z.string(), "").default(""),
-	level: fallback(z.string(), "").default(""),
-	topic: fallback(z.string(), "").default(""),
-	sortBy: fallback(z.enum([
+//#region node_modules/.nitro/vite/services/ssr/assets/programs-CU9Dwplx.js
+var $$splitComponentImporter = () => import("./programs-B9RrYa8l.mjs");
+var searchSchema = object({
+	search: fallback(string(), "").default(""),
+	country: fallback(string(), "").default(""),
+	level: fallback(string(), "").default(""),
+	topic: fallback(string(), "").default(""),
+	sortBy: fallback(_enum([
 		"university",
 		"country",
 		"level"
 	]), "university").default("university"),
-	sortOrder: fallback(z.enum(["asc", "desc"]), "asc").default("asc")
+	sortOrder: fallback(_enum(["asc", "desc"]), "asc").default("asc")
 });
 var Route = createFileRoute("/programs")({
 	validateSearch: zodValidator(searchSchema),

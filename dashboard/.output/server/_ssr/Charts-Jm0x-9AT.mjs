@@ -6,7 +6,7 @@ import { n as linear, r as band } from "../_libs/d3-scale+internmap.mjs";
 import { n as axisLeft, t as axisBottom } from "../_libs/d3-axis.mjs";
 import { m as select_default } from "../_libs/d3+[...].mjs";
 import { n as arc_default, t as pie_default } from "../_libs/d3-shape.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/Charts-_7q_Krp8.js
+//#region node_modules/.nitro/vite/services/ssr/assets/Charts-Jm0x-9AT.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var nf = new Intl.NumberFormat("en-US");
@@ -217,7 +217,7 @@ function StackedBars({ data, keys, colors, height = 320 }) {
 		}, k))
 	})] });
 }
-function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
+function Histogram({ values, bins = 20, height = 200, color = "#7F52FF" }) {
 	const { ref, width } = useResizeObserver();
 	const svgRef = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
@@ -227,8 +227,8 @@ function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 		const margin = {
 			top: 8,
 			right: 8,
-			bottom: 22,
-			left: 34
+			bottom: 28,
+			left: 38
 		};
 		const w = width - margin.left - margin.right;
 		const h = height - margin.top - margin.bottom;
@@ -236,9 +236,10 @@ function Histogram({ values, bins = 10, height = 200, color = "#7F52FF" }) {
 		const hist = bin().domain([0, 1]).thresholds(bins)(values);
 		const y = linear().domain([0, max(hist, (d) => d.length) ?? 1]).range([h, 0]);
 		const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-		g.selectAll("rect").data(hist).join("rect").attr("x", (d) => x(d.x0 ?? 0) + 1).attr("y", (d) => y(d.length)).attr("width", (d) => Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 2)).attr("height", (d) => h - y(d.length)).attr("fill", color).attr("rx", 2).append("title").text((d) => `${(d.x0 ?? 0).toFixed(1)}–${(d.x1 ?? 0).toFixed(1)}: ${fmt(d.length)}`);
-		const xAxis = axisBottom(x).ticks(5).tickSizeOuter(0);
-		g.append("g").attr("transform", `translate(0,${h})`).call(xAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1")).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
+		g.selectAll("rect").data(hist).join("rect").attr("x", (d) => x(d.x0 ?? 0) + 1).attr("y", (d) => y(d.length)).attr("width", (d) => Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 2)).attr("height", (d) => h - y(d.length)).attr("fill", color).attr("rx", 2).append("title").text((d) => `${(d.x0 ?? 0).toFixed(2)}–${(d.x1 ?? 0).toFixed(2)}: ${fmt(d.length)} records`);
+		const midpoints = hist.map((d) => ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2);
+		const xAxis = axisBottom(x).tickValues(midpoints).tickFormat((v) => v.toFixed(1)).tickSizeOuter(0);
+		g.append("g").attr("transform", `translate(0,${h})`).call(xAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1").attr("font-size", 9)).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
 		const yAxis = axisLeft(y).ticks(4).tickSizeOuter(0);
 		g.append("g").call(yAxis).call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1")).call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
 	}, [

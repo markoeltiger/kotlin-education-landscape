@@ -1,19 +1,14 @@
-import { o as __toESM } from "../_runtime.mjs";
 import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
-import { a as boolean, c as string, i as array, n as zodValidator, o as number, s as object, t as fallback } from "../_libs/tanstack__zod-adapter+zod.mjs";
-import { t as require_papaparse } from "../_libs/papaparse.mjs";
+import { a as number, i as array, n as zodValidator, o as object, s as string, t as fallback } from "../_libs/tanstack__zod-adapter+zod.mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-BIJQ6Lqp.js
-var import_papaparse = /* @__PURE__ */ __toESM(require_papaparse());
-var $$splitComponentImporter = () => import("./routes-DXysDqcX.mjs");
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BUR9LaBu.js
+var $$splitComponentImporter = () => import("./routes-e_lgXrdA.mjs");
 var searchSchema = object({
-	primary_only: fallback(boolean(), false).default(false),
 	sources: fallback(array(string()), []).default([]),
 	tiers: fallback(array(string()), []).default([]),
 	learning_types: fallback(array(string()), []).default([]),
 	countries: fallback(array(string()), []).default([]),
-	min_stars: fallback(number(), 0).default(0),
 	conf_min: fallback(number(), 0).default(0),
 	conf_max: fallback(number(), 1).default(1),
 	search: fallback(string(), "").default("")
@@ -21,22 +16,9 @@ var searchSchema = object({
 var Route = createFileRoute("/")({
 	validateSearch: zodValidator(searchSchema),
 	loader: async () => {
-		const mainCsvPath = join(process.cwd(), "kotlin_education_tableau.csv");
-		const uniCsvPath = join(process.cwd(), "kotlin_education_tableau_universities.csv");
-		const mainCsvContent = readFileSync(mainCsvPath, "utf-8");
-		const mainResult = import_papaparse.default.parse(mainCsvContent, {
-			header: true,
-			dynamicTyping: true,
-			skipEmptyLines: true
-		});
-		const uniCsvContent = readFileSync(uniCsvPath, "utf-8");
-		const uniResult = import_papaparse.default.parse(uniCsvContent, {
-			header: true,
-			dynamicTyping: true,
-			skipEmptyLines: true
-		});
-		const courses = [...mainResult.data, ...uniResult.data];
-		console.log(`[csv] loaded ${courses.length} courses from CSV files.`);
+		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
+		const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
+		console.log(`[json] loaded ${courses.length} courses from courses_unified.json.`);
 		const serpPath = join(process.cwd(), "public/data/serp_progress.json");
 		const serp = JSON.parse(readFileSync(serpPath, "utf-8"));
 		const baselinePath = join(process.cwd(), "public/data/baseline_comparison.json");
@@ -52,11 +34,13 @@ var Route = createFileRoute("/")({
 		} catch {
 			console.log("[insights] failed to load insights.json, continuing without insights");
 		}
+		const meta = { generated_at: (/* @__PURE__ */ new Date()).toISOString() };
 		return {
 			courses,
 			serp,
 			baseline,
-			insights
+			insights,
+			meta
 		};
 	},
 	component: lazyRouteComponent($$splitComponentImporter, "component")

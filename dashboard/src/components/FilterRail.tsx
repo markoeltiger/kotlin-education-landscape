@@ -14,7 +14,34 @@ type Props = {
 
 const TIERS = ["primary", "secondary"];
 const LEARNING = ["formal", "informal"];
-const STAR_STEPS = [0, 10, 50, 100, 500];
+
+/** Display-friendly labels for raw data values */
+const TIER_LABELS: Record<string, string> = {
+  primary: "Primary",
+  secondary: "Secondary",
+};
+const LEARNING_LABELS: Record<string, string> = {
+  formal: "Formal",
+  informal: "Non-formal",
+};
+const SOURCE_LABELS: Record<string, string> = {
+  university_website: "University",
+  github: "GitHub",
+  stepik: "Stepik",
+  coursera: "Coursera",
+};
+
+/**
+ * A chip is "active" when:
+ * - The filter array is empty (= all values allowed, i.e. no restriction)
+ * - OR the specific value is present in the filter array
+ *
+ * This way, on first load with no URL params, all chips appear highlighted,
+ * correctly communicating "everything is shown".
+ */
+function isActive(arr: string[], value: string): boolean {
+  return arr.length === 0 || arr.includes(value);
+}
 
 export function FilterRail({
   filters,
@@ -36,8 +63,21 @@ export function FilterRail({
   const toggle = (key: keyof Filters, v: string) =>
     setFilters((prev) => {
       const cur = (prev[key] as string[]) ?? [];
+      // If the array is currently empty (= all selected), clicking one chip
+      // means "exclude all others" — so we populate with all except this one.
+      // If the array has values, toggle normally.
+      if (cur.length === 0) {
+        // Get the full list for this key to deselect just `v`
+        const allValues =
+          key === "tiers" ? TIERS :
+          key === "learning_types" ? LEARNING :
+          key === "sources" ? sources :
+          [];
+        return { ...prev, [key]: allValues.filter((x) => x !== v) };
+      }
       const has = cur.includes(v);
-      return { ...prev, [key]: has ? cur.filter((x) => x !== v) : [...cur, v] };
+      const next = has ? cur.filter((x) => x !== v) : [...cur, v];
+      return { ...prev, [key]: next };
     });
 
   const filterContent = (
@@ -60,29 +100,14 @@ export function FilterRail({
         />
       </Group>
 
-      <Group label="Signal tier">
-        <ToggleRow>
-          <Chip
-            active={filters.primary_only}
-            onClick={() => setFilters((p) => ({ ...p, primary_only: !p.primary_only }))}
-          >
-            Primary-only
-          </Chip>
-        </ToggleRow>
+      <Group
+        label="Signal tier"
+        tooltip="Primary: Kotlin is the main language taught. Secondary: Kotlin is mentioned as part of a broader course or resource."
+      >
         <ToggleRow>
           {TIERS.map((t) => (
-            <Chip key={t} active={filters.tiers.includes(t)} onClick={() => toggle("tiers", t)}>
-              {t}
-            </Chip>
-          ))}
-        </ToggleRow>
-      </Group>
-
-      <Group label="Source">
-        <ToggleRow>
-          {sources.map((s) => (
-            <Chip key={s} active={filters.sources.includes(s)} onClick={() => toggle("sources", s)}>
-              {s}
+            <Chip key={t} active={isActive(filters.tiers, t)} onClick={() => toggle("tiers", t)}>
+              {TIER_LABELS[t] ?? t}
             </Chip>
           ))}
         </ToggleRow>
@@ -93,70 +118,71 @@ export function FilterRail({
           {LEARNING.map((l) => (
             <Chip
               key={l}
-              active={filters.learning_types.includes(l)}
+              active={isActive(filters.learning_types, l)}
               onClick={() => toggle("learning_types", l)}
             >
-              {l}
+              {LEARNING_LABELS[l] ?? l}
             </Chip>
           ))}
         </ToggleRow>
       </Group>
 
-      <Group label={`Min GitHub stars · ${filters.min_stars}`}>
-        <div className="flex items-center gap-1">
-          {STAR_STEPS.map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilters((p) => ({ ...p, min_stars: s }))}
-              className={classNames(
-                "mono flex-1 py-1.5 text-xs rounded-md border transition-colors",
-                filters.min_stars === s
-                  ? "bg-[color:var(--kt-purple)] text-white border-transparent"
-                  : "border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-purple)]",
-              )}
-            >
-              {s === 0 ? "any" : `≥${s}`}
-            </button>
+      <Group label="Source">
+        <ToggleRow>
+          {sources.map((s) => (
+            <Chip key={s} active={isActive(filters.sources, s)} onClick={() => toggle("sources", s)}>
+              {SOURCE_LABELS[s] ?? s}
+            </Chip>
           ))}
-        </div>
+        </ToggleRow>
       </Group>
 
       <Group
         label={`Kotlin confidence · ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`}
+        tooltip="A classifier score (0–1) indicating how likely this record is genuinely Kotlin-focused. 1.0 = near-certain Kotlin content."
       >
         <div className="flex items-center gap-2">
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={filters.conf_min}
-            onChange={(e) =>
-              setFilters((p) => ({
-                ...p,
-                conf_min: Math.min(Number(e.target.value), p.conf_max),
-              }))
-            }
-            className="w-full accent-[color:var(--kt-purple)]"
-          />
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={filters.conf_max}
-            onChange={(e) =>
-              setFilters((p) => ({
-                ...p,
-                conf_max: Math.max(Number(e.target.value), p.conf_min),
-              }))
-            }
-            className="w-full accent-[color:var(--kt-magenta)]"
-          />
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="mono text-[10px] text-muted-foreground">Min</span>
+            <input
+              type="number"
+              min={0}
+              max={1}
+              step={0.05}
+              value={filters.conf_min}
+              onChange={(e) =>
+                setFilters((p) => ({
+                  ...p,
+                  conf_min: Math.min(Number(e.target.value), p.conf_max),
+                }))
+              }
+              className="mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+            />
+          </div>
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="mono text-[10px] text-muted-foreground">Max</span>
+            <input
+              type="number"
+              min={0}
+              max={1}
+              step={0.05}
+              value={filters.conf_max}
+              onChange={(e) =>
+                setFilters((p) => ({
+                  ...p,
+                  conf_max: Math.max(Number(e.target.value), p.conf_min),
+                }))
+              }
+              className="mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+            />
+          </div>
         </div>
       </Group>
 
       <Group label={`Country${filters.countries.length ? ` · ${filters.countries.length} picked` : ""}`}>
+        <p className="mono text-[10px] text-muted-foreground mb-1.5">
+          Map and table filtering applies to universities only.
+        </p>
         <input
           type="text"
           value={countryQuery}
@@ -205,29 +231,14 @@ export function FilterRail({
         />
       </Group>
 
-      <Group label="Signal tier">
-        <ToggleRow>
-          <Chip
-            active={filters.primary_only}
-            onClick={() => setFilters((p) => ({ ...p, primary_only: !p.primary_only }))}
-          >
-            Primary-only
-          </Chip>
-        </ToggleRow>
+      <Group
+        label="Signal tier"
+        tooltip="Primary: Kotlin is the main language taught. Secondary: Kotlin is mentioned as part of a broader course or resource."
+      >
         <ToggleRow>
           {TIERS.map((t) => (
-            <Chip key={t} active={filters.tiers.includes(t)} onClick={() => toggle("tiers", t)}>
-              {t}
-            </Chip>
-          ))}
-        </ToggleRow>
-      </Group>
-
-      <Group label="Source">
-        <ToggleRow>
-          {sources.map((s) => (
-            <Chip key={s} active={filters.sources.includes(s)} onClick={() => toggle("sources", s)}>
-              {s}
+            <Chip key={t} active={isActive(filters.tiers, t)} onClick={() => toggle("tiers", t)}>
+              {TIER_LABELS[t] ?? t}
             </Chip>
           ))}
         </ToggleRow>
@@ -238,70 +249,71 @@ export function FilterRail({
           {LEARNING.map((l) => (
             <Chip
               key={l}
-              active={filters.learning_types.includes(l)}
+              active={isActive(filters.learning_types, l)}
               onClick={() => toggle("learning_types", l)}
             >
-              {l}
+              {LEARNING_LABELS[l] ?? l}
             </Chip>
           ))}
         </ToggleRow>
       </Group>
 
-      <Group label={`Min GitHub stars · ${filters.min_stars}`}>
-        <div className="flex items-center gap-1">
-          {STAR_STEPS.map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilters((p) => ({ ...p, min_stars: s }))}
-              className={classNames(
-                "mono flex-1 py-1.5 text-xs rounded-md border transition-colors",
-                filters.min_stars === s
-                  ? "bg-[color:var(--kt-purple)] text-white border-transparent"
-                  : "border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-purple)]",
-              )}
-            >
-              {s === 0 ? "any" : `≥${s}`}
-            </button>
+      <Group label="Source">
+        <ToggleRow>
+          {sources.map((s) => (
+            <Chip key={s} active={isActive(filters.sources, s)} onClick={() => toggle("sources", s)}>
+              {SOURCE_LABELS[s] ?? s}
+            </Chip>
           ))}
-        </div>
+        </ToggleRow>
       </Group>
 
       <Group
         label={`Kotlin confidence · ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`}
+        tooltip="A classifier score (0–1) indicating how likely this record is genuinely Kotlin-focused."
       >
         <div className="flex items-center gap-2">
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={filters.conf_min}
-            onChange={(e) =>
-              setFilters((p) => ({
-                ...p,
-                conf_min: Math.min(Number(e.target.value), p.conf_max),
-              }))
-            }
-            className="w-full accent-[color:var(--kt-purple)]"
-          />
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={filters.conf_max}
-            onChange={(e) =>
-              setFilters((p) => ({
-                ...p,
-                conf_max: Math.max(Number(e.target.value), p.conf_min),
-              }))
-            }
-            className="w-full accent-[color:var(--kt-magenta)]"
-          />
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="mono text-[10px] text-muted-foreground">Min</span>
+            <input
+              type="number"
+              min={0}
+              max={1}
+              step={0.05}
+              value={filters.conf_min}
+              onChange={(e) =>
+                setFilters((p) => ({
+                  ...p,
+                  conf_min: Math.min(Number(e.target.value), p.conf_max),
+                }))
+              }
+              className="mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+            />
+          </div>
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="mono text-[10px] text-muted-foreground">Max</span>
+            <input
+              type="number"
+              min={0}
+              max={1}
+              step={0.05}
+              value={filters.conf_max}
+              onChange={(e) =>
+                setFilters((p) => ({
+                  ...p,
+                  conf_max: Math.max(Number(e.target.value), p.conf_min),
+                }))
+              }
+              className="mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+            />
+          </div>
         </div>
       </Group>
 
       <Group label={`Country${filters.countries.length ? ` · ${filters.countries.length} picked` : ""}`}>
+        <p className="mono text-[10px] text-muted-foreground mb-1.5">
+          Map and table filtering applies to universities only.
+        </p>
         <input
           type="text"
           value={countryQuery}
@@ -361,10 +373,29 @@ export function FilterRail({
   );
 }
 
-function Group({ label, children }: { label: string; children: React.ReactNode }) {
+function Group({
+  label,
+  tooltip,
+  children,
+}: {
+  label: string;
+  tooltip?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-1.5 sm:gap-2">
-      <div className="eyebrow text-[10px] sm:text-[11px]">{label}</div>
+      <div className="eyebrow text-[10px] sm:text-[11px] flex items-center gap-1">
+        {label}
+        {tooltip && (
+          <span
+            title={tooltip}
+            className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px] leading-none"
+            style={{ fontFamily: "serif", fontStyle: "italic" }}
+          >
+            i
+          </span>
+        )}
+      </div>
       {children}
     </div>
   );
@@ -404,23 +435,24 @@ export function ActiveFilters({
   setFilters: (f: Filters | ((p: Filters) => Filters)) => void;
 }) {
   const chips: { label: string; onRemove: () => void }[] = [];
-  if (filters.primary_only)
-    chips.push({ label: "primary-only", onRemove: () => setFilters((p) => ({ ...p, primary_only: false })) });
+
+  // Only show active-filter chips when a filter is actually narrowing results
+  // (i.e. the array is non-empty and not containing all possible values)
   filters.sources.forEach((s) =>
     chips.push({
-      label: `source: ${s}`,
+      label: `source: ${SOURCE_LABELS[s] ?? s}`,
       onRemove: () => setFilters((p) => ({ ...p, sources: p.sources.filter((x) => x !== s) })),
     }),
   );
   filters.tiers.forEach((s) =>
     chips.push({
-      label: `tier: ${s}`,
+      label: `tier: ${TIER_LABELS[s] ?? s}`,
       onRemove: () => setFilters((p) => ({ ...p, tiers: p.tiers.filter((x) => x !== s) })),
     }),
   );
   filters.learning_types.forEach((s) =>
     chips.push({
-      label: s,
+      label: LEARNING_LABELS[s] ?? s,
       onRemove: () => setFilters((p) => ({ ...p, learning_types: p.learning_types.filter((x) => x !== s) })),
     }),
   );
@@ -430,8 +462,6 @@ export function ActiveFilters({
       onRemove: () => setFilters((p) => ({ ...p, countries: p.countries.filter((x) => x !== s) })),
     }),
   );
-  if (filters.min_stars > 0)
-    chips.push({ label: `≥${filters.min_stars}★`, onRemove: () => setFilters((p) => ({ ...p, min_stars: 0 })) });
   if (filters.conf_min > 0 || filters.conf_max < 1)
     chips.push({
       label: `conf ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`,
@@ -456,12 +486,10 @@ export function ActiveFilters({
         onClick={() =>
           setFilters((p) => ({
             ...p,
-            primary_only: false,
             sources: [],
             tiers: [],
             learning_types: [],
             countries: [],
-            min_stars: 0,
             conf_min: 0,
             conf_max: 1,
             search: "",

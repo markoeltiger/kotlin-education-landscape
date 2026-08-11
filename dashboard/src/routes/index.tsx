@@ -1,8 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { useCallback, useMemo, Suspense, lazy, useRef, useEffect } from "react";
-import Papa from "papaparse";
+import { useCallback, useMemo, Suspense, lazy, useRef } from "react";
 
 import { applyFilters, emptyFilters, groupBy, topN, type Filters, type Dataset, type Course, type SerpRow, type Baseline, type Insights } from "../lib/dataset";
 import { ActiveFilters, FilterRail } from "../components/FilterRail";
@@ -16,6 +15,10 @@ import { fmt } from "../lib/format";
 import { readFileSync } from "fs";
 import { join } from "path";
 
+// Filter constants
+const TIERS = ["primary", "secondary"];
+const LEARNING = ["formal", "non-formal"];
+
 // DataTable uses useVirtualizer which is SSR-incompatible (needs DOM refs).
 // Lazy-loading ensures it only renders on the client side.
 const DataTable = lazy(() =>
@@ -25,47 +28,26 @@ const DataTable = lazy(() =>
 // ─── URL search-param schema ─────────────────────────────────────────────────
 // All filter state lives in the URL so the dashboard is shareable / bookmarkable.
 const searchSchema = z.object({
-  primary_only: fallback(z.boolean(), false).default(false),
   sources: fallback(z.array(z.string()), []).default([]),
   tiers: fallback(z.array(z.string()), []).default([]),
   learning_types: fallback(z.array(z.string()), []).default([]),
   countries: fallback(z.array(z.string()), []).default([]),
-  min_stars: fallback(z.number(), 0).default(0),
   conf_min: fallback(z.number(), 0).default(0),
   conf_max: fallback(z.number(), 1).default(1),
   search: fallback(z.string(), "").default(""),
 });
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(({
   validateSearch: zodValidator(searchSchema),
   // ── Server-side data loader ────────────────────────────────────────────────
-  // Reads both CSV files at request time on the server so no additional client
-  // fetches are needed; the parsed data is serialised into the HTML payload.
+  // Reads courses_unified.json and serp_progress.json at request time on the server
+  // so no additional client fetches are needed; the parsed data is serialised into the HTML payload.
   loader: async (): Promise<Dataset> => {
-    // Load courses from CSV files
-    const mainCsvPath = join(process.cwd(), 'kotlin_education_tableau.csv');
-    const uniCsvPath = join(process.cwd(), 'kotlin_education_tableau_universities.csv');
+    // Load courses from unified JSON file
+    const coursesPath = join(process.cwd(), 'public/data/courses_unified.json');
+    const courses = JSON.parse(readFileSync(coursesPath, 'utf-8')) as Course[];
     
-    // Parse main CSV file (all sources: GitHub, Stepik, Coursera, etc.)
-    const mainCsvContent = readFileSync(mainCsvPath, 'utf-8');
-    const mainResult = Papa.parse<Course>(mainCsvContent, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-    });
-    
-    // Parse universities-only CSV (source === "university_website")
-    const uniCsvContent = readFileSync(uniCsvPath, 'utf-8');
-    const uniResult = Papa.parse<Course>(uniCsvContent, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-    });
-    
-    // Merge both CSV files into a single courses array
-    const courses = [...mainResult.data, ...uniResult.data];
-    
-    console.log(`[csv] loaded ${courses.length} courses from CSV files.`);
+    console.log(`[json] loaded ${courses.length} courses from courses_unified.json.`);
     
     // SERP progress JSON: tracks which university queries were searched,
     // which returned results, and what their pipeline status was.
@@ -94,10 +76,56 @@ export const Route = createFileRoute("/")({
       console.log('[insights] failed to load insights.json, continuing without insights');
     }
     
-    return { courses, serp, baseline, insights };
+    // Add meta timestamp if not present in the data
+    const meta = { generated_at: new Date().toISOString() };
+    
+    return { courses, serp, baseline, insights, meta };
   },
   component: Dashboard,
-});
+}));
+
+// ─── Section divider ──────────────────────────────────────────────────────────
+function SectionDivider({ label, description }: { label: string; description?: string }) {
+  return (
+    <div className="flex items-center gap-4 pt-2 sm:pt-4">
+      <div className="flex-1 h-px bg-line" />
+      <div className="shrink-0 text-center">
+        <div className="eyebrow text-[10px] sm:text-[12px] tracking-[0.2em] text-muted-foreground">{label}</div>
+        {description && (
+          <p className="mt-0.5 mono text-[10px] text-muted-foreground max-w-xs">{description}</p>
+        )}
+      </div>
+      <div className="flex-1 h-px bg-line" />
+    </div>
+  );
+}
+
+// ─── Dataset timestamp ────────────────────────────────────────────────────────
+function DatasetTimestamp({ generatedAt }: { generatedAt: string }) {
+  let display = "—";
+  try {
+    const d = new Date(generatedAt);
+    display = d.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZoneName: "short",
+    });
+  } catch {
+    // ignore
+  }
+  return (
+    <div className="mono text-[10px] text-muted-foreground flex items-center gap-1.5">
+      <span
+        className="inline-block w-1.5 h-1.5 rounded-full"
+        style={{ background: "var(--kt-purple)", opacity: 0.7 }}
+      />
+      Dataset updated: {display}
+    </div>
+  );
+}
 
 function Dashboard() {
   const dataset = Route.useLoaderData();
@@ -107,10 +135,9 @@ function Dashboard() {
   // ── Filter state (URL-backed) ──────────────────────────────────────────────
   // `filters` is derived from URL search params; `setFilters` writes back to the
   // URL so every filter change is bookmarkable and browser-back-navigable.
-  const filters: Filters = useMemo(
-    () => ({ ...emptyFilters, ...search }),
-    [search],
-  );
+  const filters: Filters = useMemo(() => {
+    return { ...emptyFilters, ...search };
+  }, [search]);
 
   const setFilters = useCallback(
     (next: Filters | ((prev: Filters) => Filters)) => {
@@ -183,7 +210,12 @@ function Dashboard() {
   // Source, tier, and learning-type distributions
   const sourceCounts = useMemo(() => topN(groupBy(filtered, (r) => r.source), 10), [filtered]);
   const tierCounts = useMemo(() => topN(groupBy(filtered, (r) => r.signal_tier), 5), [filtered]);
-  const learningCounts = useMemo(() => topN(groupBy(filtered, (r) => r.learning_type), 5), [filtered]);
+
+  // Learning type — display "non-formal" instead of "informal" in charts
+  const learningCounts = useMemo((): [string, number][] => {
+    const raw = topN(groupBy(filtered, (r) => r.learning_type), 5);
+    return raw.map(([k, v]) => [k === "informal" ? "Non-formal" : k === "formal" ? "Formal" : k, v]);
+  }, [filtered]);
 
   // GitHub-specific breakdowns
   const repoTypeCounts = useMemo(
@@ -220,7 +252,7 @@ function Dashboard() {
     return buckets;
   }, [filtered]);
 
-  // Formal vs informal split for the top 10 countries (stacked bar chart)
+  // Formal vs non-formal split for the top 10 countries (stacked bar chart)
   const formalInformal = useMemo(() => {
     const top = topN(countryCounts, 10);
     return top.map(([label]) => {
@@ -228,12 +260,19 @@ function Dashboard() {
       return {
         label,
         parts: {
+          // Raw data uses "informal"; displayed as "Non-formal" in labels
           formal: rows.filter((r) => r.learning_type === "formal").length,
-          informal: rows.filter((r) => r.learning_type === "informal").length,
+          "non-formal": rows.filter((r) => r.learning_type === "informal").length,
         },
       };
     });
   }, [countryCounts, filtered]);
+
+  // MOOC-only platform distribution
+  const moocCounts = useMemo(
+    () => topN(groupBy(filtered.filter((r) => r.source === "stepik" || r.source === "coursera"), (r) => r.source), 10),
+    [filtered],
+  );
 
   // ── Crawl-pipeline stats ───────────────────────────────────────────────────
   // Derived from the SERP data (not the filtered courses) — shows the funnel
@@ -290,6 +329,9 @@ function Dashboard() {
           An automated pipeline discovers universities, MOOCs, and public repositories teaching
           Kotlin. Every filter below refines the whole dashboard in real time.
         </p>
+        <div className="mt-3 sm:mt-4">
+          <DatasetTimestamp generatedAt={dataset.meta.generated_at} />
+        </div>
       </header>
 
       <div className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 pb-10 sm:pb-12 md:pb-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-3 sm:gap-4 md:gap-6">
@@ -328,11 +370,81 @@ function Dashboard() {
               Displays only if insights.json loaded successfully. */}
           <InsightSummary insight={dataset.insights?.overall} />
 
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: GENERAL
+              Overview metrics covering all sources combined.
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider label="General" />
+
           {/* ── KPI stat cards ───────────────────────────────────────────────
               Six large-number cards summarising the filtered dataset.
               The "Primary signal" card highlights the signal-tier split with a
               pulsing PRIMARY badge and a secondary count below. */}
           <StatCards totals={totals} />
+
+          {/* ── Source + tier + learning-type breakdown ──────────────────── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <Panel title="Records by source" subtitle="All sources · distribution">
+              {/* Source breakdown bar chart */}
+              <HorizontalBars data={sourceCounts} color="#C711E1" height={220} />
+              <ChartInsight insight={dataset.insights?.sources} />
+            </Panel>
+
+            <Panel title="Signal tier & learning type" subtitle="Dataset composition">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Signal-tier donut: primary vs secondary — measures dataset quality */}
+                <div>
+                  <div className="eyebrow mb-2 flex items-center gap-1">
+                    Signal tier
+                    <span
+                      title="Primary: Kotlin is the main subject. Secondary: Kotlin mentioned alongside other content."
+                      className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px]"
+                      style={{ fontFamily: "serif", fontStyle: "italic" }}
+                    >i</span>
+                  </div>
+                  <Donut
+                    data={tierCounts}
+                    colors={["#7F52FF", "#3A3A3F"]}
+                    centerLabel="records"
+                  />
+                  <ChartInsight insight={dataset.insights?.signal_tier} />
+                </div>
+                {/* Learning-type donut: formal (university) vs non-formal (MOOC/GitHub) */}
+                <div>
+                  <div className="eyebrow mb-2 flex items-center gap-1">
+                    Learning type
+                    <span
+                      title="Formal: accredited university courses. Non-formal: MOOCs, GitHub repos, self-study resources."
+                      className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px]"
+                      style={{ fontFamily: "serif", fontStyle: "italic" }}
+                    >i</span>
+                  </div>
+                  <Donut
+                    data={learningCounts}
+                    colors={["#C711E1", "#7F52FF"]}
+                    centerLabel="records"
+                  />
+                  <ChartInsight insight={dataset.insights?.learning_type} />
+                </div>
+              </div>
+            </Panel>
+          </div>
+
+          {/* ── Top 15 providers ─────────────────────────────────────────────
+              University names, MOOC platforms, GitHub orgs across all sources */}
+          <Panel title="Top 15 providers" subtitle="Owners & institutions · all sources">
+            <HorizontalBars data={providerCounts} color="#7F52FF" />
+            <ChartInsight insight={dataset.insights?.top_providers} />
+          </Panel>
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: FORMAL EDUCATION
+              Accredited university courses teaching Kotlin.
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider
+            label="Formal Education"
+            description="Accredited university courses where Kotlin appears in the curriculum."
+          />
 
           {/* ── World map + university table ─────────────────────────────────
               The map shows one bubble per country (colour-coded by university
@@ -380,13 +492,10 @@ function Dashboard() {
             </div>
           </Panel>
 
-          {/* ── Country & source distribution ────────────────────────────────
-              Side-by-side bar charts: the left shows the top 15 countries
-              across all sources; the right breaks down records by pipeline
-              source and also shows the signal-tier and learning-type donuts. */}
+          {/* ── Top countries + formal vs non-formal breakdown ───────────────  */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Top-15 country bar chart — clicking a bar also toggles the filter */}
-            <Panel title="Top 15 countries" subtitle="All sources">
+            <Panel title="Top 15 countries" subtitle="Universities teaching Kotlin">
               <HorizontalBars
                 data={topCountries}
                 onClick={toggleCountry}
@@ -395,34 +504,36 @@ function Dashboard() {
               <ChartInsight insight={dataset.insights?.top_countries} />
             </Panel>
 
-            <Panel title="Records by source" subtitle="Distribution">
-              {/* Source breakdown bar chart */}
-              <HorizontalBars data={sourceCounts} color="#C711E1" height={220} />
-              <ChartInsight insight={dataset.insights?.sources} />
-              <div className="grid grid-cols-2 gap-6 mt-6">
-                {/* Signal-tier donut: primary vs secondary — measures dataset quality */}
-                <div>
-                  <div className="eyebrow mb-2">Signal tier</div>
-                  <Donut
-                    data={tierCounts}
-                    colors={["#7F52FF", "#3A3A3F"]}
-                    centerLabel="records"
-                  />
-                  <ChartInsight insight={dataset.insights?.signal_tier} />
-                </div>
-                {/* Learning-type donut: formal (university/MOOC) vs informal (GitHub) */}
-                <div>
-                  <div className="eyebrow mb-2">Learning type</div>
-                  <Donut
-                    data={learningCounts}
-                    colors={["#C711E1", "#7F52FF"]}
-                    centerLabel="records"
-                  />
-                  <ChartInsight insight={dataset.insights?.learning_type} />
-                </div>
-              </div>
+            <Panel title="Formal vs non-formal" subtitle="Top 10 countries, stacked">
+              <StackedBars
+                data={formalInformal}
+                keys={["formal", "non-formal"]}
+                colors={["#7F52FF", "#C711E1"]}
+              />
             </Panel>
           </div>
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: MOOCs
+              Non-formal online courses (Coursera, Stepik, etc.).
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider
+            label="MOOCs"
+            description="Non-formal online courses — Massively Open Online Courses on platforms like Coursera and Stepik."
+          />
+
+          <Panel title="MOOC platform distribution" subtitle="Courses by platform">
+            <HorizontalBars data={moocCounts} color="#C711E1" height={160} />
+          </Panel>
+
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: GITHUB
+              Public GitHub repositories related to Kotlin learning.
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider
+            label="GitHub"
+            description="Public repositories: courses, tutorials, workshops, and book companions."
+          />
 
           {/* ── GitHub-specific breakdowns ───────────────────────────────────
               Only rows where source === "github" are included.
@@ -433,35 +544,56 @@ function Dashboard() {
               <HorizontalBars data={repoTypeCounts} color="#7F52FF" />
               <ChartInsight insight={dataset.insights?.github_types} />
             </Panel>
-            <Panel title="GitHub popularity" subtitle="Stars distribution">
+            <Panel title="GitHub stars distribution" subtitle="Star count buckets">
               <HorizontalBars data={popularityBuckets} color="#C711E1" height={260} />
             </Panel>
           </div>
 
-          {/* ── Provider & learning-mode breakdown ──────────────────────────
-              Top 15 providers (university names, MOOC platforms, GitHub orgs);
-              stacked bars show how each of the top 10 countries splits between
-              formal (accredited) and informal (self-study) Kotlin learning. */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <Panel title="Top 15 providers" subtitle="Owners & institutions">
-              <HorizontalBars data={providerCounts} color="#7F52FF" />
-              <ChartInsight insight={dataset.insights?.top_providers} />
-            </Panel>
-            <Panel title="Formal vs informal" subtitle="Top 10 countries, stacked">
-              <StackedBars
-                data={formalInformal}
-                keys={["formal", "informal"]}
-                colors={["#7F52FF", "#C711E1"]}
-              />
-            </Panel>
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION: SEARCH STATISTICS
+              Crawl pipeline health: how the automated discovery worked.
+          ═══════════════════════════════════════════════════════════════════ */}
+          <SectionDivider
+            label="Search Statistics"
+            description="Pipeline telemetry — how the automated scraping and discovery process performed."
+          />
+
+          {/* ── Methodology blurb ───────────────────────────────────────────── */}
+          <div className="panel p-4 sm:p-5">
+            <div className="eyebrow text-[10px] sm:text-[11px] mb-2">Methodology</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed">
+              <div>
+                <span className="text-ink font-semibold">Data scraping</span><br />
+                The pipeline searches for university names paired with "Kotlin" using major search
+                engines (Google, Bing). Result pages are fetched and parsed to extract course
+                listings and syllabi.
+              </div>
+              <div>
+                <span className="text-ink font-semibold">Signal tier</span><br />
+                <span className="text-[color:var(--kt-purple)] mono text-[11px]">Primary</span> — Kotlin
+                is the explicit focus of the course or resource.{" "}
+                <span className="text-muted-foreground mono text-[11px]">Secondary</span> — Kotlin is
+                mentioned as a supplementary or comparable language within a broader curriculum.
+              </div>
+              <div>
+                <span className="text-ink font-semibold">Kotlin confidence</span><br />
+                A machine-learning classifier assigns a score (0–1) estimating how likely it is
+                that a page genuinely teaches Kotlin, rather than merely mentioning it in passing.
+                Higher scores indicate stronger Kotlin focus.
+              </div>
+            </div>
           </div>
 
           {/* ── Kotlin-confidence histogram ──────────────────────────────────
               The classifier assigns a confidence score (0–1) to every record
               indicating how likely the content is Kotlin-specific.
-              This histogram reveals score distribution across the filtered set. */}
-          <Panel title="Kotlin-confidence distribution" subtitle="Classifier score histogram">
-            <Histogram values={confidenceValues} bins={10} height={220} />
+              This histogram reveals score distribution across the filtered set.
+              Bars are centered on tick marks for readability. */}
+          <Panel
+            title="Kotlin-confidence distribution"
+            subtitle="Classifier score histogram · bars centered on ticks"
+          >
+            <Histogram values={confidenceValues} bins={20} height={240} />
           </Panel>
 
           {/* ── Crawl-pipeline funnel ────────────────────────────────────────

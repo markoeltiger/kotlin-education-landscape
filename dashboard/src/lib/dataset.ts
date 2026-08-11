@@ -1,7 +1,18 @@
 export type Course = {
   source: string;
   category: string;
+  /**
+   * Signal tier indicates the strength of evidence that Kotlin is being taught:
+   * - "primary" — Kotlin is the main subject (course title, syllabus explicitly mentions Kotlin)
+   * - "secondary" — Kotlin is mentioned as part of a broader course or resource
+   */
   signal_tier: "primary" | "secondary" | string;
+  /**
+   * Learning type follows standard educational classification:
+   * - "formal" — accredited university / higher-education courses
+   * - "informal" — non-formal learning: MOOCs, GitHub repos, self-study resources
+   *   (displayed in the UI as "Non-formal" to match educational terminology)
+   */
   learning_type: "formal" | "informal" | string;
   title: string;
   url: string;
@@ -9,7 +20,12 @@ export type Course = {
   country: string;
   language: string;
   subtype: string;
+  /** Raw star count (GitHub) or 0 for non-GitHub sources */
   popularity: number;
+  /**
+   * Kotlin confidence score (0–1): classifier probability that this resource
+   * is genuinely Kotlin-focused rather than tangentially mentioning it.
+   */
   kotlin_confidence: number;
 };
 
@@ -48,11 +64,16 @@ export type Insights = {
   };
 };
 
+export type DatasetMeta = {
+  generated_at: string;
+};
+
 export type Dataset = {
   courses: Course[];
   serp: SerpRow[];
   baseline: Baseline | null;
   insights: Insights | null;
+  meta: DatasetMeta;
 };
 
 export async function fetchDataset(): Promise<Dataset> {
@@ -64,6 +85,7 @@ export async function fetchDataset(): Promise<Dataset> {
       serp: data.serp || [],
       baseline: data.baseline || null,
       insights: data.insights || null,
+      meta: data.meta || { generated_at: new Date().toISOString() },
     };
   } catch (error) {
     console.error('Error fetching dataset:', error);
@@ -74,29 +96,31 @@ export async function fetchDataset(): Promise<Dataset> {
       fetch("/data/baseline_comparison.json").then((r) => (r.ok ? r.json() as Promise<Baseline> : null)).catch(() => null),
       fetch("/data/insights.json").then((r) => (r.ok ? r.json() as Promise<Insights> : null)).catch(() => null),
     ]);
-    return { courses: c, serp: s, baseline: b, insights: i };
+    return { 
+      courses: c, 
+      serp: s, 
+      baseline: b, 
+      insights: i,
+      meta: { generated_at: new Date().toISOString() }
+    };
   }
 }
 
 export type Filters = {
-  primary_only: boolean;
   sources: string[];
   tiers: string[];
   learning_types: string[];
   countries: string[];
-  min_stars: number;
   conf_min: number;
   conf_max: number;
   search: string;
 };
 
 export const emptyFilters: Filters = {
-  primary_only: false,
   sources: [],
   tiers: [],
   learning_types: [],
   countries: [],
-  min_stars: 0,
   conf_min: 0,
   conf_max: 1,
   search: "",
@@ -109,12 +133,10 @@ export function applyFilters(courses: Course[], f: Filters): Course[] {
   const tSet = new Set(f.tiers);
   const lSet = new Set(f.learning_types);
   return courses.filter((r) => {
-    if (f.primary_only && r.signal_tier !== "primary") return false;
     if (srcSet.size && !srcSet.has(r.source)) return false;
     if (tSet.size && !tSet.has(r.signal_tier)) return false;
     if (lSet.size && !lSet.has(r.learning_type)) return false;
     if (csSet.size && !csSet.has(r.country)) return false;
-    if (f.min_stars > 0 && (r.source !== "github" || r.popularity < f.min_stars)) return false;
     if (r.kotlin_confidence < f.conf_min || r.kotlin_confidence > f.conf_max) return false;
     if (q) {
       const hay = `${r.title} ${r.provider} ${r.country}`.toLowerCase();

@@ -6,24 +6,22 @@ import { t as log } from "../_libs/d3-scale+internmap.mjs";
 import { m as select_default, t as zoom_default } from "../_libs/d3+[...].mjs";
 import { t as hcl_default } from "../_libs/d3-interpolate.mjs";
 import { n as path_default, r as graticule10, t as naturalEarth1_default } from "../_libs/d3-geo.mjs";
-import { a as HorizontalBars, c as classNames, i as Histogram, l as fmt, o as Panel, r as Funnel, s as StackedBars, t as Donut, u as useResizeObserver } from "./Charts-_7q_Krp8.mjs";
+import { a as HorizontalBars, c as classNames, i as Histogram, l as fmt, o as Panel, r as Funnel, s as StackedBars, t as Donut, u as useResizeObserver } from "./Charts-Jm0x-9AT.mjs";
 import { a as DialogOverlay, c as DialogTrigger, i as DialogDescription, n as DialogClose, o as DialogPortal, r as DialogContent, s as DialogTitle, t as Dialog } from "../_libs/@radix-ui/react-dialog+[...].mjs";
 import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route } from "./routes-BIJQ6Lqp.mjs";
+import { t as Route } from "./routes-BUR9LaBu.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as X } from "../_libs/lucide-react.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { t as feature_default } from "../_libs/topojson-client.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DXysDqcX.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-e_lgXrdA.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var emptyFilters = {
-	primary_only: false,
 	sources: [],
 	tiers: [],
 	learning_types: [],
 	countries: [],
-	min_stars: 0,
 	conf_min: 0,
 	conf_max: 1,
 	search: ""
@@ -35,12 +33,10 @@ function applyFilters(courses, f) {
 	const tSet = new Set(f.tiers);
 	const lSet = new Set(f.learning_types);
 	return courses.filter((r) => {
-		if (f.primary_only && r.signal_tier !== "primary") return false;
 		if (srcSet.size && !srcSet.has(r.source)) return false;
 		if (tSet.size && !tSet.has(r.signal_tier)) return false;
 		if (lSet.size && !lSet.has(r.learning_type)) return false;
 		if (csSet.size && !csSet.has(r.country)) return false;
-		if (f.min_stars > 0 && (r.source !== "github" || r.popularity < f.min_stars)) return false;
 		if (r.kotlin_confidence < f.conf_min || r.kotlin_confidence > f.conf_max) return false;
 		if (q) {
 			if (!`${r.title} ${r.provider} ${r.country}`.toLowerCase().includes(q)) return false;
@@ -123,13 +119,32 @@ var SheetDescription = import_react.forwardRef(({ className, ...props }, ref) =>
 SheetDescription.displayName = DialogDescription.displayName;
 var TIERS = ["primary", "secondary"];
 var LEARNING = ["formal", "informal"];
-var STAR_STEPS = [
-	0,
-	10,
-	50,
-	100,
-	500
-];
+/** Display-friendly labels for raw data values */
+var TIER_LABELS = {
+	primary: "Primary",
+	secondary: "Secondary"
+};
+var LEARNING_LABELS = {
+	formal: "Formal",
+	informal: "Non-formal"
+};
+var SOURCE_LABELS = {
+	university_website: "University",
+	github: "GitHub",
+	stepik: "Stepik",
+	coursera: "Coursera"
+};
+/**
+* A chip is "active" when:
+* - The filter array is empty (= all values allowed, i.e. no restriction)
+* - OR the specific value is present in the filter array
+*
+* This way, on first load with no URL params, all chips appear highlighted,
+* correctly communicating "everything is shown".
+*/
+function isActive(arr, value) {
+	return arr.length === 0 || arr.includes(value);
+}
 function FilterRail({ filters, setFilters, sources, countries, filteredCount, totalCount }) {
 	const [countryQuery, setCountryQuery] = (0, import_react.useState)("");
 	const [mobileOpen, setMobileOpen] = (0, import_react.useState)(false);
@@ -141,10 +156,17 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 	}, [countries, countryQuery]);
 	const toggle = (key, v) => setFilters((prev) => {
 		const cur = prev[key] ?? [];
-		const has = cur.includes(v);
+		if (cur.length === 0) {
+			const allValues = key === "tiers" ? TIERS : key === "learning_types" ? LEARNING : key === "sources" ? sources : [];
+			return {
+				...prev,
+				[key]: allValues.filter((x) => x !== v)
+			};
+		}
+		const next = cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v];
 		return {
 			...prev,
-			[key]: has ? cur.filter((x) => x !== v) : [...cur, v]
+			[key]: next
 		};
 	});
 	const filterContent = /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -177,106 +199,106 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
 				})
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
-				label: "Signal tier",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.primary_only,
-					onClick: () => setFilters((p) => ({
-						...p,
-						primary_only: !p.primary_only
-					})),
-					children: "Primary-only"
-				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.tiers.includes(t),
-					onClick: () => toggle("tiers", t),
-					children: t
-				}, t)) })]
-			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
-				label: "Source",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.sources.includes(s),
-					onClick: () => toggle("sources", s),
-					children: s
-				}, s)) })
+				label: "Signal tier",
+				tooltip: "Primary: Kotlin is the main language taught. Secondary: Kotlin is mentioned as part of a broader course or resource.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
+					active: isActive(filters.tiers, t),
+					onClick: () => toggle("tiers", t),
+					children: TIER_LABELS[t] ?? t
+				}, t)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: "Learning type",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: LEARNING.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.learning_types.includes(l),
+					active: isActive(filters.learning_types, l),
 					onClick: () => toggle("learning_types", l),
-					children: l
+					children: LEARNING_LABELS[l] ?? l
 				}, l)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
-				label: `Min GitHub stars · ${filters.min_stars}`,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex items-center gap-1",
-					children: STAR_STEPS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						onClick: () => setFilters((p) => ({
-							...p,
-							min_stars: s
-						})),
-						className: classNames("mono flex-1 py-1.5 text-xs rounded-md border transition-colors", filters.min_stars === s ? "bg-[color:var(--kt-purple)] text-white border-transparent" : "border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-purple)]"),
-						children: s === 0 ? "any" : `≥${s}`
-					}, s))
-				})
+				label: "Source",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
+					active: isActive(filters.sources, s),
+					onClick: () => toggle("sources", s),
+					children: SOURCE_LABELS[s] ?? s
+				}, s)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: `Kotlin confidence · ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`,
+				tooltip: "A classifier score (0–1) indicating how likely this record is genuinely Kotlin-focused. 1.0 = near-certain Kotlin content.",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-						type: "range",
-						min: 0,
-						max: 1,
-						step: .05,
-						value: filters.conf_min,
-						onChange: (e) => setFilters((p) => ({
-							...p,
-							conf_min: Math.min(Number(e.target.value), p.conf_max)
-						})),
-						className: "w-full accent-[color:var(--kt-purple)]"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-						type: "range",
-						min: 0,
-						max: 1,
-						step: .05,
-						value: filters.conf_max,
-						onChange: (e) => setFilters((p) => ({
-							...p,
-							conf_max: Math.max(Number(e.target.value), p.conf_min)
-						})),
-						className: "w-full accent-[color:var(--kt-magenta)]"
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1 flex-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "mono text-[10px] text-muted-foreground",
+							children: "Min"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							type: "number",
+							min: 0,
+							max: 1,
+							step: .05,
+							value: filters.conf_min,
+							onChange: (e) => setFilters((p) => ({
+								...p,
+								conf_min: Math.min(Number(e.target.value), p.conf_max)
+							})),
+							className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1 flex-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "mono text-[10px] text-muted-foreground",
+							children: "Max"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							type: "number",
+							min: 0,
+							max: 1,
+							step: .05,
+							value: filters.conf_max,
+							onChange: (e) => setFilters((p) => ({
+								...p,
+								conf_max: Math.max(Number(e.target.value), p.conf_min)
+							})),
+							className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+						})]
 					})]
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
 				label: `Country${filters.countries.length ? ` · ${filters.countries.length} picked` : ""}`,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-					type: "text",
-					value: countryQuery,
-					onChange: (e) => setCountryQuery(e.target.value),
-					placeholder: "filter countries…",
-					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] mb-2"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "max-h-40 sm:max-h-56 overflow-y-auto flex flex-col",
-					children: filteredCountries.map((c) => {
-						const active = filters.countries.includes(c);
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							onClick: () => toggle("countries", c),
-							className: classNames("text-left mono text-xs px-2 py-1 rounded-md transition-colors", active ? "bg-[color:var(--kt-purple)]/20 text-ink" : "text-muted-foreground hover:text-ink hover:bg-panel-2"),
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "inline-block w-3",
-									children: active ? "×" : ""
-								}),
-								" ",
-								c
-							]
-						}, c);
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mono text-[10px] text-muted-foreground mb-1.5",
+						children: "Map and table filtering applies to universities only."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+						type: "text",
+						value: countryQuery,
+						onChange: (e) => setCountryQuery(e.target.value),
+						placeholder: "filter countries…",
+						className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] mb-2"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "max-h-40 sm:max-h-56 overflow-y-auto flex flex-col",
+						children: filteredCountries.map((c) => {
+							const active = filters.countries.includes(c);
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => toggle("countries", c),
+								className: classNames("text-left mono text-xs px-2 py-1 rounded-md transition-colors", active ? "bg-[color:var(--kt-purple)]/20 text-ink" : "text-muted-foreground hover:text-ink hover:bg-panel-2"),
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "inline-block w-3",
+										children: active ? "×" : ""
+									}),
+									" ",
+									c
+								]
+							}, c);
+						})
 					})
-				})]
+				]
 			})
 		]
 	});
@@ -310,106 +332,106 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
 				})
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
-				label: "Signal tier",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.primary_only,
-					onClick: () => setFilters((p) => ({
-						...p,
-						primary_only: !p.primary_only
-					})),
-					children: "Primary-only"
-				}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.tiers.includes(t),
-					onClick: () => toggle("tiers", t),
-					children: t
-				}, t)) })]
-			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
-				label: "Source",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.sources.includes(s),
-					onClick: () => toggle("sources", s),
-					children: s
-				}, s)) })
+				label: "Signal tier",
+				tooltip: "Primary: Kotlin is the main language taught. Secondary: Kotlin is mentioned as part of a broader course or resource.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: TIERS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
+					active: isActive(filters.tiers, t),
+					onClick: () => toggle("tiers", t),
+					children: TIER_LABELS[t] ?? t
+				}, t)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: "Learning type",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: LEARNING.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
-					active: filters.learning_types.includes(l),
+					active: isActive(filters.learning_types, l),
 					onClick: () => toggle("learning_types", l),
-					children: l
+					children: LEARNING_LABELS[l] ?? l
 				}, l)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
-				label: `Min GitHub stars · ${filters.min_stars}`,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex items-center gap-1",
-					children: STAR_STEPS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						onClick: () => setFilters((p) => ({
-							...p,
-							min_stars: s
-						})),
-						className: classNames("mono flex-1 py-1.5 text-xs rounded-md border transition-colors", filters.min_stars === s ? "bg-[color:var(--kt-purple)] text-white border-transparent" : "border-line text-muted-foreground hover:text-ink hover:border-[color:var(--kt-purple)]"),
-						children: s === 0 ? "any" : `≥${s}`
-					}, s))
-				})
+				label: "Source",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToggleRow, { children: sources.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Chip, {
+					active: isActive(filters.sources, s),
+					onClick: () => toggle("sources", s),
+					children: SOURCE_LABELS[s] ?? s
+				}, s)) })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Group, {
 				label: `Kotlin confidence · ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`,
+				tooltip: "A classifier score (0–1) indicating how likely this record is genuinely Kotlin-focused.",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-						type: "range",
-						min: 0,
-						max: 1,
-						step: .05,
-						value: filters.conf_min,
-						onChange: (e) => setFilters((p) => ({
-							...p,
-							conf_min: Math.min(Number(e.target.value), p.conf_max)
-						})),
-						className: "w-full accent-[color:var(--kt-purple)]"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-						type: "range",
-						min: 0,
-						max: 1,
-						step: .05,
-						value: filters.conf_max,
-						onChange: (e) => setFilters((p) => ({
-							...p,
-							conf_max: Math.max(Number(e.target.value), p.conf_min)
-						})),
-						className: "w-full accent-[color:var(--kt-magenta)]"
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1 flex-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "mono text-[10px] text-muted-foreground",
+							children: "Min"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							type: "number",
+							min: 0,
+							max: 1,
+							step: .05,
+							value: filters.conf_min,
+							onChange: (e) => setFilters((p) => ({
+								...p,
+								conf_min: Math.min(Number(e.target.value), p.conf_max)
+							})),
+							className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-1 flex-1",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "mono text-[10px] text-muted-foreground",
+							children: "Max"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+							type: "number",
+							min: 0,
+							max: 1,
+							step: .05,
+							value: filters.conf_max,
+							onChange: (e) => setFilters((p) => ({
+								...p,
+								conf_max: Math.max(Number(e.target.value), p.conf_min)
+							})),
+							className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-[color:var(--kt-purple)] transition-colors"
+						})]
 					})]
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Group, {
 				label: `Country${filters.countries.length ? ` · ${filters.countries.length} picked` : ""}`,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-					type: "text",
-					value: countryQuery,
-					onChange: (e) => setCountryQuery(e.target.value),
-					placeholder: "filter countries…",
-					className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] mb-2"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "max-h-60 overflow-y-auto flex flex-col",
-					children: filteredCountries.map((c) => {
-						const active = filters.countries.includes(c);
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							onClick: () => toggle("countries", c),
-							className: classNames("text-left mono text-xs px-2 py-1 rounded-md transition-colors", active ? "bg-[color:var(--kt-purple)]/20 text-ink" : "text-muted-foreground hover:text-ink hover:bg-panel-2"),
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "inline-block w-3",
-									children: active ? "×" : ""
-								}),
-								" ",
-								c
-							]
-						}, c);
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mono text-[10px] text-muted-foreground mb-1.5",
+						children: "Map and table filtering applies to universities only."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+						type: "text",
+						value: countryQuery,
+						onChange: (e) => setCountryQuery(e.target.value),
+						placeholder: "filter countries…",
+						className: "mono w-full bg-panel-2 border border-line rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted-foreground focus:outline-none focus:border-[color:var(--kt-purple)] mb-2"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "max-h-60 overflow-y-auto flex flex-col",
+						children: filteredCountries.map((c) => {
+							const active = filters.countries.includes(c);
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => toggle("countries", c),
+								className: classNames("text-left mono text-xs px-2 py-1 rounded-md transition-colors", active ? "bg-[color:var(--kt-purple)]/20 text-ink" : "text-muted-foreground hover:text-ink hover:bg-panel-2"),
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "inline-block w-3",
+										children: active ? "×" : ""
+									}),
+									" ",
+									c
+								]
+							}, c);
+						})
 					})
-				})]
+				]
 			})
 		]
 	});
@@ -450,12 +472,20 @@ function FilterRail({ filters, setFilters, sources, countries, filteredCount, to
 		children: filterContent
 	})] });
 }
-function Group({ label, children }) {
+function Group({ label, tooltip, children }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-col gap-1.5 sm:gap-2",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "eyebrow text-[10px] sm:text-[11px]",
-			children: label
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "eyebrow text-[10px] sm:text-[11px] flex items-center gap-1",
+			children: [label, tooltip && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				title: tooltip,
+				className: "inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px] leading-none",
+				style: {
+					fontFamily: "serif",
+					fontStyle: "italic"
+				},
+				children: "i"
+			})]
 		}), children]
 	});
 }
@@ -474,29 +504,22 @@ function Chip({ active, onClick, children }) {
 }
 function ActiveFilters({ filters, setFilters }) {
 	const chips = [];
-	if (filters.primary_only) chips.push({
-		label: "primary-only",
-		onRemove: () => setFilters((p) => ({
-			...p,
-			primary_only: false
-		}))
-	});
 	filters.sources.forEach((s) => chips.push({
-		label: `source: ${s}`,
+		label: `source: ${SOURCE_LABELS[s] ?? s}`,
 		onRemove: () => setFilters((p) => ({
 			...p,
 			sources: p.sources.filter((x) => x !== s)
 		}))
 	}));
 	filters.tiers.forEach((s) => chips.push({
-		label: `tier: ${s}`,
+		label: `tier: ${TIER_LABELS[s] ?? s}`,
 		onRemove: () => setFilters((p) => ({
 			...p,
 			tiers: p.tiers.filter((x) => x !== s)
 		}))
 	}));
 	filters.learning_types.forEach((s) => chips.push({
-		label: s,
+		label: LEARNING_LABELS[s] ?? s,
 		onRemove: () => setFilters((p) => ({
 			...p,
 			learning_types: p.learning_types.filter((x) => x !== s)
@@ -509,13 +532,6 @@ function ActiveFilters({ filters, setFilters }) {
 			countries: p.countries.filter((x) => x !== s)
 		}))
 	}));
-	if (filters.min_stars > 0) chips.push({
-		label: `≥${filters.min_stars}★`,
-		onRemove: () => setFilters((p) => ({
-			...p,
-			min_stars: 0
-		}))
-	});
 	if (filters.conf_min > 0 || filters.conf_max < 1) chips.push({
 		label: `conf ${filters.conf_min.toFixed(2)}–${filters.conf_max.toFixed(2)}`,
 		onRemove: () => setFilters((p) => ({
@@ -541,12 +557,10 @@ function ActiveFilters({ filters, setFilters }) {
 		}, i)), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 			onClick: () => setFilters((p) => ({
 				...p,
-				primary_only: false,
 				sources: [],
 				tiers: [],
 				learning_types: [],
 				countries: [],
-				min_stars: 0,
 				conf_min: 0,
 				conf_max: 1,
 				search: ""
@@ -861,15 +875,63 @@ function ChartInsight({ insight }) {
 		})
 	});
 }
-var DataTable = (0, import_react.lazy)(() => import("./DataTable-BgVHYMOL.mjs").then((m) => ({ default: m.DataTable })));
+var DataTable = (0, import_react.lazy)(() => import("./DataTable-BYW0vW46.mjs").then((m) => ({ default: m.DataTable })));
+function SectionDivider({ label, description }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex items-center gap-4 pt-2 sm:pt-4",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex-1 h-px bg-line" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "shrink-0 text-center",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "eyebrow text-[10px] sm:text-[12px] tracking-[0.2em] text-muted-foreground",
+					children: label
+				}), description && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-0.5 mono text-[10px] text-muted-foreground max-w-xs",
+					children: description
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex-1 h-px bg-line" })
+		]
+	});
+}
+function DatasetTimestamp({ generatedAt }) {
+	let display = "—";
+	try {
+		display = new Date(generatedAt).toLocaleString("en-GB", {
+			day: "2-digit",
+			month: "short",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+			timeZoneName: "short"
+		});
+	} catch {}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "mono text-[10px] text-muted-foreground flex items-center gap-1.5",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "inline-block w-1.5 h-1.5 rounded-full",
+				style: {
+					background: "var(--kt-purple)",
+					opacity: .7
+				}
+			}),
+			"Dataset updated: ",
+			display
+		]
+	});
+}
 function Dashboard() {
 	const dataset = Route.useLoaderData();
 	const search = Route.useSearch();
 	const navigate = useNavigate({ from: "/" });
-	const filters = (0, import_react.useMemo)(() => ({
-		...emptyFilters,
-		...search
-	}), [search]);
+	const filters = (0, import_react.useMemo)(() => {
+		return {
+			...emptyFilters,
+			...search
+		};
+	}, [search]);
 	const setFilters = (0, import_react.useCallback)((next) => {
 		navigate({
 			search: (prev) => {
@@ -909,7 +971,9 @@ function Dashboard() {
 	const topCountries = (0, import_react.useMemo)(() => topN(countryCounts, 15), [countryCounts]);
 	const sourceCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.source), 10), [filtered]);
 	const tierCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.signal_tier), 5), [filtered]);
-	const learningCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.learning_type), 5), [filtered]);
+	const learningCounts = (0, import_react.useMemo)(() => {
+		return topN(groupBy(filtered, (r) => r.learning_type), 5).map(([k, v]) => [k === "informal" ? "Non-formal" : k === "formal" ? "Formal" : k, v]);
+	}, [filtered]);
 	const repoTypeCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "github"), (r) => r.subtype || "other"), 10), [filtered]);
 	const providerCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered, (r) => r.provider), 15), [filtered]);
 	const confidenceValues = (0, import_react.useMemo)(() => filtered.map((r) => r.kotlin_confidence), [filtered]);
@@ -941,11 +1005,12 @@ function Dashboard() {
 				label,
 				parts: {
 					formal: rows.filter((r) => r.learning_type === "formal").length,
-					informal: rows.filter((r) => r.learning_type === "informal").length
+					"non-formal": rows.filter((r) => r.learning_type === "informal").length
 				}
 			};
 		});
 	}, [countryCounts, filtered]);
+	const moocCounts = (0, import_react.useMemo)(() => topN(groupBy(filtered.filter((r) => r.source === "stepik" || r.source === "coursera"), (r) => r.source), 10), [filtered]);
 	const crawlStats = (0, import_react.useMemo)(() => {
 		const s = dataset.serp;
 		return {
@@ -996,6 +1061,10 @@ function Dashboard() {
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "mt-2 sm:mt-3 md:mt-4 max-w-2xl text-muted-foreground text-[12px] sm:text-[13px] md:text-[15px] leading-relaxed",
 					children: "An automated pipeline discovers universities, MOOCs, and public repositories teaching Kotlin. Every filter below refines the whole dashboard in real time."
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "mt-3 sm:mt-4",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DatasetTimestamp, { generatedAt: dataset.meta.generated_at })
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1034,7 +1103,77 @@ function Dashboard() {
 							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightSummary, { insight: dataset.insights?.overall }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, { label: "General" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatCards, { totals }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+								title: "Records by source",
+								subtitle: "All sources · distribution",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+									data: sourceCounts,
+									color: "#C711E1",
+									height: 220
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.sources })]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "Signal tier & learning type",
+								subtitle: "Dataset composition",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-6",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "eyebrow mb-2 flex items-center gap-1",
+											children: ["Signal tier", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												title: "Primary: Kotlin is the main subject. Secondary: Kotlin mentioned alongside other content.",
+												className: "inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px]",
+												style: {
+													fontFamily: "serif",
+													fontStyle: "italic"
+												},
+												children: "i"
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
+											data: tierCounts,
+											colors: ["#7F52FF", "#3A3A3F"],
+											centerLabel: "records"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.signal_tier })
+									] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "eyebrow mb-2 flex items-center gap-1",
+											children: ["Learning type", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												title: "Formal: accredited university courses. Non-formal: MOOCs, GitHub repos, self-study resources.",
+												className: "inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-line text-muted-foreground cursor-help text-[9px]",
+												style: {
+													fontFamily: "serif",
+													fontStyle: "italic"
+												},
+												children: "i"
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
+											data: learningCounts,
+											colors: ["#C711E1", "#7F52FF"],
+											centerLabel: "records"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.learning_type })
+									] })]
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+							title: "Top 15 providers",
+							subtitle: "Owners & institutions · all sources",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+								data: providerCounts,
+								color: "#7F52FF"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.top_providers })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
+							label: "Formal Education",
+							description: "Accredited university courses where Kotlin appears in the curriculum."
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
 							title: "Universities per country",
 							subtitle: "World map · click a country to filter",
@@ -1073,50 +1212,38 @@ function Dashboard() {
 							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
 								title: "Top 15 countries",
-								subtitle: "All sources",
+								subtitle: "Universities teaching Kotlin",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 									data: topCountries,
 									onClick: toggleCountry,
 									activeKey: filters.countries[0]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.top_countries })]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
-								title: "Records by source",
-								subtitle: "Distribution",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-										data: sourceCounts,
-										color: "#C711E1",
-										height: 220
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.sources }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "grid grid-cols-2 gap-6 mt-6",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-												className: "eyebrow mb-2",
-												children: "Signal tier"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
-												data: tierCounts,
-												colors: ["#7F52FF", "#3A3A3F"],
-												centerLabel: "records"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.signal_tier })
-										] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-												className: "eyebrow mb-2",
-												children: "Learning type"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Donut, {
-												data: learningCounts,
-												colors: ["#C711E1", "#7F52FF"],
-												centerLabel: "records"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.learning_type })
-										] })]
-									})
-								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+								title: "Formal vs non-formal",
+								subtitle: "Top 10 countries, stacked",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
+									data: formalInformal,
+									keys: ["formal", "non-formal"],
+									colors: ["#7F52FF", "#C711E1"]
+								})
 							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
+							label: "MOOCs",
+							description: "Non-formal online courses — Massively Open Online Courses on platforms like Coursera and Stepik."
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+							title: "MOOC platform distribution",
+							subtitle: "Courses by platform",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+								data: moocCounts,
+								color: "#C711E1",
+								height: 160
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
+							label: "GitHub",
+							description: "Public repositories: courses, tutorials, workshops, and book companions."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
@@ -1128,8 +1255,8 @@ function Dashboard() {
 									color: "#7F52FF"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.github_types })]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-								title: "GitHub popularity",
-								subtitle: "Stars distribution",
+								title: "GitHub stars distribution",
+								subtitle: "Star count buckets",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
 									data: popularityBuckets,
 									color: "#C711E1",
@@ -1137,32 +1264,62 @@ function Dashboard() {
 								})
 							})]
 						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SectionDivider, {
+							label: "Search Statistics",
+							description: "Pipeline telemetry — how the automated scraping and discovery process performed."
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
-								title: "Top 15 providers",
-								subtitle: "Owners & institutions",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-									data: providerCounts,
-									color: "#7F52FF"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.top_providers })]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-								title: "Formal vs informal",
-								subtitle: "Top 10 countries, stacked",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StackedBars, {
-									data: formalInformal,
-									keys: ["formal", "informal"],
-									colors: ["#7F52FF", "#C711E1"]
-								})
+							className: "panel p-4 sm:p-5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "eyebrow text-[10px] sm:text-[11px] mb-2",
+								children: "Methodology"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-1 sm:grid-cols-3 gap-4 text-[12px] sm:text-[13px] text-muted-foreground leading-relaxed",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-ink font-semibold",
+											children: "Data scraping"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+										"The pipeline searches for university names paired with \"Kotlin\" using major search engines (Google, Bing). Result pages are fetched and parsed to extract course listings and syllabi."
+									] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-ink font-semibold",
+											children: "Signal tier"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-[color:var(--kt-purple)] mono text-[11px]",
+											children: "Primary"
+										}),
+										" — Kotlin is the explicit focus of the course or resource.",
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-muted-foreground mono text-[11px]",
+											children: "Secondary"
+										}),
+										" — Kotlin is mentioned as a supplementary or comparable language within a broader curriculum."
+									] }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-ink font-semibold",
+											children: "Kotlin confidence"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+										"A machine-learning classifier assigns a score (0–1) estimating how likely it is that a page genuinely teaches Kotlin, rather than merely mentioning it in passing. Higher scores indicate stronger Kotlin focus."
+									] })
+								]
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
 							title: "Kotlin-confidence distribution",
-							subtitle: "Classifier score histogram",
+							subtitle: "Classifier score histogram · bars centered on ticks",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Histogram, {
 								values: confidenceValues,
-								bins: 10,
-								height: 220
+								bins: 20,
+								height: 240
 							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {

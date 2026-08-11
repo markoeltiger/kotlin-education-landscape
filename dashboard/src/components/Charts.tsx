@@ -249,7 +249,7 @@ export function StackedBars({
 
 export function Histogram({
   values,
-  bins = 10,
+  bins = 20,
   height = 200,
   color = "#7F52FF",
 }: {
@@ -265,7 +265,7 @@ export function Histogram({
     if (!svgRef.current || !width || !values.length) return;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
-    const margin = { top: 8, right: 8, bottom: 22, left: 34 };
+    const margin = { top: 8, right: 8, bottom: 28, left: 38 };
     const w = width - margin.left - margin.right;
     const h = height - margin.top - margin.bottom;
 
@@ -284,13 +284,19 @@ export function Histogram({
       .attr("fill", color)
       .attr("rx", 2)
       .append("title")
-      .text((d) => `${(d.x0 ?? 0).toFixed(1)}–${(d.x1 ?? 0).toFixed(1)}: ${fmt(d.length)}`);
+      .text((d) => `${(d.x0 ?? 0).toFixed(2)}–${(d.x1 ?? 0).toFixed(2)}: ${fmt(d.length)} records`);
 
-    const xAxis = d3.axisBottom(x).ticks(5).tickSizeOuter(0);
+    // Center tick marks at bin midpoints so each bar sits under its label
+    const midpoints = hist.map((d) => ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2);
+    const xAxis = d3
+      .axisBottom(x)
+      .tickValues(midpoints)
+      .tickFormat((v) => (v as number).toFixed(1))
+      .tickSizeOuter(0);
     g.append("g")
       .attr("transform", `translate(0,${h})`)
       .call(xAxis)
-      .call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1"))
+      .call((sel) => sel.selectAll("text").attr("class", "mono").attr("fill", "#9B9BA1").attr("font-size", 9))
       .call((sel) => sel.selectAll("line,path").attr("stroke", "#3A3A3F"));
 
     const yAxis = d3.axisLeft(y).ticks(4).tickSizeOuter(0);
