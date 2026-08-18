@@ -15,6 +15,10 @@ interface Program {
   country: string;
   program_name: string;
   topics: string[];
+  topics_targets?: string[];
+  topics_domains?: string[];
+  topics_concepts?: { topic: string; branch: string }[];
+  topics_canonical?: string[];
   level: string;
   prerequisites: string | null;
   language_taught: string | null;
@@ -26,11 +30,14 @@ interface Program {
 
 interface TopicsData {
   total_programs: number;
-  topics: { topic: string; count: number }[];
+  targets: { topic: string; count: number }[];
+  domains: { topic: string; count: number }[];
+  concepts: { topic: string; count: number }[];
+  concepts_by_branch: Record<string, { topic: string; count: number }[]>;
   by_level: { level: string; count: number }[];
   by_language: { language: string; count: number }[];
   by_country: { country: string; count: number }[];
-  top_topics_by_country: Record<string, { topic: string; count: number }[]>;
+  top_targets_by_country: Record<string, { topic: string; count: number }[]>;
 }
 
 interface ProgramsDataset {
@@ -109,15 +116,17 @@ function ProgramsPage() {
 
   // Filter programs based on search criteria
   const filteredPrograms = useMemo(() => {
-    return dataset.programs.filter((program) => {
+    const programs = dataset?.programs ?? [];
+    return programs.filter((program) => {
+      const topics = program.topics_canonical ?? program.topics ?? [];
       const matchesSearch = !search.search || 
-        program.university.toLowerCase().includes(search.search.toLowerCase()) ||
-        program.program_name.toLowerCase().includes(search.search.toLowerCase()) ||
-        program.topics.some(t => t.toLowerCase().includes(search.search.toLowerCase()));
+        (program.university ?? "").toLowerCase().includes(search.search.toLowerCase()) ||
+        (program.program_name ?? "").toLowerCase().includes(search.search.toLowerCase()) ||
+        topics.some(t => (t ?? "").toLowerCase().includes(search.search.toLowerCase()));
 
       const matchesCountry = !search.country || program.country === search.country;
       const matchesLevel = !search.level || program.level === search.level;
-      const matchesTopic = !search.topic || program.topics.includes(search.topic);
+      const matchesTopic = !search.topic || topics.includes(search.topic);
 
       return matchesSearch && matchesCountry && matchesLevel && matchesTopic;
     });
@@ -125,15 +134,15 @@ function ProgramsPage() {
 
   // Sort programs
   const sortedPrograms = useMemo(() => {
-    const sorted = [...filteredPrograms];
+    const sorted = [...(filteredPrograms ?? [])];
     sorted.sort((a, b) => {
       let comparison = 0;
       if (search.sortBy === "university") {
-        comparison = a.university.localeCompare(b.university);
+        comparison = (a.university ?? "").localeCompare(b.university ?? "");
       } else if (search.sortBy === "country") {
-        comparison = a.country.localeCompare(b.country);
+        comparison = (a.country ?? "").localeCompare(b.country ?? "");
       } else if (search.sortBy === "level") {
-        comparison = a.level.localeCompare(b.level);
+        comparison = (a.level ?? "").localeCompare(b.level ?? "");
       }
       return search.sortOrder === "asc" ? comparison : -comparison;
     });
@@ -153,17 +162,20 @@ function ProgramsPage() {
 
   // Get unique values for filters
   const allCountries = useMemo(() => {
-    const unique = Array.from(new Set(dataset.programs.map((p) => p.country))).sort();
+    const programs = dataset?.programs ?? [];
+    const unique = Array.from(new Set(programs.map((p) => p.country).filter(Boolean))).sort();
     return unique;
   }, [dataset.programs]);
 
   const allLevels = useMemo(() => {
-    const unique = Array.from(new Set(dataset.programs.map((p) => p.level))).sort();
+    const programs = dataset?.programs ?? [];
+    const unique = Array.from(new Set(programs.map((p) => p.level).filter(Boolean))).sort();
     return unique;
   }, [dataset.programs]);
 
   const allTopics = useMemo(() => {
-    const unique = Array.from(new Set(dataset.programs.flatMap((p) => p.topics))).sort();
+    const programs = dataset?.programs ?? [];
+    const unique = Array.from(new Set(programs.flatMap((p) => p.topics_canonical ?? p.topics ?? []).filter(Boolean))).sort();
     return unique;
   }, [dataset.programs]);
 
@@ -181,25 +193,31 @@ function ProgramsPage() {
   }, [search.sortBy, search.sortOrder, setSearch]);
 
   // Prepare chart data — must be called unconditionally (Rules of Hooks).
-  // These return empty arrays when topics is null, which is safe for the charts.
-  const topicsChartData = useMemo(() => {
-    if (!dataset.topics) return [] as [string, number][];
-    return dataset.topics.topics
-      .slice(0, 15)
-      .map((t) => [t.topic, t.count] as [string, number]);
-  }, [dataset.topics]);
+  // These return empty arrays when keys are missing, showing empty state instead of crashing.
+  const targetsChartData = useMemo(() => {
+    const targets = dataset?.topics?.targets ?? [];
+    return targets.slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0] as [string, number]);
+  }, [dataset?.topics]);
+
+  const domainsChartData = useMemo(() => {
+    const domains = dataset?.topics?.domains ?? [];
+    return domains.slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0] as [string, number]);
+  }, [dataset?.topics]);
+
+  const conceptsChartData = useMemo(() => {
+    const concepts = dataset?.topics?.concepts ?? [];
+    return concepts.slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0] as [string, number]);
+  }, [dataset?.topics]);
 
   const levelChartData = useMemo(() => {
-    if (!dataset.topics) return [] as [string, number][];
-    return dataset.topics.by_level.map((l) => [l.level, l.count] as [string, number]);
-  }, [dataset.topics]);
+    const levels = dataset?.topics?.by_level ?? [];
+    return levels.map((l) => [l.level ?? "", l.count ?? 0] as [string, number]);
+  }, [dataset?.topics]);
 
   const languageChartData = useMemo(() => {
-    if (!dataset.topics) return [] as [string, number][];
-    return dataset.topics.by_language
-      .slice(0, 10)
-      .map((l) => [l.language, l.count] as [string, number]);
-  }, [dataset.topics]);
+    const languages = dataset?.topics?.by_language ?? [];
+    return languages.slice(0, 10).map((l) => [l.language ?? "", l.count ?? 0] as [string, number]);
+  }, [dataset?.topics]);
 
   // Topic tag colors (subtle brand palette) — must be before any early returns (Rules of Hooks)
   const getTopicColor = useCallback((topic: string) => {
@@ -215,7 +233,7 @@ function ProgramsPage() {
   }, []);
 
   // Show empty state if data failed to load
-  if (!dataset.programs.length || !dataset.topics) {
+  if (!dataset?.programs?.length || !dataset?.topics) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Empty label="Program data not available" />
@@ -242,32 +260,55 @@ function ProgramsPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="panel p-4 sm:p-5">
             <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Total Programs</div>
-            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{dataset.programs.length}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{(dataset?.programs?.length ?? 0)}</div>
           </div>
           <div className="panel p-4 sm:p-5">
             <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Countries</div>
-            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{allCountries.length}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{(allCountries?.length ?? 0)}</div>
           </div>
           <div className="panel p-4 sm:p-5">
             <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Topics</div>
-            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{allTopics.length}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-ink mono">{(allTopics?.length ?? 0)}</div>
           </div>
           <div className="panel p-4 sm:p-5">
             <div className="eyebrow text-[10px] sm:text-[11px] mb-1">Filtered</div>
-            <div className="text-2xl sm:text-3xl font-bold text-kt-purple mono">{sortedPrograms.length}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-kt-purple mono">{(sortedPrograms?.length ?? 0)}</div>
           </div>
         </div>
 
-        {/* Topics distribution chart (headline) */}
-        <Panel title="Topics distribution" subtitle="Most taught Kotlin topics across all programs" className="mb-4 sm:mb-6">
+        {/* Targets distribution chart (headline) */}
+        <Panel title="Targets distribution" subtitle="Primary areas targeted by Kotlin programs" className="mb-4 sm:mb-6">
           <HorizontalBars 
-            data={topicsChartData} 
+            data={targetsChartData} 
             color="#7F52FF" 
-            height={400}
+            height={340}
             onClick={handleTopicClick}
             activeKey={search.topic}
           />
         </Panel>
+
+        {/* Domains and Concepts distribution charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+          <Panel title="Domains distribution" subtitle="Most taught domains (e.g. Mobile, Server)">
+            <HorizontalBars 
+              data={domainsChartData} 
+              color="#C711E1" 
+              height={340}
+              onClick={handleTopicClick}
+              activeKey={search.topic}
+            />
+          </Panel>
+
+          <Panel title="Kotlin concepts distribution" subtitle="Key Kotlin language features taught">
+            <HorizontalBars 
+              data={conceptsChartData} 
+              color="#7F52FF" 
+              height={340}
+              onClick={handleTopicClick}
+              activeKey={search.topic}
+            />
+          </Panel>
+        </div>
 
         {/* Secondary charts row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
@@ -290,9 +331,9 @@ function ProgramsPage() {
           </Panel>
         </div>
 
-        {/* Top topics by country (optional) */}
-        {dataset.topics?.top_topics_by_country && Object.keys(dataset.topics.top_topics_by_country).length > 0 && (
-          <Panel title="Top topics by country" subtitle="Select a country to see its topic breakdown" className="mb-4 sm:mb-6">
+        {/* Top targets by country (optional) */}
+        {dataset?.topics?.top_targets_by_country && Object.keys(dataset.topics.top_targets_by_country).length > 0 && (
+          <Panel title="Top targets by country" subtitle="Select a country to see its target breakdown" className="mb-4 sm:mb-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               <select
                 value={selectedCountry}
@@ -300,17 +341,17 @@ function ProgramsPage() {
                 className="bg-panel-2 border border-line rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-kt-purple"
               >
                 <option value="">Select a country</option>
-                {Object.keys(dataset.topics.top_topics_by_country).sort().map((country) => (
+                {Object.keys(dataset.topics.top_targets_by_country).sort().map((country) => (
                   <option key={country} value={country}>{country}</option>
                 ))}
               </select>
             </div>
-            {selectedCountry && dataset.topics.top_topics_by_country[selectedCountry] && (
+            {selectedCountry && dataset.topics.top_targets_by_country[selectedCountry] && (
               <div>
                 <HorizontalBars 
-                  data={dataset.topics.top_topics_by_country[selectedCountry]
+                  data={(dataset.topics.top_targets_by_country[selectedCountry] ?? [])
                     .slice(0, 10)
-                    .map((t) => [t.topic, t.count] as [string, number])} 
+                    .map((t) => [t.topic ?? "", t.count ?? 0] as [string, number])} 
                   color="#E44857" 
                   height={300}
                   onClick={handleTopicClick}
@@ -499,7 +540,7 @@ function ProgramsPage() {
                     </td>
                     <td className="py-3 px-2">
                       <div className="flex flex-wrap gap-1">
-                        {program.topics.slice(0, 3).map((topic) => (
+                        {(program.topics_canonical ?? program.topics ?? []).slice(0, 3).map((topic) => (
                           <span
                             key={topic}
                             className={`inline-block px-2 py-0.5 rounded text-xs border ${getTopicColor(topic)}`}
@@ -511,8 +552,8 @@ function ProgramsPage() {
                             {topic}
                           </span>
                         ))}
-                        {program.topics.length > 3 && (
-                          <span className="text-xs text-muted-foreground">+{program.topics.length - 3}</span>
+                        {(program.topics_canonical ?? program.topics ?? []).length > 3 && (
+                          <span className="text-xs text-muted-foreground">+{((program.topics_canonical ?? program.topics ?? []).length - 3)}</span>
                         )}
                       </div>
                     </td>
@@ -523,7 +564,7 @@ function ProgramsPage() {
               </tbody>
             </table>
           </div>
-
+ 
           {/* Expanded row details */}
           {expandedRow !== null && sortedPrograms[expandedRow] && (
             <div className="mt-4 p-4 bg-panel-2 rounded-md border border-line">
@@ -538,7 +579,7 @@ function ProgramsPage() {
               <div className="mt-3">
                 <span className="font-semibold text-ink text-sm">All topics: </span>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {sortedPrograms[expandedRow].topics.map((topic) => (
+                  {(sortedPrograms[expandedRow].topics_canonical ?? sortedPrograms[expandedRow].topics ?? []).map((topic) => (
                     <span
                       key={topic}
                       className={`inline-block px-2 py-0.5 rounded text-xs border ${getTopicColor(topic)}`}

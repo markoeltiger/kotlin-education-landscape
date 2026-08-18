@@ -3,8 +3,8 @@ import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
 import { c as Panel, n as Empty, o as HorizontalBars, t as Donut } from "./Charts-Cg3e7Nay.mjs";
 import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route } from "./programs-BWzKSdHD.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/programs-BOTZy9OT.js
+import { t as Route } from "./programs-B8lcqrGS.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/programs-Dbf1E_I0.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProgramsPage() {
@@ -14,21 +14,22 @@ function ProgramsPage() {
 	const [expandedRow, setExpandedRow] = (0, import_react.useState)(null);
 	const [selectedCountry, setSelectedCountry] = (0, import_react.useState)("");
 	const filteredPrograms = (0, import_react.useMemo)(() => {
-		return dataset.programs.filter((program) => {
-			const matchesSearch = !search.search || program.university.toLowerCase().includes(search.search.toLowerCase()) || program.program_name.toLowerCase().includes(search.search.toLowerCase()) || program.topics.some((t) => t.toLowerCase().includes(search.search.toLowerCase()));
+		return (dataset?.programs ?? []).filter((program) => {
+			const topics = program.topics_canonical ?? program.topics ?? [];
+			const matchesSearch = !search.search || (program.university ?? "").toLowerCase().includes(search.search.toLowerCase()) || (program.program_name ?? "").toLowerCase().includes(search.search.toLowerCase()) || topics.some((t) => (t ?? "").toLowerCase().includes(search.search.toLowerCase()));
 			const matchesCountry = !search.country || program.country === search.country;
 			const matchesLevel = !search.level || program.level === search.level;
-			const matchesTopic = !search.topic || program.topics.includes(search.topic);
+			const matchesTopic = !search.topic || topics.includes(search.topic);
 			return matchesSearch && matchesCountry && matchesLevel && matchesTopic;
 		});
 	}, [dataset.programs, search]);
 	const sortedPrograms = (0, import_react.useMemo)(() => {
-		const sorted = [...filteredPrograms];
+		const sorted = [...filteredPrograms ?? []];
 		sorted.sort((a, b) => {
 			let comparison = 0;
-			if (search.sortBy === "university") comparison = a.university.localeCompare(b.university);
-			else if (search.sortBy === "country") comparison = a.country.localeCompare(b.country);
-			else if (search.sortBy === "level") comparison = a.level.localeCompare(b.level);
+			if (search.sortBy === "university") comparison = (a.university ?? "").localeCompare(b.university ?? "");
+			else if (search.sortBy === "country") comparison = (a.country ?? "").localeCompare(b.country ?? "");
+			else if (search.sortBy === "level") comparison = (a.level ?? "").localeCompare(b.level ?? "");
 			return search.sortOrder === "asc" ? comparison : -comparison;
 		});
 		return sorted;
@@ -47,13 +48,16 @@ function ProgramsPage() {
 		});
 	}, [navigate]);
 	const allCountries = (0, import_react.useMemo)(() => {
-		return Array.from(new Set(dataset.programs.map((p) => p.country))).sort();
+		const programs = dataset?.programs ?? [];
+		return Array.from(new Set(programs.map((p) => p.country).filter(Boolean))).sort();
 	}, [dataset.programs]);
 	const allLevels = (0, import_react.useMemo)(() => {
-		return Array.from(new Set(dataset.programs.map((p) => p.level))).sort();
+		const programs = dataset?.programs ?? [];
+		return Array.from(new Set(programs.map((p) => p.level).filter(Boolean))).sort();
 	}, [dataset.programs]);
 	const allTopics = (0, import_react.useMemo)(() => {
-		return Array.from(new Set(dataset.programs.flatMap((p) => p.topics))).sort();
+		const programs = dataset?.programs ?? [];
+		return Array.from(new Set(programs.flatMap((p) => p.topics_canonical ?? p.topics ?? []).filter(Boolean))).sort();
 	}, [dataset.programs]);
 	const handleTopicClick = (0, import_react.useCallback)((topic) => {
 		setSearch({ topic: search.topic === topic ? "" : topic });
@@ -68,18 +72,21 @@ function ProgramsPage() {
 		search.sortOrder,
 		setSearch
 	]);
-	const topicsChartData = (0, import_react.useMemo)(() => {
-		if (!dataset.topics) return [];
-		return dataset.topics.topics.slice(0, 15).map((t) => [t.topic, t.count]);
-	}, [dataset.topics]);
+	const targetsChartData = (0, import_react.useMemo)(() => {
+		return (dataset?.topics?.targets ?? []).slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0]);
+	}, [dataset?.topics]);
+	const domainsChartData = (0, import_react.useMemo)(() => {
+		return (dataset?.topics?.domains ?? []).slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0]);
+	}, [dataset?.topics]);
+	const conceptsChartData = (0, import_react.useMemo)(() => {
+		return (dataset?.topics?.concepts ?? []).slice(0, 15).map((t) => [t.topic ?? "", t.count ?? 0]);
+	}, [dataset?.topics]);
 	const levelChartData = (0, import_react.useMemo)(() => {
-		if (!dataset.topics) return [];
-		return dataset.topics.by_level.map((l) => [l.level, l.count]);
-	}, [dataset.topics]);
+		return (dataset?.topics?.by_level ?? []).map((l) => [l.level ?? "", l.count ?? 0]);
+	}, [dataset?.topics]);
 	const languageChartData = (0, import_react.useMemo)(() => {
-		if (!dataset.topics) return [];
-		return dataset.topics.by_language.slice(0, 10).map((l) => [l.language, l.count]);
-	}, [dataset.topics]);
+		return (dataset?.topics?.by_language ?? []).slice(0, 10).map((l) => [l.language ?? "", l.count ?? 0]);
+	}, [dataset?.topics]);
 	const getTopicColor = (0, import_react.useCallback)((topic) => {
 		const colors = [
 			"bg-purple-500/20 text-purple-300 border-purple-500/30",
@@ -90,7 +97,7 @@ function ProgramsPage() {
 		];
 		return colors[topic.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length];
 	}, []);
-	if (!dataset.programs.length || !dataset.topics) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	if (!dataset?.programs?.length || !dataset?.topics) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "min-h-screen flex items-center justify-center",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, { label: "Program data not available" })
 	});
@@ -128,7 +135,7 @@ function ProgramsPage() {
 								children: "Total Programs"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-2xl sm:text-3xl font-bold text-ink mono",
-								children: dataset.programs.length
+								children: dataset?.programs?.length ?? 0
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -138,7 +145,7 @@ function ProgramsPage() {
 								children: "Countries"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-2xl sm:text-3xl font-bold text-ink mono",
-								children: allCountries.length
+								children: allCountries?.length ?? 0
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -148,7 +155,7 @@ function ProgramsPage() {
 								children: "Topics"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-2xl sm:text-3xl font-bold text-ink mono",
-								children: allTopics.length
+								children: allTopics?.length ?? 0
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -158,22 +165,46 @@ function ProgramsPage() {
 								children: "Filtered"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "text-2xl sm:text-3xl font-bold text-kt-purple mono",
-								children: sortedPrograms.length
+								children: sortedPrograms?.length ?? 0
 							})]
 						})
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-					title: "Topics distribution",
-					subtitle: "Most taught Kotlin topics across all programs",
+					title: "Targets distribution",
+					subtitle: "Primary areas targeted by Kotlin programs",
 					className: "mb-4 sm:mb-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-						data: topicsChartData,
+						data: targetsChartData,
 						color: "#7F52FF",
-						height: 400,
+						height: 340,
 						onClick: handleTopicClick,
 						activeKey: search.topic
 					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+						title: "Domains distribution",
+						subtitle: "Most taught domains (e.g. Mobile, Server)",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+							data: domainsChartData,
+							color: "#C711E1",
+							height: 340,
+							onClick: handleTopicClick,
+							activeKey: search.topic
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+						title: "Kotlin concepts distribution",
+						subtitle: "Key Kotlin language features taught",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+							data: conceptsChartData,
+							color: "#7F52FF",
+							height: 340,
+							onClick: handleTopicClick,
+							activeKey: search.topic
+						})
+					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6",
@@ -200,9 +231,9 @@ function ProgramsPage() {
 						})
 					})]
 				}),
-				dataset.topics?.top_topics_by_country && Object.keys(dataset.topics.top_topics_by_country).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
-					title: "Top topics by country",
-					subtitle: "Select a country to see its topic breakdown",
+				dataset?.topics?.top_targets_by_country && Object.keys(dataset.topics.top_targets_by_country).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+					title: "Top targets by country",
+					subtitle: "Select a country to see its target breakdown",
 					className: "mb-4 sm:mb-6",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4",
@@ -213,13 +244,13 @@ function ProgramsPage() {
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 								value: "",
 								children: "Select a country"
-							}), Object.keys(dataset.topics.top_topics_by_country).sort().map((country) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+							}), Object.keys(dataset.topics.top_targets_by_country).sort().map((country) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 								value: country,
 								children: country
 							}, country))]
 						})
-					}), selectedCountry && dataset.topics.top_topics_by_country[selectedCountry] && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
-						data: dataset.topics.top_topics_by_country[selectedCountry].slice(0, 10).map((t) => [t.topic, t.count]),
+					}), selectedCountry && dataset.topics.top_targets_by_country[selectedCountry] && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HorizontalBars, {
+						data: (dataset.topics.top_targets_by_country[selectedCountry] ?? []).slice(0, 10).map((t) => [t.topic ?? "", t.count ?? 0]),
 						color: "#E44857",
 						height: 300,
 						onClick: handleTopicClick,
@@ -430,16 +461,16 @@ function ProgramsPage() {
 											className: "py-3 px-2",
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 												className: "flex flex-wrap gap-1",
-												children: [program.topics.slice(0, 3).map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												children: [(program.topics_canonical ?? program.topics ?? []).slice(0, 3).map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 													className: `inline-block px-2 py-0.5 rounded text-xs border ${getTopicColor(topic)}`,
 													onClick: (e) => {
 														e.stopPropagation();
 														handleTopicClick(topic);
 													},
 													children: topic
-												}, topic)), program.topics.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												}, topic)), (program.topics_canonical ?? program.topics ?? []).length > 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 													className: "text-xs text-muted-foreground",
-													children: ["+", program.topics.length - 3]
+													children: ["+", (program.topics_canonical ?? program.topics ?? []).length - 3]
 												})]
 											})
 										}),
@@ -483,7 +514,7 @@ function ProgramsPage() {
 										children: "All topics: "
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 										className: "flex flex-wrap gap-1 mt-1",
-										children: sortedPrograms[expandedRow].topics.map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										children: (sortedPrograms[expandedRow].topics_canonical ?? sortedPrograms[expandedRow].topics ?? []).map((topic) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: `inline-block px-2 py-0.5 rounded text-xs border ${getTopicColor(topic)}`,
 											onClick: () => handleTopicClick(topic),
 											children: topic
