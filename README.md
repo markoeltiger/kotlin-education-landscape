@@ -44,52 +44,81 @@ All sources flow into one unified collection (`courses_unified`) with a consiste
 
 ---
 
-## The collectors
+## The orchestrator (`pipeline/main.py`)
 
-### `search_kotlin_in_universties.py` — university discovery
-The core of the project. Reads a global list of universities and their domains, then searches each one for Kotlin course pages.
-
-- **Engine fallback:** tries Google → DuckDuckGo → Bing (via a local [OpenSERP](https://github.com/karust/openserp) server), falling back to the **Serper API** only when all three free engines are blocked — conserving Serper credits for the hard cases.
-- **Relevance filtering:** a result is kept only if it is on the university's domain, mentions Kotlin as a whole word, **and** shows a course signal (course/syllabus/module/curriculum/degree terms in the title, snippet, or URL path). Word-boundary matching avoids false positives.
-- **Resumable:** every attempt is recorded in `serp_progress` with a status (`found` / `no_match` / `empty` / `failed`). Re-running skips completed schools; `--retry-failed` re-attempts only those where engines failed.
+The main entry point for running the entire pipeline or its individual phases is [pipeline/main.py](file:///Users/markseif/Desktop/Projects/kotlin-education-landscape/pipeline/main.py).
 
 ```bash
-python search_kotlin_in_universties.py --strict --workers 4
-python search_kotlin_in_universties.py --strict --retry-failed --workers 4
+# Run everything
+python pipeline/main.py --all
+
+# Run specific tasks
+python pipeline/main.py --scrape
+python pipeline/main.py --normalize
+python pipeline/main.py --enrich --limit 100
+python pipeline/main.py --export
 ```
-
-Key flags: `--strict` (require a course signal), `--workers N` (parallelism), `--retry-failed`, `--no-serper`, `--debug`.
-
-### `github_kotlin.py` — GitHub repositories
-Collects Kotlin educational repos and classifies each by type (course, workshop, tutorial, book companion, library, personal). Assigns an `edu_confidence` score used later for tiering.
-
-### `mooc_kotlin.py` — online courses
-Unified collector for Coursera and Stepik. Coursera is paged from the full catalog and filtered locally; Stepik uses its public search API. (Udemy's API was discontinued and is effectively unavailable.)
-
-### `proxy_rotator.py` — proxy helper (optional)
-A small local rotator that cycles a pool of residential proxies behind a single endpoint, for use with OpenSERP when running the university collector at scale.
 
 ---
 
-## Processing
+## The collectors
 
-### `normalizer.py`
-Merges the three raw collections into `courses_unified`. It:
+### `scraper/universties/search_kotlin_unis_playright.py` — university discovery
+Reads a global list of universities and their domains, then searches each one for Kotlin course pages.
 
-- assigns **`signal_tier`** — `primary` for genuinely course-like content (university course pages; GitHub course/workshop/book repos with confidence ≥ 0.75; all MOOCs), `secondary` for supporting material (tutorials, libraries, non-course pages);
-- assigns **`learning_type`** — `formal` (universities, structured MOOC platforms) vs `informal` (GitHub, community content);
-- resolves **Stepik author IDs to names** via Stepik's public API;
-- pulls **country** where available (university findings, GitHub owner location).
+- **Engine fallback:** tries Google, DuckDuckGo, Bing, falling back to the Serper API when free engines are blocked.
+- **Relevance filtering:** a result is kept only if it is on the university's domain, mentions Kotlin as a whole word, and shows a course signal.
+- **Resumable:** status tracked in the `serp_progress` collection.
 
 ```bash
-python normalizer.py
+python scraper/universties/search_kotlin_unis_playright.py --strict --limit 100
 ```
 
-### `stats.py`
-Read-only summary across every collection: sizes, GitHub breakdown by type/confidence, MOOC providers, university countries and top institutions, and crawl outcomes. Run it any time to see the current state of the data.
+### `scraper/github/find_kotlin_in_github.py` — GitHub repositories
+Collects Kotlin educational repos and classifies each by type.
 
 ```bash
-python stats.py
+python scraper/github/find_kotlin_in_github.py
+```
+
+### `scraper/MOOCs/find_kotlin_in_moocs.py` — online courses
+Unified collector for Coursera and Stepik.
+
+```bash
+python scraper/MOOCs/find_kotlin_in_moocs.py
+```
+
+---
+
+## Processing & Exports
+
+### `pipeline/normalizer.py`
+Merges the raw collections into `courses_unified`.
+
+```bash
+python pipeline/normalizer.py
+```
+
+### `pipeline/enrich_programs.py`
+Enriches university findings using AI/LLM analysis to confirm if they are real Kotlin courses and extract details.
+
+```bash
+python pipeline/enrich_programs.py --course-only --limit 50
+```
+
+### `pipeline/export_programs.py` & `export_courses_unified.py`
+Exports database collections to local static JSON files in `dashboard/public/data/` for the React dashboard.
+
+```bash
+python pipeline/export_courses_unified.py dashboard/public/data
+python pipeline/export_programs.py dashboard/public/data
+```
+
+### `scraper/stats.py`
+Read-only summary across every collection.
+
+```bash
+python scraper/stats.py
 ```
 
 ---
@@ -155,20 +184,20 @@ openserp serve -p 7001
 ## Typical workflow
 
 ```bash
-# 1. collect (each can run independently / resume)
-python github_kotlin.py
-python mooc_kotlin.py --source all
-python search_kotlin_in_universties.py --strict --workers 4
+# 1. Run the entire pipeline (scrape, normalize, enrich, export)
+python pipeline/main.py --all
 
-# 2. inspect
-python stats.py
+# Or run individual steps via the main orchestrator:
+python pipeline/main.py --scrape
+python pipeline/main.py --normalize
+python pipeline/main.py --enrich --limit 100
+python pipeline/main.py --export --output-dir dashboard/public/data
 
-# 3. unify
-python normalizer.py
+# 2. Inspect database collections status
+python scraper/stats.py
 
-# 4. export + visualize
-python export_tableau.py
-open kotlin_dashboard.html      # then load the exported CSV
+# 3. Export Tableau CSVs
+python dashboard/export_tableau.py
 ```
 
 ---

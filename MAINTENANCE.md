@@ -44,44 +44,71 @@ There's also some junk you can ignore: `courses_unified_backup`, `serp_progress_
 
 ## Running the pipeline
 
-Each step reads from the step before it. You don't have to run all of them every time — usually you just re-export and push.
+The entire pipeline can be run or individual steps executed using the main orchestrator script: [pipeline/main.py](file:///Users/markseif/Desktop/Projects/kotlin-education-landscape/pipeline/main.py).
+
+Alternatively, you can run individual scripts manually.
+
+### Using the main entry point (Recommended)
+
+You can run the entire pipeline or specific steps via `pipeline/main.py`:
+
+```bash
+# Run the entire pipeline (scrape, normalize, enrich, export)
+python pipeline/main.py --all
+
+# Run only scraping
+python pipeline/main.py --scrape
+
+# Run only normalization
+python pipeline/main.py --normalize
+
+# Run only AI enrichment (limit to 100 university findings)
+python pipeline/main.py --enrich --limit 100 --course-only
+
+# Run only exports to the dashboard folder
+python pipeline/main.py --export --output-dir dashboard/public/data
+```
+
+### Running individual scripts manually
+
+If you prefer to run scripts individually, use their correct file paths:
 
 **Collecting.** The collectors upsert, so re-running them doesn't create duplicates.
 
 ```bash
-python github_kotlin.py                           # -> github_repos
-python mooc_kotlin.py                             # -> mooc_courses
-python search_kotlin_in_universties.py --strict   # -> university_findings + serp_progress
+python scraper/github/find_kotlin_in_github.py                           # -> github_repos
+python scraper/MOOCs/find_kotlin_in_moocs.py                             # -> mooc_courses
+python scraper/universties/search_kotlin_unis_playright.py --strict      # -> university_findings + serp_progress
 ```
 
-The university one is the flaky part. It searches the web, and web search is rate-limited and full of CAPTCHAs. It uses free engines first and falls back to the Serper API. The Serper free credits are already used up, so a big new crawl needs either fresh Serper credits or the browser top-up (more on that below). The ~445 findings we have are fine as they are — you don't need to re-collect them.
+The university one is the flaky part. It searches the web, and web search is rate-limited and full of CAPTCHAs. It uses free engines first and falls back to the Serper API. The Serper free credits are already used up, so a big new crawl needs either fresh Serper credits. The ~445 findings we have are fine as they are — you don't need to re-collect them.
 
 **Normalizing.** This merges the three raw collections into `courses_unified` and works out the signal tier, learning type, cleans up country names, and resolves Stepik author IDs to real names.
 
 ```bash
-python normalizer.py
+python pipeline/normalizer.py
 ```
 
 **AI enrichment.** This is the part that reads each university page and decides if it's actually a Kotlin course (not just a page that mentions Kotlin), then pulls out the program name, topics, level, prerequisites, language, and credits.
 
 ```bash
-python enrich_programs_browser.py --course-only --limit 100
+python pipeline/enrich_programs.py --course-only --limit 100
 ```
 
-Use this one, not the plain-HTTP version. A lot of university sites render their pages with JavaScript, so a normal HTTP fetch gets back an empty shell and the AI thinks there's no course there. This version uses a real browser (Chromium) so it actually sees the content. It skips pages it's already done, so you can stop and restart it. Results land in `programs`.
+This version uses a real browser (Playwright Chromium) so it actually sees Javascript-rendered content. It skips pages it's already done, so you can stop and restart it. Results land in `programs`.
 
 **Exporting.** This is what feeds the dashboard.
 
 ```bash
-python export_for_dashboard.py public/data   # courses_unified.json, serp_progress.json, baseline_comparison.json
-python export_programs.py public/data        # programs.json, topics.json
-python generate_insights.py public/data      # insights.json (AI blurb per chart)
+python pipeline/export_courses_unified.py dashboard/public/data   # courses_unified.json
+python pipeline/export_programs.py dashboard/public/data          # programs.json, topics.json
+python dashboard/generate_insights.py dashboard/public/data       # insights.json (AI blurb per chart)
 ```
 
 **Publishing.** Railway watches the repo and redeploys when you push.
 
 ```bash
-git add public/data
+git add dashboard/public/data
 git commit -m "refresh dataset"
 git push
 ```
@@ -91,14 +118,13 @@ git push
 Ninety percent of the time you just want to update the dashboard with fresh data:
 
 ```bash
-python normalizer.py
-python export_for_dashboard.py public/data
-python export_programs.py public/data
-python generate_insights.py public/data
-git add public/data && git commit -m "refresh dataset" && git push
+# Using main.py to normalize and export
+python pipeline/main.py --normalize --export --output-dir dashboard/public/data
+python dashboard/generate_insights.py dashboard/public/data
+git add dashboard/public/data && git commit -m "refresh dataset" && git push
 ```
 
-If you only re-ran the AI enrichment, you only need `export_programs.py` and the push.
+If you only re-ran the AI enrichment, you can just run `pipeline/main.py --export` and push.
 
 ## Other scripts worth knowing
 

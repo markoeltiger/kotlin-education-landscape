@@ -1,7 +1,29 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getDbSafe } from "./mongodb";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { join } from "path";
+
+// Robust path resolver for data files across different run environments (dev/prod)
+function resolveDataFilePath(filename: string): string {
+  const candidates = [
+    join(process.cwd(), 'public/data', filename),
+    join(process.cwd(), '.output/public/data', filename),
+    join(process.cwd(), 'dashboard/public/data', filename),
+    join(process.cwd(), 'dashboard/.output/public/data', filename),
+    join(process.cwd(), '../public/data', filename),
+    join(process.cwd(), '../../public/data', filename),
+  ];
+
+  for (const c of candidates) {
+    if (existsSync(c)) {
+      console.log(`[api-data:resolveDataFilePath] Found ${filename} at ${c}`);
+      return c;
+    }
+  }
+
+  // Fallback to default
+  return join(process.cwd(), 'public/data', filename);
+}
 
 export const getApiData = createServerFn({ method: "GET" }).handler(async () => {
   try {
@@ -32,9 +54,9 @@ export const getApiData = createServerFn({ method: "GET" }).handler(async () => 
 
   // Fallback to static JSON
   try {
-    const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
-    const serpPath = join(process.cwd(), "public/data/serp_progress.json");
-    const baselinePath = join(process.cwd(), "public/data/baseline_comparison.json");
+    const coursesPath = resolveDataFilePath("courses_unified.json");
+    const serpPath = resolveDataFilePath("serp_progress.json");
+    const baselinePath = resolveDataFilePath("baseline_comparison.json");
 
     const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
     const serp = JSON.parse(readFileSync(serpPath, "utf-8"));

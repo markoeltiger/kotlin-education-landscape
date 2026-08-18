@@ -1,19 +1,19 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-Ck4Ebsil.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CU0j1aOU.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "/Users/markseif/Desktop/Projects/kotlin-education-landscape/dashboard/src/routes/__root.tsx",
 		children: ["/", "/programs"],
 		preloads: [
-			"/assets/index-BDl_digo.js",
+			"/assets/index-BEiJKmpB.js",
 			"/assets/jsx-runtime-Bc41UEzt.js",
 			"/assets/preload-helper-C5yV35kO.js",
 			"/assets/routes-28zpEI0m.js",
-			"/assets/programs-ClqiKHn1.js"
+			"/assets/programs-DYT9VVPg.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-BDl_digo.js"
+			src: "/assets/index-BEiJKmpB.js"
 		} }]
 	},
 	"/": {
@@ -28,7 +28,7 @@ var tsrStartManifest = () => ({ routes: {
 	"/programs": {
 		filePath: "/Users/markseif/Desktop/Projects/kotlin-education-landscape/dashboard/src/routes/programs.tsx",
 		children: void 0,
-		preloads: ["/assets/programs-BPNzLDSk.js", "/assets/Charts-CaeQbbnp.js"]
+		preloads: ["/assets/programs-C-nxKqjv.js", "/assets/Charts-CaeQbbnp.js"]
 	}
 } });
 //#endregion

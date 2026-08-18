@@ -26,147 +26,161 @@ var public_assets_data_default = {
 	"/favicon.ico": {
 		"type": "image/vnd.microsoft.icon",
 		"etag": "\"4f95-3RXc3p2mhEAs1WBwaIvE0Y0uu0Y\"",
-		"mtime": "2026-08-18T10:10:43.087Z",
+		"mtime": "2026-08-18T10:42:04.740Z",
 		"size": 20373,
 		"path": "../public/favicon.ico"
 	},
 	"/favicon.svg": {
 		"type": "image/svg+xml",
 		"etag": "\"1a4-+rYjOtdvgx3STWwomPhfrygP0EM\"",
-		"mtime": "2026-08-18T10:10:43.087Z",
+		"mtime": "2026-08-18T10:42:04.743Z",
 		"size": 420,
 		"path": "../public/favicon.svg"
-	},
-	"/kotlin_education_tableau_universities.csv": {
-		"type": "text/csv; charset=utf-8",
-		"etag": "\"19ab5-PYDvfWWHGNAAC/6UIN+9NIAL8ME\"",
-		"mtime": "2026-08-18T10:10:43.089Z",
-		"size": 105141,
-		"path": "../public/kotlin_education_tableau_universities.csv"
 	},
 	"/assets/DataTable-ETFIWJ9S.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"7084-ik68d6oAUnDgQ5GdVt+h1BAWhhQ\"",
-		"mtime": "2026-08-18T10:10:42.583Z",
+		"mtime": "2026-08-18T10:42:04.124Z",
 		"size": 28804,
 		"path": "../public/assets/DataTable-ETFIWJ9S.js"
 	},
 	"/assets/format-CkOFoDvF.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"80-DXprVUq3lOzjYz7fxrbIukkhpKA\"",
-		"mtime": "2026-08-18T10:10:42.583Z",
+		"mtime": "2026-08-18T10:42:04.125Z",
 		"size": 128,
 		"path": "../public/assets/format-CkOFoDvF.js"
+	},
+	"/kotlin_education_tableau_universities.csv": {
+		"type": "text/csv; charset=utf-8",
+		"etag": "\"19ab5-PYDvfWWHGNAAC/6UIN+9NIAL8ME\"",
+		"mtime": "2026-08-18T10:42:04.743Z",
+		"size": 105141,
+		"path": "../public/kotlin_education_tableau_universities.csv"
 	},
 	"/assets/jsx-runtime-Bc41UEzt.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"2e71-IPMWUdOXLAQYYgtmcgbBvjnQ2ZU\"",
-		"mtime": "2026-08-18T10:10:42.583Z",
+		"mtime": "2026-08-18T10:42:04.125Z",
 		"size": 11889,
 		"path": "../public/assets/jsx-runtime-Bc41UEzt.js"
-	},
-	"/assets/preload-helper-C5yV35kO.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"7341-WoIj8V6vaSJyUBVwuRkDLDaZy6I\"",
-		"mtime": "2026-08-18T10:10:42.584Z",
-		"size": 29505,
-		"path": "../public/assets/preload-helper-C5yV35kO.js"
 	},
 	"/assets/Charts-CaeQbbnp.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"144be-SuKABGsb+PYW2rGInmiN4rfUhGU\"",
-		"mtime": "2026-08-18T10:10:42.582Z",
+		"mtime": "2026-08-18T10:42:04.124Z",
 		"size": 83134,
 		"path": "../public/assets/Charts-CaeQbbnp.js"
 	},
-	"/assets/programs-BPNzLDSk.js": {
+	"/assets/preload-helper-C5yV35kO.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"32af-A676M0lFlXvgeR8AEGV7yskc9o4\"",
-		"mtime": "2026-08-18T10:10:42.584Z",
+		"etag": "\"7341-WoIj8V6vaSJyUBVwuRkDLDaZy6I\"",
+		"mtime": "2026-08-18T10:42:04.125Z",
+		"size": 29505,
+		"path": "../public/assets/preload-helper-C5yV35kO.js"
+	},
+	"/assets/programs-C-nxKqjv.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"32af-w5+zlST9pQOJ+5ubcAAscX0EEYQ\"",
+		"mtime": "2026-08-18T10:42:04.126Z",
 		"size": 12975,
-		"path": "../public/assets/programs-BPNzLDSk.js"
+		"path": "../public/assets/programs-C-nxKqjv.js"
+	},
+	"/assets/index-BEiJKmpB.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"4a478-riV+c8NWwwAEGNbwaXXPEcXHcS8\"",
+		"mtime": "2026-08-18T10:42:04.124Z",
+		"size": 304248,
+		"path": "../public/assets/index-BEiJKmpB.js"
+	},
+	"/assets/programs-DYT9VVPg.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"edc6-yPYNerNE5UzSY3nmc9Jjo3TicRs\"",
+		"mtime": "2026-08-18T10:42:04.126Z",
+		"size": 60870,
+		"path": "../public/assets/programs-DYT9VVPg.js"
 	},
 	"/assets/routes-28zpEI0m.js": {
 		"type": "text/javascript; charset=utf-8",
 		"etag": "\"531-Eqm9F/Mof0ePtHxE5h9dXpgCwZw\"",
-		"mtime": "2026-08-18T10:10:42.584Z",
+		"mtime": "2026-08-18T10:42:04.126Z",
 		"size": 1329,
 		"path": "../public/assets/routes-28zpEI0m.js"
-	},
-	"/assets/styles-Q1eiLyp6.css": {
-		"type": "text/css; charset=utf-8",
-		"etag": "\"127d2-iQSNKXBPxC9If7wyUr2+vik/7kQ\"",
-		"mtime": "2026-08-18T10:10:42.585Z",
-		"size": 75730,
-		"path": "../public/assets/styles-Q1eiLyp6.css"
-	},
-	"/assets/programs-ClqiKHn1.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"ec2f-SjfJwRq7rByo6s469y/IgtpJKgo\"",
-		"mtime": "2026-08-18T10:10:42.584Z",
-		"size": 60463,
-		"path": "../public/assets/programs-ClqiKHn1.js"
-	},
-	"/assets/routes-DiaGOpa5.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"2032c-T5vCUKKFilwteYlaezuMr75a6uQ\"",
-		"mtime": "2026-08-18T10:10:42.585Z",
-		"size": 131884,
-		"path": "../public/assets/routes-DiaGOpa5.js"
 	},
 	"/data/baseline_comparison.json": {
 		"type": "application/json",
 		"etag": "\"70-FnjkoWV9H8+Al9xNKl3IDJQDK7c\"",
-		"mtime": "2026-08-18T10:10:43.083Z",
+		"mtime": "2026-08-18T10:42:04.736Z",
 		"size": 112,
 		"path": "../public/data/baseline_comparison.json"
+	},
+	"/assets/styles-CB1Shy08.css": {
+		"type": "text/css; charset=utf-8",
+		"etag": "\"12812-bgEoJ2HEK7kcI/n+yY38GUnxfr8\"",
+		"mtime": "2026-08-18T10:42:04.126Z",
+		"size": 75794,
+		"path": "../public/assets/styles-CB1Shy08.css"
 	},
 	"/data/insights.json": {
 		"type": "application/json",
 		"etag": "\"1255-2ypdIlixOQ2I8vpBvswhFtewRvs\"",
-		"mtime": "2026-08-18T10:10:43.085Z",
+		"mtime": "2026-08-18T10:42:04.737Z",
 		"size": 4693,
 		"path": "../public/data/insights.json"
 	},
-	"/assets/index-BDl_digo.js": {
+	"/assets/routes-DiaGOpa5.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"4a478-XYRs+A4jfRnLzgaoTBEuiZDMUMc\"",
-		"mtime": "2026-08-18T10:10:42.582Z",
-		"size": 304248,
-		"path": "../public/assets/index-BDl_digo.js"
+		"etag": "\"2032c-T5vCUKKFilwteYlaezuMr75a6uQ\"",
+		"mtime": "2026-08-18T10:42:04.126Z",
+		"size": 131884,
+		"path": "../public/assets/routes-DiaGOpa5.js"
+	},
+	"/data/programs copy.json": {
+		"type": "application/json",
+		"etag": "\"1a502-hkWTniZgDmtc/Ch7k8E+NspapW8\"",
+		"mtime": "2026-08-18T10:42:04.738Z",
+		"size": 107778,
+		"path": "../public/data/programs copy.json"
+	},
+	"/data/topics copy.json": {
+		"type": "application/json",
+		"etag": "\"227e-zJRbuKJGLze7NjzgxerHtMWQ1Nc\"",
+		"mtime": "2026-08-18T10:42:04.739Z",
+		"size": 8830,
+		"path": "../public/data/topics copy.json"
 	},
 	"/data/programs.json": {
 		"type": "application/json",
-		"etag": "\"ca76-DVoHwlI+Ps2bFihydu1AF/klmF4\"",
-		"mtime": "2026-08-18T10:10:43.085Z",
-		"size": 51830,
+		"etag": "\"1a502-hkWTniZgDmtc/Ch7k8E+NspapW8\"",
+		"mtime": "2026-08-18T10:42:04.737Z",
+		"size": 107778,
 		"path": "../public/data/programs.json"
 	},
 	"/data/topics.json": {
 		"type": "application/json",
-		"etag": "\"46b6-EDbzSZwp0OhI7OjWMFteqrYqMIM\"",
-		"mtime": "2026-08-18T10:10:43.085Z",
-		"size": 18102,
+		"etag": "\"227e-zJRbuKJGLze7NjzgxerHtMWQ1Nc\"",
+		"mtime": "2026-08-18T10:42:04.738Z",
+		"size": 8830,
 		"path": "../public/data/topics.json"
 	},
 	"/data/serp_progress.json": {
 		"type": "application/json",
 		"etag": "\"1725fa-vZzHydDZn45KMjQ11Y5UrSWYA5A\"",
-		"mtime": "2026-08-18T10:10:43.090Z",
+		"mtime": "2026-08-18T10:42:04.744Z",
 		"size": 1517050,
 		"path": "../public/data/serp_progress.json"
 	},
 	"/kotlin_education_tableau.csv": {
 		"type": "text/csv; charset=utf-8",
 		"etag": "\"20221b-bLgILHkDAgCn8by0TSAsjgegXX0\"",
-		"mtime": "2026-08-18T10:10:43.093Z",
+		"mtime": "2026-08-18T10:42:04.747Z",
 		"size": 2105883,
 		"path": "../public/kotlin_education_tableau.csv"
 	},
 	"/data/courses_unified.json": {
 		"type": "application/json",
 		"etag": "\"4f13b6-+KkDzH0fUZiIDpGWoEJAZWD+9UI\"",
-		"mtime": "2026-08-18T10:10:43.095Z",
+		"mtime": "2026-08-18T10:42:04.749Z",
 		"size": 5182390,
 		"path": "../public/data/courses_unified.json"
 	}

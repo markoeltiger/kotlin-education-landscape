@@ -201,12 +201,35 @@ def run_enrich(limit=None, course_only=False, redo=False, pause=1.0):
 
 
 def run_export(output_dir="public/data"):
-    """Export program data to JSON files for dashboard."""
+    """Export program and unified course data to JSON files for dashboard."""
     print("=" * 60)
-    print("STEP 4: Exporting program data to JSON files...")
+    print("STEP 4: Exporting data to JSON files for the dashboard...")
     print("=" * 60)
     
+    success = True
+    
+    # 1. Export courses unified
     try:
+        print("Exporting courses unified...")
+        cmd = [sys.executable, "export_courses_unified.py", output_dir]
+        result = subprocess.run(
+            cmd,
+            cwd=Path(__file__).parent,
+            capture_output=False,
+            text=True
+        )
+        if result.returncode != 0:
+            print(f"❌ Unified courses export failed with exit code {result.returncode}")
+            success = False
+        else:
+            print("✅ Unified courses export completed successfully")
+    except Exception as e:
+        print(f"❌ Error running unified courses export: {e}")
+        success = False
+
+    # 2. Export programs and topics
+    try:
+        print("\nExporting programs and topics...")
         cmd = [sys.executable, "export_programs.py", output_dir]
         result = subprocess.run(
             cmd,
@@ -215,13 +238,15 @@ def run_export(output_dir="public/data"):
             text=True
         )
         if result.returncode != 0:
-            print(f"❌ Export failed with exit code {result.returncode}")
-            return False
-        print("✅ Export completed successfully")
-        return True
+            print(f"❌ Programs export failed with exit code {result.returncode}")
+            success = False
+        else:
+            print("✅ Programs export completed successfully")
     except Exception as e:
-        print(f"❌ Error running export: {e}")
-        return False
+        print(f"❌ Error running programs export: {e}")
+        success = False
+
+    return success
 
 
 def main():

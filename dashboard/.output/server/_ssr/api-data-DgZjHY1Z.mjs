@@ -2,7 +2,7 @@ import { c as createServerFn, i as TSS_SERVER_FUNCTION } from "./createServerFn-
 import { t as require_lib } from "../_libs/mongodb.mjs";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
-//#region node_modules/.nitro/vite/services/ssr/assets/api-data-ogJeRuqf.js
+//#region node_modules/.nitro/vite/services/ssr/assets/api-data-DgZjHY1Z.js
 var import_lib = require_lib();
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
@@ -57,6 +57,21 @@ async function getDbSafe(dbName = "kotlin_edu") {
 		return null;
 	}
 }
+function resolveDataFilePath(filename) {
+	const candidates = [
+		join(process.cwd(), "public/data", filename),
+		join(process.cwd(), ".output/public/data", filename),
+		join(process.cwd(), "dashboard/public/data", filename),
+		join(process.cwd(), "dashboard/.output/public/data", filename),
+		join(process.cwd(), "../public/data", filename),
+		join(process.cwd(), "../../public/data", filename)
+	];
+	for (const c of candidates) if (existsSync(c)) {
+		console.log(`[api-data:resolveDataFilePath] Found ${filename} at ${c}`);
+		return c;
+	}
+	return join(process.cwd(), "public/data", filename);
+}
 var getApiData_createServerFn_handler = createServerRpc({
 	id: "8e06fae4a2d24719e6eea33c258187b27767656003397f7a7a1fa1015039e721",
 	name: "getApiData",
@@ -81,9 +96,9 @@ var getApiData = createServerFn({ method: "GET" }).handler(getApiData_createServ
 		console.error("[apiData] MongoDB query error:", err);
 	}
 	try {
-		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");
-		const serpPath = join(process.cwd(), "public/data/serp_progress.json");
-		const baselinePath = join(process.cwd(), "public/data/baseline_comparison.json");
+		const coursesPath = resolveDataFilePath("courses_unified.json");
+		const serpPath = resolveDataFilePath("serp_progress.json");
+		const baselinePath = resolveDataFilePath("baseline_comparison.json");
 		const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
 		const serp = JSON.parse(readFileSync(serpPath, "utf-8"));
 		let baseline = null;
