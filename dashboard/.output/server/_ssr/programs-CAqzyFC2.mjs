@@ -2,8 +2,8 @@ import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstac
 import { a as string, i as object, n as zodValidator, r as _enum, t as fallback } from "../_libs/tanstack__zod-adapter+zod.mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-//#region node_modules/.nitro/vite/services/ssr/assets/programs-BBTZWlVw.js
-var $$splitComponentImporter = () => import("./programs-CavCf0wl.mjs");
+//#region node_modules/.nitro/vite/services/ssr/assets/programs-CAqzyFC2.js
+var $$splitComponentImporter = () => import("./programs-Ux0VsmoR.mjs");
 var searchSchema = object({
 	search: fallback(string(), "").default(""),
 	country: fallback(string(), "").default(""),

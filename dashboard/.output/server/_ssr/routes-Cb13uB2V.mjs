@@ -8,12 +8,12 @@ import { t as hcl_default } from "../_libs/d3-interpolate.mjs";
 import { n as path_default, r as graticule10, t as naturalEarth1_default } from "../_libs/d3-geo.mjs";
 import { a as Histogram, c as Panel, d as fmt, f as useResizeObserver, i as GitHubRepoBars, l as StackedBars, o as HorizontalBars, r as Funnel, s as MoocCourseTable, t as Donut, u as classNames } from "./Charts-Cg3e7Nay.mjs";
 import { a as DialogOverlay, c as DialogTrigger, i as DialogDescription, n as DialogClose, o as DialogPortal, r as DialogContent, s as DialogTitle, t as Dialog } from "../_libs/@radix-ui/react-dialog+[...].mjs";
-import { t as Route } from "./routes-Dad_G23S.mjs";
+import { t as Route } from "./routes-B0tX_-u8.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as X } from "../_libs/lucide-react.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { t as feature_default } from "../_libs/topojson-client.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-9uf7FfOo.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Cb13uB2V.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var emptyFilters = {
@@ -874,7 +874,7 @@ function ChartInsight({ insight }) {
 		})
 	});
 }
-var DataTable = (0, import_react.lazy)(() => import("./DataTable-Di1Sfxoy.mjs").then((m) => ({ default: m.DataTable })));
+var DataTable = (0, import_react.lazy)(() => import("./DataTable-DikFHMl3.mjs").then((m) => ({ default: m.DataTable })));
 function SectionDivider({ label, description }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex items-center gap-4 pt-2 sm:pt-4",
@@ -1181,6 +1181,10 @@ function Dashboard() {
 									countryCounts: new Map(Array.from(groupBy(filtered.filter((r) => r.source === "university_website"), (r) => r.country || "")).filter(([k]) => k)),
 									activeCountries: filters.countries,
 									onToggleCountry: toggleCountry
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mono text-[10px] text-muted-foreground mt-2",
+									children: "ⓘ Click-based filtering only works on this map, and only for countries (university records)."
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartInsight, { insight: dataset.insights?.map }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {

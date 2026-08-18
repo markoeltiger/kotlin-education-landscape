@@ -99,18 +99,16 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
           Export CSV
         </button>
       </div>
-      {/* Single scroll container — header + rows share the same overflow-x-auto
-          so horizontal scroll moves both together. The header is sticky top-0
-          inside this container for vertical scroll. */}
+      {/* Single overflow-auto container — the sticky header is inside it so the
+          header scrolls horizontally with the body while staying pinned vertically. */}
       <div className="border border-line rounded-md overflow-hidden">
         <div ref={parentRef} className="overflow-auto" style={{ height: 'min(520px, 60vh)' }}>
-          {/* Minimum width forces horizontal scroll when viewport is narrow */}
+          {/* Min-width forces horizontal scroll when the viewport is narrow */}
           <div style={{ minWidth: `${COLS.reduce((acc, c) => {
-            // parse minmax(200px,2fr) -> 200, 90px -> 90, etc.
             const m = c.w.match(/(\d+)px/);
             return acc + (m ? parseInt(m[1]) : 90);
           }, 0)}px` }}>
-            {/* Sticky header inside the scroll container */}
+            {/* Sticky header — sticks to top of the scroll container, scrolls horizontally with it */}
             <div
               className="grid bg-panel-2 border-b border-line sticky top-0 z-10"
               style={{ gridTemplateColumns: gridTemplate }}
@@ -144,7 +142,7 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
                       gridTemplateColumns: gridTemplate,
                     }}
                   >
-                    <Cell>
+                    <Cell title={r.title}>
                       <a
                         href={r.url}
                         target="_blank"
@@ -155,16 +153,16 @@ export function DataTable({ rows, data }: { rows?: Course[]; data?: Course[] }) 
                         {r.title}
                       </a>
                     </Cell>
-                    <Cell mono muted>{r.source}</Cell>
+                    <Cell mono muted title={r.source}>{r.source}</Cell>
                     <Cell>
                       <Badge tier={r.signal_tier as string}>{r.signal_tier}</Badge>
                     </Cell>
-                    <Cell mono muted>{r.learning_type === "informal" ? "non-formal" : r.learning_type}</Cell>
-                    <Cell mono>{r.provider}</Cell>
-                    <Cell mono muted>{r.country || "—"}</Cell>
-                    <Cell mono muted>{r.subtype || "—"}</Cell>
-                    <Cell mono align="right">{fmt(r.popularity)}</Cell>
-                    <Cell mono align="right">{r.kotlin_confidence.toFixed(2)}</Cell>
+                    <Cell mono muted title={r.learning_type === "informal" ? "non-formal" : r.learning_type}>{r.learning_type === "informal" ? "non-formal" : r.learning_type}</Cell>
+                    <Cell mono title={r.provider}>{r.provider}</Cell>
+                    <Cell mono muted title={r.country || undefined}>{r.country || "\u2014"}</Cell>
+                    <Cell mono muted title={r.subtype || undefined}>{r.subtype || "\u2014"}</Cell>
+                    <Cell mono align="right" title={fmt(r.popularity)}>{fmt(r.popularity)}</Cell>
+                    <Cell mono align="right" title={r.kotlin_confidence.toFixed(2)}>{r.kotlin_confidence.toFixed(2)}</Cell>
                   </div>
                 );
               })}
@@ -181,11 +179,13 @@ function Cell({
   mono,
   muted,
   align,
+  title,
 }: {
   children: React.ReactNode;
   mono?: boolean;
   muted?: boolean;
   align?: "right";
+  title?: string;
 }) {
   return (
     <div
@@ -195,7 +195,8 @@ function Cell({
         muted ? "text-muted-foreground" : "text-ink",
         align === "right" && "justify-end tabular-nums",
       )}
-      style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
+      title={title}
+      style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", direction: "ltr" }}
     >
       {children}
     </div>

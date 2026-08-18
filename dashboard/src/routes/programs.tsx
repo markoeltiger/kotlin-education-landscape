@@ -6,9 +6,8 @@ import { useCallback, useMemo, useState } from "react";
 import { Panel, Empty } from "../components/Panel";
 import { HorizontalBars, Donut } from "../components/Charts";
 import { fmt } from "../lib/format";
-import { readFileSync, existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 // Types for programs data
 interface Program {
@@ -83,7 +82,7 @@ function ProgramsPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/programs" });
 
-  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
 
   // Filter programs based on search criteria
@@ -159,6 +158,40 @@ function ProgramsPage() {
     });
   }, [search.sortBy, search.sortOrder, setSearch]);
 
+  // Prepare chart data — must be called unconditionally (Rules of Hooks).
+  // These return empty arrays when topics is null, which is safe for the charts.
+  const topicsChartData = useMemo(() => {
+    if (!dataset.topics) return [] as [string, number][];
+    return dataset.topics.topics
+      .slice(0, 15)
+      .map((t) => [t.topic, t.count] as [string, number]);
+  }, [dataset.topics]);
+
+  const levelChartData = useMemo(() => {
+    if (!dataset.topics) return [] as [string, number][];
+    return dataset.topics.by_level.map((l) => [l.level, l.count] as [string, number]);
+  }, [dataset.topics]);
+
+  const languageChartData = useMemo(() => {
+    if (!dataset.topics) return [] as [string, number][];
+    return dataset.topics.by_language
+      .slice(0, 10)
+      .map((l) => [l.language, l.count] as [string, number]);
+  }, [dataset.topics]);
+
+  // Topic tag colors (subtle brand palette) — must be before any early returns (Rules of Hooks)
+  const getTopicColor = useCallback((topic: string) => {
+    const colors = [
+      "bg-purple-500/20 text-purple-300 border-purple-500/30",
+      "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30",
+      "bg-pink-500/20 text-pink-300 border-pink-500/30",
+      "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+      "bg-violet-500/20 text-violet-300 border-violet-500/30",
+    ];
+    const idx = topic.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+    return colors[idx];
+  }, []);
+
   // Show empty state if data failed to load
   if (!dataset.programs.length || !dataset.topics) {
     return (
@@ -168,35 +201,6 @@ function ProgramsPage() {
     );
   }
 
-  // Prepare chart data
-  const topicsChartData = useMemo(() => {
-    return dataset.topics!.topics
-      .slice(0, 15)
-      .map((t) => [t.topic, t.count] as [string, number]);
-  }, [dataset.topics]);
-
-  const levelChartData = useMemo(() => {
-    return dataset.topics!.by_level.map((l) => [l.level, l.count] as [string, number]);
-  }, [dataset.topics]);
-
-  const languageChartData = useMemo(() => {
-    return dataset.topics!.by_language
-      .slice(0, 10)
-      .map((l) => [l.language, l.count] as [string, number]);
-  }, [dataset.topics]);
-
-  // Topic tag colors (subtle brand palette)
-  const getTopicColor = useCallback((topic: string) => {
-    const colors = [
-      "bg-purple-500/20 text-purple-300 border-purple-500/30",
-      "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30",
-      "bg-pink-500/20 text-pink-300 border-pink-500/30",
-      "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-      "bg-violet-500/20 text-violet-300 border-violet-500/30",
-    ];
-    const index = topic.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
-    return colors[index];
-  }, []);
 
   return (
     <div className="min-h-screen">
@@ -451,7 +455,7 @@ function ProgramsPage() {
                   <tr 
                     key={index}
                     className="border-b border-line hover:bg-panel-2 cursor-pointer"
-                    onClick={() => setExpandedRow(expandedRow === index ? null : index)}
+                    onClick={() => setExpandedRow(expandedRow === index ? null : index as number)}
                   >
                     <td className="py-3 px-2 text-ink">{program.university}</td>
                     <td className="py-3 px-2">

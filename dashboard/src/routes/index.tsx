@@ -475,6 +475,9 @@ function Dashboard() {
               activeCountries={filters.countries}
               onToggleCountry={toggleCountry}
             />
+            <p className="mono text-[10px] text-muted-foreground mt-2">
+              ⓘ Click-based filtering only works on this map, and only for countries (university records).
+            </p>
             <ChartInsight insight={dataset.insights?.map} />
 
             {/* Divider between map and table */}

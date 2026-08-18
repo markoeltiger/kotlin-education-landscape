@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
 import { readFileSync } from "fs";
 import { join } from "path";
-//#region src/routes/index.tsx
-var $$splitComponentImporter = () => import("./routes-9uf7FfOo.js");
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-B0tX_-u8.js
+var $$splitComponentImporter = () => import("./routes-Cb13uB2V.mjs");
 var Route = createFileRoute("/")({
 	loader: async () => {
 		const coursesPath = join(process.cwd(), "public/data/courses_unified.json");

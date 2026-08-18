@@ -1,13 +1,15 @@
-import { t as Route$1 } from "./routes-Dad_G23S.js";
-import { t as Route$2 } from "./programs-BBTZWlVw.js";
-import { useEffect } from "react";
-import { HeadContent, Link, Outlet, Scripts, createRootRouteWithContext, createRouter, useLocation, useRouter } from "@tanstack/react-router";
-import { jsx, jsxs } from "react/jsx-runtime";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-//#region src/styles.css?url
+import { o as __toESM } from "../_runtime.mjs";
+import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
+import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
+import { c as HeadContent, d as createRouter, f as Outlet, g as Link, h as createRootRouteWithContext, l as useLocation, s as Scripts, v as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
+import { t as Route$1 } from "./programs-CAqzyFC2.mjs";
+import { t as Route$2 } from "./routes-B0tX_-u8.mjs";
+import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
+import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/router-Ctcx1pe_.js
+var import_react = /* @__PURE__ */ __toESM(require_react());
+var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-Q1eiLyp6.css";
-//#endregion
-//#region src/lib/lovable-error-reporting.ts
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -20,29 +22,27 @@ function reportLovableError(error, context = {}) {
 		severity: "error"
 	});
 }
-//#endregion
-//#region src/routes/__root.tsx
 function NotFoundComponent() {
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "flex min-h-screen items-center justify-center bg-background px-4",
-		children: /* @__PURE__ */ jsxs("div", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "max-w-md text-center",
 			children: [
-				/* @__PURE__ */ jsx("h1", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 					className: "text-7xl font-bold kt-gradient-text",
 					children: "404"
 				}),
-				/* @__PURE__ */ jsx("h2", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					className: "mt-4 text-xl font-semibold text-foreground",
 					children: "Page not found"
 				}),
-				/* @__PURE__ */ jsx("p", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "mt-2 text-sm text-muted-foreground",
 					children: "The page you're looking for doesn't exist."
 				}),
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mt-6",
-					children: /* @__PURE__ */ jsx(Link, {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 						to: "/",
 						className: "mono inline-flex items-center justify-center rounded-md border border-line px-4 py-2 text-sm text-foreground transition-colors hover:bg-panel",
 						children: "→ Dashboard"
@@ -55,25 +55,25 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }) {
 	console.error(error);
 	const router = useRouter();
-	useEffect(() => {
+	(0, import_react.useEffect)(() => {
 		reportLovableError(error, { boundary: "tanstack_root_error_component" });
 	}, [error]);
-	return /* @__PURE__ */ jsx("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "flex min-h-screen items-center justify-center bg-background px-4",
-		children: /* @__PURE__ */ jsxs("div", {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "max-w-md text-center",
 			children: [
-				/* @__PURE__ */ jsx("h1", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 					className: "text-xl font-semibold text-foreground",
 					children: "This page didn't load"
 				}),
-				/* @__PURE__ */ jsx("p", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "mt-2 text-sm text-muted-foreground",
 					children: "Something went wrong."
 				}),
-				/* @__PURE__ */ jsx("div", {
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mt-6 flex flex-wrap justify-center gap-2",
-					children: /* @__PURE__ */ jsx("button", {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						onClick: () => {
 							router.invalidate();
 							reset();
@@ -156,30 +156,30 @@ var Route = createRootRouteWithContext()({
 	errorComponent: ErrorComponent
 });
 function RootShell({ children }) {
-	return /* @__PURE__ */ jsxs("html", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("html", {
 		lang: "en",
-		children: [/* @__PURE__ */ jsx("head", { children: /* @__PURE__ */ jsx(HeadContent, {}) }), /* @__PURE__ */ jsxs("body", { children: [children, /* @__PURE__ */ jsx(Scripts, {})] })]
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HeadContent, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("body", { children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scripts, {})] })]
 	});
 }
 function RootComponent() {
 	const { queryClient } = Route.useRouteContext();
 	const location = useLocation();
 	const isActive = (path) => location.pathname === path;
-	return /* @__PURE__ */ jsxs(QueryClientProvider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(QueryClientProvider, {
 		client: queryClient,
-		children: [/* @__PURE__ */ jsx("nav", {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
 			className: "border-b border-line bg-panel",
-			children: /* @__PURE__ */ jsx("div", {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6",
-				children: /* @__PURE__ */ jsx("div", {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "flex items-center justify-between h-14",
-					children: /* @__PURE__ */ jsxs("div", {
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-center gap-6",
-						children: [/* @__PURE__ */ jsx(Link, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 							to: "/",
 							className: `text-sm font-medium transition-colors ${isActive("/") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"}`,
 							children: "Dashboard"
-						}), /* @__PURE__ */ jsx(Link, {
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 							to: "/programs",
 							className: `text-sm font-medium transition-colors ${isActive("/programs") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"}`,
 							children: "Programs"
@@ -187,26 +187,22 @@ function RootComponent() {
 					})
 				})
 			})
-		}), /* @__PURE__ */ jsx(Outlet, {})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})]
 	});
 }
-//#endregion
-//#region src/routeTree.gen.ts
 var rootRouteChildren = {
-	IndexRoute: Route$1.update({
+	IndexRoute: Route$2.update({
 		id: "/",
 		path: "/",
 		getParentRoute: () => Route
 	}),
-	ProgramsRoute: Route$2.update({
+	ProgramsRoute: Route$1.update({
 		id: "/programs",
 		path: "/programs",
 		getParentRoute: () => Route
 	})
 };
 var routeTree = Route._addFileChildren(rootRouteChildren)._addFileTypes();
-//#endregion
-//#region src/router.tsx
 var getRouter = () => {
 	return createRouter({
 		routeTree,
