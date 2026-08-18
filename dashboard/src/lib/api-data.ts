@@ -46,6 +46,8 @@ export const getApiData = createServerFn({ method: "GET" }).handler(async () => 
         courses,
         serp,
         baseline: baseline || null,
+        insights: null,
+        meta: { generated_at: new Date().toISOString() },
       };
     }
   } catch (err) {
@@ -57,9 +59,22 @@ export const getApiData = createServerFn({ method: "GET" }).handler(async () => 
     const coursesPath = resolveDataFilePath("courses_unified.json");
     const serpPath = resolveDataFilePath("serp_progress.json");
     const baselinePath = resolveDataFilePath("baseline_comparison.json");
+    const insightsPath = resolveDataFilePath("insights.json");
 
-    const courses = JSON.parse(readFileSync(coursesPath, "utf-8"));
+    const coursesData = JSON.parse(readFileSync(coursesPath, "utf-8"));
     const serp = JSON.parse(readFileSync(serpPath, "utf-8"));
+    
+    // Handle new format (meta + courses) or old format (array)
+    let courses;
+    let meta;
+    if (Array.isArray(coursesData)) {
+      courses = coursesData;
+      meta = { generated_at: new Date().toISOString() };
+    } else {
+      courses = coursesData.courses || [];
+      meta = coursesData.meta || { generated_at: new Date().toISOString() };
+    }
+    
     let baseline = null;
     try {
       baseline = JSON.parse(readFileSync(baselinePath, "utf-8"));
@@ -67,8 +82,16 @@ export const getApiData = createServerFn({ method: "GET" }).handler(async () => 
       // optional
     }
 
-    return { courses, serp, baseline };
+    let insights = null;
+    try {
+      insights = JSON.parse(readFileSync(insightsPath, "utf-8"));
+    } catch {
+      // optional
+    }
+
+    return { courses, serp, baseline, insights, meta };
   } catch (e) {
-    return { courses: [], serp: [], baseline: null };
+    console.error("[apiData] JSON fallback error:", e);
+    return { courses: [], serp: [], baseline: null, insights: null, meta: { generated_at: new Date().toISOString() } };
   }
 });

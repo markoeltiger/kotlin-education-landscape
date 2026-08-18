@@ -1,10 +1,10 @@
-//#region src/lib/dataset.ts
+//#region node_modules/.nitro/vite/services/ssr/assets/dataset-DEQaWqwR.js
 async function fetchDataset() {
 	try {
-		const { getApiData } = await import("./api-data-B_-OLdve.js");
+		const { getApiData } = await import("./api-data-C4mtBtIB.mjs");
 		const data = await getApiData();
 		return {
-			courses: data.courses || [],
+			courses: Array.isArray(data.courses) ? data.courses : [],
 			serp: data.serp || [],
 			baseline: data.baseline || null,
 			insights: data.insights || null,

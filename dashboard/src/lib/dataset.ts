@@ -80,8 +80,12 @@ export async function fetchDataset(): Promise<Dataset> {
   try {
     const { getApiData } = await import("./api-data");
     const data = await getApiData();
+    
+    // Ensure courses is always an array
+    const courses = Array.isArray(data.courses) ? data.courses : [];
+    
     return {
-      courses: data.courses || [],
+      courses,
       serp: data.serp || [],
       baseline: data.baseline || null,
       insights: data.insights || null,

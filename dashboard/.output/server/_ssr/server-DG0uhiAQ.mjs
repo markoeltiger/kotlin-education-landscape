@@ -1,7 +1,7 @@
 import "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
-import { t as getServerFnById } from "../__23tanstack-start-server-fn-resolver-D221SqGJ.mjs";
+import { t as getServerFnById } from "../__23tanstack-start-server-fn-resolver-CktJZTb_.mjs";
 import { C as getScriptPreloadAttrs, D as executeRewriteInput, E as resolveManifestCssLink, M as isNotFound, O as isRedirect, P as invariant, T as resolveManifestAssetLink, a as replaceSsrResponse, i as normalizeSsrResponse, j as rootRouteId, k as isResolvedRedirect, n as defineHandlerCallback, o as stripSsrResponseBody, r as isSsrResponse, t as renderRouterToStream, u as RouterProvider, w as getStylesheetHref } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as createMemoryHistory } from "../_libs/tanstack__history.mjs";
 import { a as defaultSerovalPlugins, c as makeSerovalPlugin, d as lu, i as mergeHeaders, l as Ou, n as getNormalizedURL, o as createRawStreamRPCPlugin, r as getOrigin, s as createSerializationAdapter, t as attachRouterServerSsrUtils, u as cu } from "../_libs/@tanstack/router-core+[...].mjs";
@@ -84,7 +84,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-vwY3W46R.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-uNovtic0.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -1080,7 +1080,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-CexOwIo3.mjs"),
+		import("./router-BnuzcK7S.mjs"),
 		import("./start-BcSBlhe9.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);
