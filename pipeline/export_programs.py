@@ -2,8 +2,9 @@
 Export the AI-analyzed `programs` collection to JSON files the dashboard reads.
 
 Writes two files to public/data/:
-  programs.json        — array of confirmed programs (is_program=true) with all fields
-  topics.json          — topic distribution + level/language rollups (precomputed)
+  programs.json  — array of confirmed programs (is_program=true) with all fields
+  topics.json    — precomputed distributions, split by category:
+                   targets / domains / concepts (+ by branch), plus level/language/country
 
 Run after enrich_programs_browser.py:
   python export_programs.py public/data
@@ -42,6 +43,10 @@ def write(path, data):
     return os.path.getsize(path) / 1e6
 
 
+def dist(counter):
+    return [{"topic": t, "count": c} for t, c in counter.most_common()]
+
+
 def main():
     outdir = Path(sys.argv[1] if len(sys.argv) > 1 else "public/data")
     outdir.mkdir(parents=True, exist_ok=True)
@@ -52,7 +57,7 @@ def main():
     db = MongoClient(uri, serverSelectionTimeoutMS=20000)["kotlin_edu"]
     coll = db["programs"]
 
-    # ---- 1. programs.json : confirmed programs only ----
+    # ---- 1. programs.json ----
     programs = []
     for p in coll.find({"is_program": True}, {"_id": 0}):
         programs.append({
@@ -60,6 +65,10 @@ def main():
             "country": clean_country(p.get("country")),
             "program_name": p.get("program_name"),
             "topics": p.get("topics") or [],
+            "topics_targets": p.get("topics_targets") or [],
+            "topics_domains": p.get("topics_domains") or [],
+            "topics_concepts": p.get("topics_concepts") or [],
+            "topics_canonical": p.get("topics_canonical") or [],
             "level": p.get("level"),
             "prerequisites": p.get("prerequisites"),
             "language_taught": p.get("language_taught"),
@@ -71,50 +80,59 @@ def main():
     programs.sort(key=lambda x: (x["country"] or "zzz", x["university"] or "", x["program_name"] or ""))
     mb1 = write(outdir / "programs.json", programs)
 
-    # ---- 2. topics.json : precomputed distributions for charts ----
-    topic_counts = Counter()
-    topic_by_country = {}
-    level_counts = Counter()
-    language_counts = Counter()
-    country_counts = Counter()
+    # ---- 2. topics.json : categorized distributions ----
+    targets_c, domains_c, concepts_c = Counter(), Counter(), Counter()
+    concepts_by_branch = {}
+    level_c, language_c, country_c = Counter(), Counter(), Counter()
+    targets_by_country = {}
 
     for p in programs:
-        for t in p["topics"]:
-            topic_counts[t] += 1
+        for t in p["topics_targets"]:
+            targets_c[t] += 1
+        for t in p["topics_domains"]:
+            domains_c[t] += 1
+        for c in p["topics_concepts"]:
+            topic = c.get("topic"); branch = c.get("branch") or "Other"
+            if topic:
+                concepts_c[topic] += 1
+                concepts_by_branch.setdefault(branch, Counter())[topic] += 1
         if p["level"]:
-            level_counts[p["level"]] += 1
+            level_c[p["level"]] += 1
         if p["language_taught"]:
-            language_counts[p["language_taught"]] += 1
+            language_c[p["language_taught"]] += 1
         if p["country"]:
-            country_counts[p["country"]] += 1
-            tc = topic_by_country.setdefault(p["country"], Counter())
-            for t in p["topics"]:
-                tc[t] += 1
+            country_c[p["country"]] += 1
+            tbc = targets_by_country.setdefault(p["country"], Counter())
+            for t in p["topics_targets"]:
+                tbc[t] += 1
 
     topics_out = {
         "total_programs": len(programs),
-        "topics": [{"topic": t, "count": c} for t, c in topic_counts.most_common()],
-        "by_level": [{"level": k, "count": v} for k, v in level_counts.most_common()],
-        "by_language": [{"language": k, "count": v} for k, v in language_counts.most_common()],
-        "by_country": [{"country": k, "count": v} for k, v in country_counts.most_common()],
-        "top_topics_by_country": {
-            country: [{"topic": t, "count": c} for t, c in tc.most_common(8)]
-            for country, tc in sorted(topic_by_country.items(),
-                                      key=lambda kv: -sum(kv[1].values()))[:15]
+        "targets": dist(targets_c),
+        "domains": dist(domains_c),
+        "concepts": dist(concepts_c),
+        "concepts_by_branch": {
+            branch: dist(counter) for branch, counter in
+            sorted(concepts_by_branch.items(), key=lambda kv: -sum(kv[1].values()))
+        },
+        "by_level": [{"level": k, "count": v} for k, v in level_c.most_common()],
+        "by_language": [{"language": k, "count": v} for k, v in language_c.most_common()],
+        "by_country": [{"country": k, "count": v} for k, v in country_c.most_common()],
+        "top_targets_by_country": {
+            country: dist(tc) for country, tc in
+            sorted(targets_by_country.items(), key=lambda kv: -sum(kv[1].values()))[:15]
         },
     }
     mb2 = write(outdir / "topics.json", topics_out)
 
     # ---- report ----
     analyzed = coll.count_documents({})
-    confirmed = len(programs)
-    print(f"  programs.json   {mb1:.3f} MB  ({confirmed} confirmed programs)")
-    print(f"  topics.json     {mb2:.3f} MB  ({len(topic_counts)} distinct topics)")
-    print(f"\n  analyzed total: {analyzed}  |  confirmed programs: {confirmed}")
-    print(f"  countries with programs: {len(country_counts)}")
-    print("\n  top topics:")
-    for t, c in topic_counts.most_common(12):
-        print(f"    {c:>4}  {t}")
+    print(f"  programs.json   {mb1:.3f} MB  ({len(programs)} confirmed programs)")
+    print(f"  topics.json     {mb2:.3f} MB")
+    print(f"\n  analyzed total: {analyzed}  |  confirmed programs: {len(programs)}")
+    print(f"\n  targets:  {[t['topic'] for t in topics_out['targets'][:6]]}")
+    print(f"  domains:  {[t['topic'] for t in topics_out['domains'][:6]]}")
+    print(f"  concepts: {[t['topic'] for t in topics_out['concepts'][:6]]}")
     print(f"\n  written to {outdir.resolve()}")
 
 
