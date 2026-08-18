@@ -1,1 +1,0 @@
-var e=new Intl.NumberFormat(`en-US`),t=t=>e.format(t);function n(...e){return e.filter(Boolean).join(` `)}export{t as n,n as t};

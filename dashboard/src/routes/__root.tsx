@@ -126,6 +126,7 @@ function RootComponent() {
             <div className="flex items-center gap-6">
               <Link
                 to="/"
+                reloadDocument
                 className={`text-sm font-medium transition-colors ${
                   isActive("/") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"
                 }`}
@@ -134,6 +135,7 @@ function RootComponent() {
               </Link>
               <Link
                 to="/programs"
+                reloadDocument
                 className={`text-sm font-medium transition-colors ${
                   isActive("/programs") ? "text-kt-purple" : "text-muted-foreground hover:text-kt-purple"
                 }`}

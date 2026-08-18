@@ -88,20 +88,39 @@ export async function fetchDataset(): Promise<Dataset> {
       meta: data.meta || { generated_at: new Date().toISOString() },
     };
   } catch (error) {
-    console.error('Error fetching dataset:', error);
+    console.error('Error fetching dataset from API, falling back to static files:', error);
     // Fallback to static JSON files
-    const [c, s, b, i] = await Promise.all([
-      fetch("/data/courses_unified.json").then((r) => r.json() as Promise<Course[]>),
-      fetch("/data/serp_progress.json").then((r) => r.json() as Promise<SerpRow[]>),
-      fetch("/data/baseline_comparison.json").then((r) => (r.ok ? r.json() as Promise<Baseline> : null)).catch(() => null),
-      fetch("/data/insights.json").then((r) => (r.ok ? r.json() as Promise<Insights> : null)).catch(() => null),
+    const [coursesResponse, serpResponse, baselineResponse, insightsResponse] = await Promise.all([
+      fetch("/data/courses_unified.json"),
+      fetch("/data/serp_progress.json"),
+      fetch("/data/baseline_comparison.json"),
+      fetch("/data/insights.json"),
     ]);
+    
+    // Handle courses_unified.json with new format (meta + courses) or old format (array)
+    let courses: Course[] = [];
+    let meta: DatasetMeta = { generated_at: new Date().toISOString() };
+    
+    if (coursesResponse.ok) {
+      const coursesData = await coursesResponse.json();
+      if (Array.isArray(coursesData)) {
+        courses = coursesData as Course[];
+      } else if (coursesData.courses) {
+        courses = coursesData.courses;
+        meta = coursesData.meta || meta;
+      }
+    }
+    
+    const serp = serpResponse.ok ? await serpResponse.json() as SerpRow[] : [];
+    const baseline = baselineResponse.ok ? await baselineResponse.json() as Baseline : null;
+    const insights = insightsResponse.ok ? await insightsResponse.json() as Insights : null;
+    
     return { 
-      courses: c, 
-      serp: s, 
-      baseline: b, 
-      insights: i,
-      meta: { generated_at: new Date().toISOString() }
+      courses, 
+      serp, 
+      baseline, 
+      insights,
+      meta
     };
   }
 }

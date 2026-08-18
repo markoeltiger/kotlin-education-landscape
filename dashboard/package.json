@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && node scripts/copy-csv.cjs",
-    "build:dev": "vite build --mode development && node scripts/copy-csv.cjs",
+    "build": "vite build && node scripts/copy-data.cjs",
+    "build:dev": "vite build --mode development && node scripts/copy-data.cjs",
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
     "lint": "eslint .",

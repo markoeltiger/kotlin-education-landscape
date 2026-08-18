@@ -12,8 +12,6 @@ import { Donut, Funnel, Histogram, HorizontalBars, StackedBars, GitHubRepoBars, 
 import { InsightSummary } from "../components/InsightSummary";
 import { ChartInsight } from "../components/ChartInsight";
 import { fmt } from "../lib/format";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 // Filter constants
 const TIERS = ["primary", "secondary"];
@@ -27,51 +25,10 @@ const DataTable = lazy(() =>
 
 export const Route = createFileRoute("/")({
   // ── Server-side data loader ────────────────────────────────────────────────
-  // Reads courses_unified.json and serp_progress.json at request time on the server
-  // so no additional client fetches are needed; the parsed data is serialised into the HTML payload.
+  // Uses the fetchDataset function which works in both server and client environments
   loader: async (): Promise<Dataset> => {
-    // Load courses from unified JSON file
-    const coursesPath = join(process.cwd(), 'public/data/courses_unified.json');
-    const coursesData = JSON.parse(readFileSync(coursesPath, 'utf-8'));
-    
-    // Handle both old format (array) and new format (object with meta + courses)
-    const courses = Array.isArray(coursesData) 
-      ? coursesData as Course[]
-      : (coursesData.courses || []);
-    const meta = Array.isArray(coursesData)
-      ? { generated_at: new Date().toISOString() }
-      : (coursesData.meta || { generated_at: new Date().toISOString() });
-    
-    console.log(`[json] loaded ${courses.length} courses from courses_unified.json.`);
-    
-    // SERP progress JSON: tracks which university queries were searched,
-    // which returned results, and what their pipeline status was.
-    const serpPath = join(process.cwd(), 'public/data/serp_progress.json');
-    const serp = JSON.parse(readFileSync(serpPath, 'utf-8')) as SerpRow[];
-    
-    // Baseline comparison JSON: optional; compares this run against a manual
-    // reference set to measure rediscovery and net-new coverage.
-    const baselinePath = join(process.cwd(), 'public/data/baseline_comparison.json');
-    let baseline: Baseline = null;
-    try {
-      baseline = JSON.parse(readFileSync(baselinePath, 'utf-8')) as Baseline;
-    } catch {
-      // baseline file might not exist yet — this is fine
-    }
-    
-    // AI-generated insights JSON: optional; contains precomputed insights
-    // about the dataset. If it fails to load, the dashboard works without insights.
-    let insights: Insights = null;
-    try {
-      const insightsPath = join(process.cwd(), 'public/data/insights.json');
-      insights = JSON.parse(readFileSync(insightsPath, 'utf-8')) as Insights;
-      console.log('[insights] loaded insights.json');
-    } catch {
-      // insights file might not exist or be invalid — this is fine
-      console.log('[insights] failed to load insights.json, continuing without insights');
-    }
-    
-    return { courses, serp, baseline, insights, meta };
+    const { fetchDataset } = await import("../lib/dataset");
+    return await fetchDataset();
   },
   component: Dashboard,
 });
