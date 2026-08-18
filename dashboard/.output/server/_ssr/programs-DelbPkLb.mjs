@@ -3,8 +3,8 @@ import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].
 import { n as require_jsx_runtime } from "../_libs/radix-ui__react-context+react.mjs";
 import { c as Panel, n as Empty, o as HorizontalBars, t as Donut } from "./Charts-Cg3e7Nay.mjs";
 import { _ as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route } from "./programs-CZe9BG9q.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/programs-CknFlmLU.js
+import { t as Route } from "./programs-CucqWH-U.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/programs-DelbPkLb.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProgramsPage() {

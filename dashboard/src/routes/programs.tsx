@@ -6,6 +6,8 @@ import { useCallback, useMemo, useState } from "react";
 import { Panel, Empty } from "../components/Panel";
 import { HorizontalBars, Donut } from "../components/Charts";
 import { fmt } from "../lib/format";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
 
 // Types for programs data
 interface Program {
@@ -53,6 +55,28 @@ const searchSchema = z.object({
   sortOrder: fallback(z.enum(["asc", "desc"]), "asc").default("asc"),
 });
 
+// Robust path resolver for data files across different run environments (dev/prod)
+function resolveDataFilePath(filename: string): string {
+  const candidates = [
+    join(process.cwd(), 'public/data', filename),
+    join(process.cwd(), '.output/public/data', filename),
+    join(process.cwd(), 'dashboard/public/data', filename),
+    join(process.cwd(), 'dashboard/.output/public/data', filename),
+    join(process.cwd(), '../public/data', filename),
+    join(process.cwd(), '../../public/data', filename),
+  ];
+
+  for (const c of candidates) {
+    if (existsSync(c)) {
+      console.log(`[programs] Found ${filename} at ${c}`);
+      return c;
+    }
+  }
+
+  // Fallback to default
+  return join(process.cwd(), 'public/data', filename);
+}
+
 export const Route = createFileRoute("/programs")({
   validateSearch: zodValidator(searchSchema),
   loader: async (): Promise<ProgramsDataset> => {
@@ -60,21 +84,19 @@ export const Route = createFileRoute("/programs")({
     let topics: TopicsData | null = null;
 
     try {
-      const programsResponse = await fetch('/data/programs.json');
-      if (programsResponse.ok) {
-        programs = await programsResponse.json() as Program[];
-        console.log(`[programs] loaded ${programs.length} programs`);
-      }
+      const programsPath = resolveDataFilePath('programs.json');
+      const programsContent = readFileSync(programsPath, 'utf-8');
+      programs = JSON.parse(programsContent) as Program[];
+      console.log(`[programs] loaded ${programs.length} programs`);
     } catch (error) {
       console.error('[programs] failed to load programs.json:', error);
     }
 
     try {
-      const topicsResponse = await fetch('/data/topics.json');
-      if (topicsResponse.ok) {
-        topics = await topicsResponse.json() as TopicsData;
-        console.log(`[programs] loaded topics`);
-      }
+      const topicsPath = resolveDataFilePath('topics.json');
+      const topicsContent = readFileSync(topicsPath, 'utf-8');
+      topics = JSON.parse(topicsContent) as TopicsData;
+      console.log(`[programs] loaded topics`);
     } catch (error) {
       console.error('[programs] failed to load topics.json:', error);
     }
