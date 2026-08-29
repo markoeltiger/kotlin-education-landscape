@@ -95,3 +95,27 @@ export const getApiData = createServerFn({ method: "GET" }).handler(async () => 
     return { courses: [], serp: [], baseline: null, insights: null, meta: { generated_at: new Date().toISOString() } };
   }
 });
+
+export const getProgramsData = createServerFn({ method: "GET" }).handler(async () => {
+  let programs = [];
+  let topics = null;
+
+  try {
+    const programsPath = resolveDataFilePath("programs.json");
+    const programsContent = readFileSync(programsPath, "utf-8");
+    programs = JSON.parse(programsContent);
+  } catch (error) {
+    console.error("[programs] failed to load programs.json:", error);
+  }
+
+  try {
+    const topicsPath = resolveDataFilePath("topics.json");
+    const topicsContent = readFileSync(topicsPath, "utf-8");
+    topics = JSON.parse(topicsContent);
+  } catch (error) {
+    console.error("[programs] failed to load topics.json:", error);
+  }
+
+  return { programs, topics };
+});
+
